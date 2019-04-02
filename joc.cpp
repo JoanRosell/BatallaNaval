@@ -1,5 +1,5 @@
 #include "joc.h"
-
+#include <iostream>
 //-----------------------------------------
 // joc: porta el control de tot el joc
 //-----------------------------------------
