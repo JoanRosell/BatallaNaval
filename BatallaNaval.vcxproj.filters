@@ -51,6 +51,12 @@
     <ClCompile Include="joc.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="InputHandler.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="Ship.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\debug.h">
@@ -87,6 +93,15 @@
       <Filter>Archivos de encabezado\lib</Filter>
     </ClInclude>
     <ClInclude Include="joc.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="InputHandler.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Ship.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
