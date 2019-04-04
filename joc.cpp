@@ -37,6 +37,7 @@ void joc()
 		sizeCount--;
 	}
 
+	int maxDeployments = fleet.size();
 	do 
 	{
 		// Captura tots els events de ratolí i teclat de l'ultim cicle
@@ -52,20 +53,20 @@ void joc()
 			grid_X = ((int)Mouse_getX() / MIDA_CASELLA) * MIDA_CASELLA;
 			grid_Y = ((int)Mouse_getY() / MIDA_CASELLA) * MIDA_CASELLA;
 
-			fleet.at(deployedShips).deployAt(grid_X, grid_Y);
-			int maxDeployments = fleet.size() - 1;
-			deployedShips++;
 			if (deployedShips < maxDeployments)
 			{
-
+				fleet.at(deployedShips).deployAt(grid_X, grid_Y);
+				deployedShips++;
 			}
 		}
 		// *****************************************************************************
 		// AFEGIR CODI: Redibuixar tauler 
 		//				Dibuixar el vaixell a la posició (fila i columna) que toqui						
 		// *****************************************************************************
-		board.draw(INI_PANTALLA_X, INI_PANTALLA_Y);
 		
+		
+		// Esto lo hace Board, que se encarga de la representación gráfica del juego
+		board.draw(INI_PANTALLA_X, INI_PANTALLA_Y);
 		for (const auto& ship : fleet)
 			ship.draw();
 		// Actualitza la pantalla
