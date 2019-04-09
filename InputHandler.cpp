@@ -9,15 +9,25 @@ void InputHandler::interpretEvents()
 	if (myPlayer == nullptr)
 		return;
 
-	int x = 0;
-	int y = 0;
-	std::pair<int, int> gridCoord(x, y);
-
 	if (Mouse_getButLeft())
 	{
-		gridCoord = mapGridCoord(Mouse_getX(), Mouse_getY());
+		currentCell = mapGridCoord(Mouse_getX(), Mouse_getY());
+
+		if (myPlayer->isDeploying())
+			deploymentRequested = true;
+
+		if (myPlayer->isAttacking())
+			attackRequested = true;
 	}
-		
+}
+
+Request_Types InputHandler::getCurrentRequest()
+{
+	if (deploymentRequested)
+		return Request_Types::DEPLOY;
+
+	if (attackRequested)
+		return Request_Types::ATTACK;
 }
 
 std::pair<int, int> InputHandler::mapGridCoord(int X, int Y)

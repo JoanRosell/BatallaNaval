@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Board.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="joc.cpp" />
     <ClCompile Include="lib\debug.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="Ship.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Board.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="joc.h" />
     <ClInclude Include="lib\debug.h" />
