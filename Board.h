@@ -1,6 +1,8 @@
 #pragma once
 #include "InputHandler.h"
+#include "joc.h"
 #include <iostream>
+
 class Board
 {
 public:
@@ -13,10 +15,8 @@ public:
 
 private:
 	InputHandler* playerListener;
-	std::vector<std::pair<Coord, Ship*>> shipsDeployed;
+	std::vector<Cell> attackedCoords;
+	std::vector<Ship*> shipsDeployed;
 	bool attendRequest(Request_Types request); // TO DO
-	bool deployShipAt(Coord thisCoord); // TO DO
-	bool assignCoordinates(Coord firstCoord, Ship* shipToDeploy); // TO DO
-	Ship_Orientation askOrientation(); // TO DO
 };
 

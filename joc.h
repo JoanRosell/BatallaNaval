@@ -35,6 +35,32 @@ const int kMinShipQuantity = 1;
 // Numero maximo de barcos por jugador
 const int kMaxShipsPerPlayer = 10;
 
+//	Posiblemente sea mejor mover estos enums y typedefs a un fichero a parte
+enum class Cell_State
+{
+	ALIVE,
+	DEAD
+};
+
+enum class Cell_Contents
+{
+	WATER,
+	SHIP
+};
+
+enum class Ship_Orientation
+{
+	TOP,
+	RIGHT,
+	BOTTOM,
+	LEFT,
+	UNDEFINED
+};
+
+typedef std::pair<int, int> Coord;
+
+typedef std::pair<Coord, Cell_State> Cell;
+
 void joc();
 
 /*----- END --------------*/

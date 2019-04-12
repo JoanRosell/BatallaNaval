@@ -1,16 +1,9 @@
 #pragma once
-#include "joc.h"
 #include <memory>
 #include <string>
-
-enum class Ship_Orientation
-{
-	TOP,
-	RIGHT,
-	BOTTOM,
-	LEFT,
-	UNDEFINED
-};
+#include <vector>
+#include <iostream>
+#include "joc.h"
 
 class Ship
 {
@@ -27,15 +20,19 @@ public:
 	bool isSank() const { return sank; }
 	int getSize() const { return size; }
 	void draw() const;
-	Ship_Orientation getShipOrientation() const { return orientation; }
-	void setOrientation(Ship_Orientation newOrientation) { orientation = newOrientation; }
+	bool deploy(Coord firstCoord);
+	
+	
 
 private:
 	Sprite* img;
 	Ship_Orientation orientation;
+	std::vector<Cell> myCoords;
 	bool deployed;
 	bool sank;
 	int size;
 	int activeCells;
+
+	void askOrientation();
 };
 

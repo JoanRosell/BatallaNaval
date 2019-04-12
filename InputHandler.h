@@ -3,7 +3,6 @@
 #include "joc.h"
 #include <memory>
 #include <utility>
-typedef std::pair<int, int> Coord;
 
 // Scoped enum or 'class' enum
 enum class Request_Types

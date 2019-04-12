@@ -2,6 +2,7 @@
 #include "Ship.h"
 #include "joc.h"
 #include <vector>
+
 class Player
 {
 public:
