@@ -16,4 +16,27 @@ enum class Player_ID
 	PLAYER_ONE
 };
 
-typedef std::pair<int, int> coord
+enum class Cell_State
+{
+	ALIVE,
+	DEAD
+};
+
+enum class Cell_Contents
+{
+	WATER,
+	SHIP
+};
+
+enum class Ship_Orientation
+{
+	TOP,
+	RIGHT,
+	BOTTOM,
+	LEFT,
+	UNDEFINED
+};
+
+typedef std::pair<int, int> coord;
+
+typedef std::pair<coord, Cell_State> cell;

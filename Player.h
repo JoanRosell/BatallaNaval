@@ -1,13 +1,12 @@
 #pragma once
 #include "Ship.h"
-#include "joc.h"
 #include <vector>
 
 class Player
 {
 public:
 	Player();
-	virtual ~Player();
+	~Player() {}
 	bool isDeploying() const { return true; }
 	bool isAttacking() const { return true; }
 	int getShipsAlive() const { return shipsAlive; }
@@ -55,8 +54,4 @@ inline void Player::buildFleet()
 		currentShipSize--;
 		currentShipsToBuild++;
 	}
-}
-
-Player::~Player()
-{
 }

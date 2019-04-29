@@ -19,6 +19,8 @@ bool EventHandler::catchEvents()
 	{
 		eventCatched = true;
 		Event* newEvent = new MouseEvent(Event_Type::mouse_event, Player_ID::PLAYER_ONE, nEvents, Mouse_getX(), Mouse_getY());
+		catchedEvents.push_back(newEvent);
 	}
-	return false;
+
+	return eventCatched;
 }

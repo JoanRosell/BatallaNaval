@@ -1,6 +1,6 @@
 #pragma once
 #include "Player.h"
-#include "joc.h"
+#include "Typedefs.h"
 #include <memory>
 #include <utility>
 
@@ -22,15 +22,15 @@ public:
 	bool hasRequest() const { return deploymentRequested || attackRequested; }
 	
 	Action_Types getCurrentRequest();
-	Coord getSelectedCell() const { return currentCell; }
+	coord getSelectedCell() const { return currentCell; }
 	Ship* getShipToDeploy() const { return &(*myPlayer->getCurrentShipToDeploy()); }
 	void attach(Player* p) { myPlayer.reset(p); }
 	void detach() { myPlayer = nullptr; }
 
 private:
-	std::shared_ptr<Player> myPlayer;
-	Coord mapGridCoord(int X, int Y);
-	Coord currentCell;
+	std::unique_ptr<Player> myPlayer;
+	coord mapGridCoord(int X, int Y);
+	coord currentCell;
 	bool deploymentRequested;
 	bool deploymentServed;
 	bool attackRequested;

@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include "joc.h"
+#include "Typedefs.h"
 
 class Ship
 {
@@ -20,14 +21,14 @@ public:
 	bool isSank() const { return sank; }
 	int getSize() const { return size; }
 	void draw() const;
-	bool deploy(Coord firstCoord);
+	bool deploy(coord firstCoord);
 	
 	
 
 private:
 	Sprite* img;
 	Ship_Orientation orientation;
-	std::vector<Cell> myCoords;
+	std::vector<cell> myCoords;
 	bool deployed;
 	bool sank;
 	int size;

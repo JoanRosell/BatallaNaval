@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include "Typedefs.h"
-#include "Event.h"
 #include "MouseEvent.h"
 #include "lib/libreria.h"
 
@@ -12,7 +11,7 @@ public:
 	~EventHandler();
 	bool catchEvents();
 private:
-	static int nEvents;
+	int nEvents;
 	std::vector<Event*> catchedEvents;
 };
 

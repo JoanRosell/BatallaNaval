@@ -1,12 +1,5 @@
 #include "Board.h"
 
-
-
-Board::Board()
-{
-}
-
-
 Board::~Board()
 {
 }
@@ -41,7 +34,7 @@ bool Board::attendRequest(Action_Types request)
 	case Action_Types::ATTACK:
 		//	Attack enemy board
 		break;
-	default:
+	default: break;
 	}
 	return requestAttended;
 }

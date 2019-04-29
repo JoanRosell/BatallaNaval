@@ -4,7 +4,7 @@ Ship::~Ship()
 {
 }
 
-bool Ship::deploy(Coord firstCoord)
+bool Ship::deploy(coord firstCoord)
 {
 	if (orientation == Ship_Orientation::UNDEFINED)
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "InputHandler.h"
-#include "joc.h"
+#include "Typedefs.h"
 #include <iostream>
 
 class Board
@@ -15,7 +15,7 @@ public:
 
 private:
 	InputHandler* playerListener;
-	std::vector<Cell> attackedCoords;
+	std::vector<cell> attackedCoords;
 	std::vector<Ship*> shipsDeployed;
 	bool attendRequest(Action_Types request); // TO DO
 };
