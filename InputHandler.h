@@ -5,7 +5,7 @@
 #include <utility>
 
 // Scoped enum or 'class' enum
-enum class Request_Types
+enum class Action_Types
 {
 	DEPLOY,
 	ATTACK
@@ -21,7 +21,7 @@ public:
 	void interpretEvents();
 	bool hasRequest() const { return deploymentRequested || attackRequested; }
 	
-	Request_Types getCurrentRequest();
+	Action_Types getCurrentRequest();
 	Coord getSelectedCell() const { return currentCell; }
 	Ship* getShipToDeploy() const { return &(*myPlayer->getCurrentShipToDeploy()); }
 	void attach(Player* p) { myPlayer.reset(p); }

@@ -17,5 +17,5 @@ void Ship::askOrientation()
 	int input;
 	std::cin >> input;
 	// Traducir int a Ship_Orientation para poder actualizar el valor
-	newOrientation = input;
+	//newOrientation = input;
 }

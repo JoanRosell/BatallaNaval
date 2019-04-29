@@ -13,8 +13,6 @@ public:
 	int getShipsAlive() const { return shipsAlive; }
 	std::vector<Ship>::iterator getCurrentShipToDeploy() const { return currentShipToDeploy; }
 	
-protected:
-	
 private:
 	unsigned int shipsAlive;
 	unsigned int deployedShips;

@@ -21,13 +21,13 @@ void InputHandler::interpretEvents()
 	}
 }
 
-Request_Types InputHandler::getCurrentRequest()
+Action_Types InputHandler::getCurrentRequest()
 {
 	if (deploymentRequested)
-		return Request_Types::DEPLOY;
+		return Action_Types::DEPLOY;
 
 	if (attackRequested)
-		return Request_Types::ATTACK;
+		return Action_Types::ATTACK;
 }
 
 std::pair<int, int> InputHandler::mapGridCoord(int X, int Y)

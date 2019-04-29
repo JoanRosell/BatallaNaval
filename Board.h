@@ -17,6 +17,6 @@ private:
 	InputHandler* playerListener;
 	std::vector<Cell> attackedCoords;
 	std::vector<Ship*> shipsDeployed;
-	bool attendRequest(Request_Types request); // TO DO
+	bool attendRequest(Action_Types request); // TO DO
 };
 

@@ -143,6 +143,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="EventHandler.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="joc.cpp" />
     <ClCompile Include="lib\debug.cpp" />
@@ -158,6 +159,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
+    <ClInclude Include="Event.h" />
+    <ClInclude Include="EventHandler.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="joc.h" />
     <ClInclude Include="lib\debug.h" />
@@ -171,8 +174,10 @@
     <ClInclude Include="lib\sprites.h" />
     <ClInclude Include="lib\stb_vorbis.h" />
     <ClInclude Include="lib\video.h" />
+    <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Ship.h" />
+    <ClInclude Include="Typedefs.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
