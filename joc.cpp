@@ -3,14 +3,14 @@
 //-----------------------------------------
 // joc: porta el control de tot el joc
 //-----------------------------------------
-void joc()
+void joc(bool mode)
 {
 	//Inicialitza un objecte de la classe Screen que s'utilitza per gestionar la finestra grafica
 	Screen pantalla(MIDA_X, MIDA_Y);
-	
+
 	//Mostrem la finestra grafica
 	pantalla.show();
-	
+
 	// ********************************************
 	// AFEGIR CODI: Crear tots els grafics del joc
 	//				Inicialitzar variables posicio vaixell
@@ -19,12 +19,12 @@ void joc()
 	Sprite board("C:\\dev\\BatallaNaval\\Program\\data\\caselles.png");
 	int grid_X = 0;
 	int grid_Y = 0;
-	do 
+	do
 	{
 		// Captura tots els events de ratolí i teclat de l'ultim cicle
 		pantalla.processEvents();
-		
-		
+
+
 		// *****************************************************************************
 		// AFEGIR CODI:	Capturar si s'ha fet clic amb el ratolí
 		//				Si s'ha fet clic amb el ratolí modificar posició (fila i columna del tauler) 
@@ -32,8 +32,8 @@ void joc()
 		// *****************************************************************************
 		if (Mouse_getButLeft())
 		{
-			grid_X = ((int) Mouse_getX() / MIDA_CASELLA) * MIDA_CASELLA;
-			grid_Y = ((int) Mouse_getY() / MIDA_CASELLA) * MIDA_CASELLA;
+			grid_X = ((int)Mouse_getX() / MIDA_CASELLA) * MIDA_CASELLA;
+			grid_Y = ((int)Mouse_getY() / MIDA_CASELLA) * MIDA_CASELLA;
 		}
 		// *****************************************************************************
 		// AFEGIR CODI: Redibuixar tauler 
@@ -46,5 +46,4 @@ void joc()
 
 	} while (!Keyboard_GetKeyTrg(KEYBOARD_ESCAPE));
 	// Sortim del bucle si pressionem ESC
-
 }

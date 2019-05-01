@@ -1,4 +1,6 @@
+#ifndef __NOT_GRAPHICS
 #include <SDL.h>
+#endif
 #include <stdlib.h>
 #include <math.h>
 #include <cassert>
@@ -7,7 +9,6 @@
 
 #include "sound.h"
 #include "stb_vorbis.h"
-
 
 #define NUM_CANALES_STEREO                                       2
 #define NO_SOUND_CHANNEL_AVAILABLE                               -1
@@ -38,34 +39,40 @@ int g_Posicion_Pila_Sonidos_Libres ;
 
 void Sound_Lock()
 {
+#ifndef __NOT_GRAPHICS
   SDL_LockAudio() ;
+#endif
 }
 
 void Sound_Unlock()
 {
+#ifndef __NOT_GRAPHICS
   SDL_UnlockAudio() ;
+#endif
 }
 
 void PushCanalLibre(int cual)
 {
+#ifndef __NOT_GRAPHICS
   assert(g_Posicion_Pila_Sonidos_Libres < (MAX_SIMULTANEOUS_SOUND_CHANNELS-1)) ;
 
   g_CanalesLibres[g_Posicion_Pila_Sonidos_Libres] = cual ;
   g_Sound_Queue[cual] = NULL ;
 
   g_Posicion_Pila_Sonidos_Libres++ ;
+#endif
 }
 
 int PopCanalLibre()
 {
   int canal_libre = NO_SOUND_CHANNEL_AVAILABLE ;
-
+#ifndef __NOT_GRAPHICS
   if(g_Posicion_Pila_Sonidos_Libres > 0) {
 
     g_Posicion_Pila_Sonidos_Libres-- ;
     canal_libre = g_CanalesLibres[g_Posicion_Pila_Sonidos_Libres] ;
   }
-
+#endif
   return canal_libre ;
 }
 
@@ -77,6 +84,7 @@ int PopCanalLibre()
 //
 int TamanyoFicheroAbierto(FILE *fichero)
 {
+#ifndef __NOT_GRAPHICS
   int posicion_actual, tamanyo ;
 
 	posicion_actual = ftell(fichero) ;
@@ -91,12 +99,16 @@ int TamanyoFicheroAbierto(FILE *fichero)
   fseek(fichero, posicion_actual, SEEK_SET) ;
 
   return tamanyo ;
+#else
+	return 0;
+#endif
 }
 
 // ------------------------------------------------------------------------------------------------
 // Devuelve el tama? en bytes del fichero
 int TamanyoFichero(char *ruta)
 {
+#ifndef __NOT_GRAPHICS
   FILE *fichero ;
   int tamanyo ;
 
@@ -107,10 +119,14 @@ int TamanyoFichero(char *ruta)
   tamanyo = TamanyoFicheroAbierto(fichero) ;
 
   return tamanyo ;
+#else
+	return 0;
+#endif
 }
 
 int Sound_GetSoundQueueSlot(struct T_SOUND *sonido)
 {
+#ifndef __NOT_GRAPHICS
   sonido->posicion_cola = PopCanalLibre() ;
 
   // Si no tenemos un slot de reproducci? libre nos marchamos sin hacer nada
@@ -125,8 +141,12 @@ int Sound_GetSoundQueueSlot(struct T_SOUND *sonido)
   g_Sound_Queue[sonido->posicion_cola] = sonido ;
 
   return sonido->posicion_cola ;
+#else
+	return 0;
+#endif
 }
 
+#ifndef __NOT_GRAPHICS
 void Sound_Callback(void *unused, Uint8 *stream, int len)
 {
   int var1 ;
@@ -239,9 +259,11 @@ void Sound_Callback(void *unused, Uint8 *stream, int len)
 
   Sound_Unlock() ;
 }
+#endif
 
 void Sound_Init()
 {
+#ifndef __NOT_GRAPHICS
   SDL_AudioSpec desired, obtained ;
   int resultado ;
   int var_sonido ;
@@ -293,10 +315,12 @@ void Sound_Init()
 
 
   SDL_PauseAudio(0) ;
+#endif
 }
 
 struct T_SOUND *Sound_LoadFileStream(char *path, int bLoop)
 {
+#ifndef __NOT_GRAPHICS
   struct T_SOUND *new_sound ;
   int error ;
 
@@ -325,10 +349,14 @@ struct T_SOUND *Sound_LoadFileStream(char *path, int bLoop)
   }
 
   return new_sound ;
+#else
+	return nullptr;
+#endif
 }
 
 struct T_SOUND *Sound_LoadMemoryStream(char *path, int bLoop)
 {
+#ifndef __NOT_GRAPHICS
   struct T_SOUND *new_sound ;
   int tam_buffer ;
   int error ;
@@ -366,19 +394,27 @@ struct T_SOUND *Sound_LoadMemoryStream(char *path, int bLoop)
   }
 
   return new_sound ;
+#else
+	return nullptr;
+#endif
 }
 
 
 struct T_SOUND *Sound_LoadMusic(char *path, int bStream)
 {
+#ifndef __NOT_GRAPHICS
   if(bStream) g_current_music = Sound_LoadFileStream(path, PLAY_THEN_LOOP_AT_END) ;
   else g_current_music = Sound_LoadMemoryStream(path, PLAY_THEN_LOOP_AT_END) ;
 
   return g_current_music ;
+#else
+	return nullptr;
+#endif
 }
 
 struct T_SOUND *Sound_LoadSound(char *path)
 {
+#ifndef __NOT_GRAPHICS
   struct T_SOUND *sound ;
 
 //  g_current_sound = Sound_LoadMemoryStream(path, PLAY_THEN_STOP_AT_END) ;
@@ -387,11 +423,15 @@ struct T_SOUND *Sound_LoadSound(char *path)
   sound = Sound_LoadMemoryStream(path, PLAY_THEN_STOP_AT_END) ;
 
   return sound ;
+#else
+	return nullptr;
+#endif
 }
 
 
 int Sound_Play(struct T_SOUND *sonido, int mode)
 {
+#ifndef __NOT_GRAPHICS
 //  g_current_sound = sonido ;
 
   if(sonido->estado != SOUND_STATE_PLAYING) {
@@ -425,10 +465,14 @@ int Sound_Play(struct T_SOUND *sonido, int mode)
 
   // Devolvemos la posici? en la cola de reproducci?
   return sonido->posicion_cola ;
+#else
+	return 0;
+#endif
 }
 
 void Sound_FreeSoundQueueSlot(struct T_SOUND *sonido)
 {
+#ifndef __NOT_GRAPHICS
   // Si el sonido no est?reproduci?dose no hacemos nada
 
   if(sonido->posicion_cola == -1) return ;
@@ -437,42 +481,51 @@ void Sound_FreeSoundQueueSlot(struct T_SOUND *sonido)
 
   PushCanalLibre(sonido->posicion_cola) ;
   sonido->posicion_cola = -1 ;
+#endif
 }
 
 void Sound_Delete(struct T_SOUND *sonido)
 {
+#ifndef __NOT_GRAPHICS
   // Liberamos la posici? de la cola que est?ocupando el sonido
 
   Sound_FreeSoundQueueSlot(sonido) ;
 
   // Falta...
+#endif
 }
 
 void Sound_Pause(struct T_SOUND *sonido)
 {
+#ifndef __NOT_GRAPHICS
   // Liberamos la posici? de la cola que est?ocupando el sonido
 
   Sound_FreeSoundQueueSlot(sonido) ;
 
   sonido->estado = SOUND_STATE_PAUSED ;
+#endif
 }
 
 void Sound_Stop(struct T_SOUND *sonido)
 {
+#ifndef __NOT_GRAPHICS
   // Liberamos la posici? de la cola que est?ocupando el sonido
 
   Sound_FreeSoundQueueSlot(sonido) ;
 
   sonido->estado = SOUND_STATE_STOPPED ;
+#endif
 }
 
 void Sound_Restart(struct T_SOUND *sonido)
 {
+#ifndef __NOT_GRAPHICS
   Sound_Lock() ;
 
   stb_vorbis_seek_start(sonido->ogg) ;
   sonido->posicion_stream = 0 ;
 
   Sound_Unlock() ;
+#endif
 }
 

@@ -1,6 +1,8 @@
 #pragma once
 
+#ifndef __NOT_GRAPHICS
 #include <SDL.h>
+#endif
 
 #define ACTIVAR_CONSOLA_DE_DEBUG
 
@@ -50,8 +52,10 @@ struct DatosVideo
   int resx ;
   int resy ;
 
+#ifndef __NOT_GRAPHICS
   SDL_Window *window ;
   SDL_Renderer *renderer ;
+#endif
 } ;
 
 // Extern para acceder a la variable de status de v?eo

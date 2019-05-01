@@ -18,6 +18,7 @@ struct DatosVideo g_Video ;
 Screen::Screen(unsigned int a, unsigned int b) 
     : resolucioX(a), resolucioY(b)
 {
+#ifndef __NOT_GRAPHICS
   //inicialització llibreria gràfica
   SDL_SetMainReady();
   SDL_Init(SDL_INIT_VIDEO);
@@ -25,11 +26,13 @@ Screen::Screen(unsigned int a, unsigned int b)
   ScreenStatus.minimized = 0;
   ScreenStatus.currentFrameNumber = 0;
   init();
+#endif
 }
 
 Screen::Screen() 
     : resolucioX(600), resolucioY(550)
 {
+#ifndef __NOT_GRAPHICS
   //inicialització llibreria gràfica
   SDL_SetMainReady();
   SDL_Init(SDL_INIT_VIDEO);
@@ -37,23 +40,29 @@ Screen::Screen()
   ScreenStatus.minimized = 0;
   ScreenStatus.currentFrameNumber = 0;
   init();
+#endif
 }
 
 Screen::~Screen()
 {
+#ifndef __NOT_GRAPHICS
   SDL_DestroyRenderer(g_Video.renderer) ;
   SDL_DestroyWindow(g_Video.window) ;
   SDL_Quit();
+#endif
 }
 
 void Screen::show()
 {
+#ifndef __NOT_GRAPHICS
   // Muestra la ventana
   SDL_ShowWindow(g_Video.window) ;
+#endif
 }
 
 void Screen::processEvents()
 {
+#ifndef __NOT_GRAPHICS
   // Borramos el buffer de vídeo antes de hacer la espera porque así aprovechamos mejor
   // el tiempo en vez de esperar para luego ponernos a borrar cuando nos toca procesar
   clearBackBuffer(255, 255, 0) ;
@@ -64,21 +73,24 @@ void Screen::processEvents()
 
   // Procesamos los eventos que pueda habernos metido en la cola el sistema operativo
   processEventSystem() ;
+#endif
 }
 
 
 void Screen::update()
 {
+#ifndef __NOT_GRAPHICS
   // Incrementamos el n?mero de frame actual
   ScreenStatus.currentFrameNumber++ ;
 
   // Pedimos al sistema operativo que actualice el contenido de la ventana
   flip() ;
-
+#endif
 }
 
 void Screen::init()
 {
+#ifndef __NOT_GRAPHICS
   // Pedimos que se inicialice la ventana del juego y establecemos como límite mínimo MAX_FPS
   initializeHardware(resolucioX, resolucioY, MAX_FPS, RUN_IN_WINDOW_MODE);
 
@@ -86,16 +98,22 @@ void Screen::init()
   //Alta prioridad, mejora la estabilidad del dibujado y el sonido
   SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS) ;
 #endif
+#endif
 }
 
 bool Screen::isExit() const
 {
+#ifndef __NOT_GRAPHICS
   return ScreenStatus.exit;
+#else
+	return false;
+#endif
 }
 
 // Inicializa la ventana con el tamaño especificado
 void Screen::init(int new_resx, int new_resy, bool FullScreen)
 {
+#ifndef __NOT_GRAPHICS
   Uint32 flags = SDL_WINDOW_HIDDEN ;/*SDL_WINDOW_OPENGL | */
   //flags |= SDL_WINDOW_RESIZABLE /*| SDL_WINDOW_MAXIMIZED*/ ;
 
@@ -129,17 +147,21 @@ void Screen::init(int new_resx, int new_resy, bool FullScreen)
   //
   //  SDL_RenderSetViewport(g_Video.renderer, &rect) ;
   //}
+#endif
 }
 
 // Borra el buffer de vídeo
 void Screen::clearBackBuffer(int r, int g, int b)
 {
+#ifndef __NOT_GRAPHICS
  SDL_SetRenderDrawColor(g_Video.renderer, (Uint8)r, (Uint8)g, (Uint8)b, 255) ;
  SDL_RenderClear(g_Video.renderer) ;
+#endif
 }
 
 void Screen::processEventSystem()
 {
+#ifndef __NOT_GRAPHICS
   SDL_Event e;
   // Mientras haya eventos en la cola nos quedamos en el bucle y los procesamos
   while (SDL_PollEvent(&e)) 
@@ -173,21 +195,26 @@ void Screen::processEventSystem()
     /**< Mouse wheel motion */
     else if(e.type == SDL_MOUSEWHEEL)        Mouse_ProcessWheel(e.wheel.x, e.wheel.y) ;       
   }
+#endif
 }
 
 
 void Screen::flip()
 {
+#ifndef __NOT_GRAPHICS
   // Pide al sistema operativo que actualice el contenido visible de la ventana
   SDL_RenderPresent(g_Video.renderer) ;
+#endif
 }
 
 void Screen::initializeHardware(int new_resolution_x, int new_resolution_y, int fps_maximos, bool FullScreen)
 {
+#ifndef __NOT_GRAPHICS
   if (SDL_Init( SDL_INIT_VIDEO) != 0 ) 
     throw custom_error( std::string("Unable to init SDL: ") + std::string(SDL_GetError()) , __FILE__, __LINE__);
 
   Keyboard_Init();
   Mouse_Init();
   init(new_resolution_x, new_resolution_y, FullScreen);
+#endif
 }

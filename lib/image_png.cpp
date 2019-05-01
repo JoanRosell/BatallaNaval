@@ -3,7 +3,9 @@
 
 
 #define PNG_DEBUG 3
+#ifndef __NOT_GRAPHICS
 #include <png.h>
+#endif
 
 #include "debug.h"
 #include "error.h"
@@ -19,6 +21,7 @@
 //TODO: Añadir constructor y destructor para limpiar en caso de error
 void read_png_file(const char *file_name, int *tamx, int *tamy)
 {
+#ifndef __NOT_GRAPHICS
   assert(file_name && tamx && tamy);
 
   /* open file and test for it being a png */
@@ -53,4 +56,5 @@ void read_png_file(const char *file_name, int *tamx, int *tamy)
   png_destroy_info_struct(png_ptr, &info_ptr);
   png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
   png_free(png_ptr, NULL);
+#endif
 }
