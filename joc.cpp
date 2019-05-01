@@ -1,26 +1,22 @@
 #include "joc.h"
+#include "Ship.h"
+#include "Player.h"
 #include <iostream>
 //-----------------------------------------
 // joc: porta el control de tot el joc
 //-----------------------------------------
 void joc()
 {
-	//Inicialitza un objecte de la classe Screen que s'utilitza per gestionar la finestra grafica
 	Screen pantalla(MIDA_X, MIDA_Y);
-	//Mostrem la finestra grafica
 	pantalla.show();
-	EventHandler eh;
-
-	// ********************************************
-	// AFEGIR CODI: Crear tots els grafics del joc
-	//				Inicialitzar variables posicio vaixell
-	// ********************************************
+	std::string iniFileHuman("C:\\dev\\BatallaNaval\\Program\\data\\vaixells_jugador_huma.txt");
+	std::string iniFileArtificial("C:\\dev\\BatallaNaval\\Program\\data\\vaixells_jugador_ordinador.txt");
 
 	do 
 	{
 		// Captura tots els events de ratolí i teclat de l'ultim cicle
 		pantalla.processEvents();
-		eh.catchEvents();
+		
 		// Actualitza la pantalla
 		pantalla.update();
 

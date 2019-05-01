@@ -39,4 +39,4 @@ enum class Ship_Orientation
 
 typedef std::pair<int, int> coord;
 
-typedef std::pair<coord, Cell_State> cell;
+typedef std::pair<coord, Cell_Contents> cell;

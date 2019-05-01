@@ -142,7 +142,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="EventHandler.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="joc.cpp" />
     <ClCompile Include="lib\debug.cpp" />
@@ -154,11 +153,11 @@
     <ClCompile Include="lib\stb_vorbis.cpp" />
     <ClCompile Include="lib\video.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Partida.cpp" />
     <ClCompile Include="Ship.cpp" />
+    <ClCompile Include="UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Event.h" />
-    <ClInclude Include="EventHandler.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="joc.h" />
     <ClInclude Include="lib\debug.h" />
@@ -172,10 +171,11 @@
     <ClInclude Include="lib\sprites.h" />
     <ClInclude Include="lib\stb_vorbis.h" />
     <ClInclude Include="lib\video.h" />
-    <ClInclude Include="MouseEvent.h" />
+    <ClInclude Include="Partida.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Ship.h" />
     <ClInclude Include="Typedefs.h" />
+    <ClInclude Include="UserInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -9,31 +9,28 @@
 class Ship
 {
 public:
-	Ship() : img(nullptr), deployed(false), sank(false), size(0), 
+	Ship() : deployed(false), sank(false), size(0), 
 		activeCells(0), orientation(Ship_Orientation::UNDEFINED) 
 	{}
 
-	Ship(const char* path, int size) : img(new Sprite(path)), deployed(false), 
-		sank(false), size(size), activeCells(size) {}
+	Ship(int size) : deployed(false), 
+		sank(false), size(size), activeCells(size), orientation(Ship_Orientation::UNDEFINED) {}
+
+	Ship(int x, int y, int size, Ship_Orientation o);
 	~Ship();
 
 	bool isDeployed() const { return deployed; }
 	bool isSank() const { return sank; }
 	int getSize() const { return size; }
-	void draw() const;
 	bool deploy(coord firstCoord);
-	
-	
+	void askOrientation();
 
 private:
-	Sprite* img;
 	Ship_Orientation orientation;
-	std::vector<cell> myCoords;
+	std::vector<coord> myCoords;
 	bool deployed;
 	bool sank;
 	int size;
 	int activeCells;
-
-	void askOrientation();
 };
 
