@@ -10,25 +10,26 @@ Ship::~Ship()
 {
 }
 
-bool Ship::deploy(coord firstCoord)
+//	TO DO: COMPROBAR SI SE PUEDE DESPLEGAR O NO
+bool Ship::deploy(coord firstCoord) 
 {
 	bool deployed(false);
 
 	switch (orientation)
 	{
 	case Ship_Orientation::TOP:
-		myCoords.push_back(firstCoord);
+		myCoords.push_back(std::make_pair(true, firstCoord));
 		for (int i = 0; i < size-1; i++)
 		{
-			myCoords.emplace_back(firstCoord.first, ++firstCoord.second);
+			myCoords.emplace_back(std::make_pair(true, std::make_pair(firstCoord.first, ++firstCoord.second)));
 		}
 		deployed = true;
 		break;
 	case Ship_Orientation::RIGHT:
-		myCoords.push_back(firstCoord);
+		myCoords.push_back(std::make_pair(true, firstCoord));
 		for (int i = 0; i < size - 1; i++)
 		{
-			myCoords.emplace_back(++firstCoord.first, firstCoord.second);
+			myCoords.emplace_back(std::make_pair(true, std::make_pair(++firstCoord.first, firstCoord.second)));
 		}
 		deployed = true;
 		break;

@@ -1,16 +1,19 @@
 #include "joc.h"
-#include "Ship.h"
-#include "Player.h"
+#include "Partida.h"
 #include <iostream>
+
 //-----------------------------------------
 // joc: porta el control de tot el joc
 //-----------------------------------------
-void joc()
+void joc(bool modeGrafic)
 {
 	Screen pantalla(MIDA_X, MIDA_Y);
 	pantalla.show();
-	std::string iniFileHuman("C:\\dev\\BatallaNaval\\Program\\data\\vaixells_jugador_huma.txt");
-	std::string iniFileArtificial("C:\\dev\\BatallaNaval\\Program\\data\\vaixells_jugador_ordinador.txt");
+	std::string iniFileHuman("Program\\data\\vaixells_jugador_huma.txt");
+	std::string iniFileArtificial("Program\\data\\vaixells_jugador_ordinador.txt");
+	
+	Partida game;
+	game.init(iniFileHuman, iniFileArtificial);	
 
 	do 
 	{

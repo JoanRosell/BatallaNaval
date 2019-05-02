@@ -25,9 +25,11 @@ public:
 	bool deploy(coord firstCoord);
 	void askOrientation();
 
+	const std::vector<std::pair<bool, coord>>& getCoords() const { return myCoords; }
+
 private:
 	Ship_Orientation orientation;
-	std::vector<coord> myCoords;
+	std::vector<std::pair<bool, coord>> myCoords;
 	bool deployed;
 	bool sank;
 	int size;

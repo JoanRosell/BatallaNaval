@@ -1,6 +1,8 @@
 #pragma once
 
+#ifndef __NOT_GRAPHICS
 #include <SDL.h>
+#endif
 #include "keyboard_sdl.h"
 
 struct T_KEYBOARD

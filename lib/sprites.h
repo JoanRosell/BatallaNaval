@@ -1,7 +1,9 @@
 #pragma once
 
+#ifndef __NOT_GRAPHICS
 #include <SDL.h>
 #include <SDL_image.h>
+#endif
 
 #define SPRITE_WILL_BE_ANIMATED   NULL
 
@@ -49,11 +51,12 @@ struct T_DESCRIPCION_ANIMACION
 struct Frame
 {
   int duracion ;
-
+#ifndef __NOT_GRAPHICS
   SDL_Texture *texture ;
 
   //Puntero a un buffer de píxeles de SDL
   SDL_Surface *surface ;
+#endif
 
   //Tamaño píxeles
   int tamx ;

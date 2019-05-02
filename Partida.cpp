@@ -19,6 +19,6 @@ bool Partida::init(const std::string & initFileHuman, const std::string & initFi
 
 	humanReady = humanPlayer.loadShipsFromFile(initFileHuman);
 	aiReady = artificialPlayer.loadShipsFromFile(initFileArtificial);
-	ui.init(initFileHuman, initFileArtificial);
+	
 	return false;
 }

@@ -4,6 +4,7 @@
 //Llibreria grafica
 #include "lib/libreria.h"
 ///////////////////////////////////////////////////////////////////////////
+
 //========================================================================
 // Mida Pantalla
 const int MIDA_X = 520;
@@ -22,11 +23,6 @@ const int FI_PANTALLA_Y = 520;
 // Mida d'una casella del tauler
 const int MIDA_CASELLA = 52;
 
-
-
-//	Posiblemente sea mejor mover estos enums y typedefs a un fichero a parte
-
-
-void joc();
+void joc(bool modeGrafic);
 
 /*----- END --------------*/
