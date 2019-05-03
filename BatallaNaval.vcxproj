@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{95EBFF15-EE8A-4B39-B29E-6E414EFC541A}</ProjectGuid>
     <RootNamespace>BatallaNaval</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -95,6 +95,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>__NOT_GRAPHICS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>libpng16.lib;SDL2.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -142,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="joc.cpp" />
     <ClCompile Include="lib\debug.cpp" />
     <ClCompile Include="lib\image_png.cpp" />
@@ -152,8 +154,12 @@
     <ClCompile Include="lib\stb_vorbis.cpp" />
     <ClCompile Include="lib\video.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Partida.cpp" />
+    <ClCompile Include="Ship.cpp" />
+    <ClCompile Include="UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="InputHandler.h" />
     <ClInclude Include="joc.h" />
     <ClInclude Include="lib\debug.h" />
     <ClInclude Include="lib\error.h" />
@@ -166,6 +172,11 @@
     <ClInclude Include="lib\sprites.h" />
     <ClInclude Include="lib\stb_vorbis.h" />
     <ClInclude Include="lib\video.h" />
+    <ClInclude Include="Partida.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Ship.h" />
+    <ClInclude Include="Typedefs.h" />
+    <ClInclude Include="UserInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
