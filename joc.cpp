@@ -7,13 +7,19 @@
 //-----------------------------------------
 void joc(bool modeGrafic)
 {
+	Partida game;
+	std::string iniFileHuman("vaixells_jugador_huma.txt");
+	std::string iniFileArtificial("vaixells_jugador_ordinador.txt");
+	game.init(iniFileHuman, iniFileArtificial);
+	
+	if (!modeGrafic)
+	{
+		game.dumpToFile();
+		return;
+	}
+
 	Screen pantalla(MIDA_X, MIDA_Y);
 	pantalla.show();
-	std::string iniFileHuman("Program\\data\\vaixells_jugador_huma.txt");
-	std::string iniFileArtificial("Program\\data\\vaixells_jugador_ordinador.txt");
-	
-	Partida game;
-	game.init(iniFileHuman, iniFileArtificial);	
 
 	do 
 	{

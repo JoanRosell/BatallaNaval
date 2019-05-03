@@ -23,7 +23,7 @@ public:
 	bool isSank() const { return sank; }
 	int getSize() const { return size; }
 	bool deploy(coord firstCoord);
-	void askOrientation();
+	//void askOrientation();
 
 	const std::vector<std::pair<bool, coord>>& getCoords() const { return myCoords; }
 

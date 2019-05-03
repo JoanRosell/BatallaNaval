@@ -15,6 +15,7 @@ public:
 	
 	//	Construye una flota a partir de un archivo txt
 	bool loadShipsFromFile(const std::string& file);
+	const std::vector<Ship>& getShips() const { return fleet; }
 
 private:
 	unsigned int shipsAlive;
@@ -79,7 +80,7 @@ inline bool Player::loadShipsFromFile(const std::string & filename)
 		int orientation;
 		shipData >> orientation;
 		// Como orientation es un int debemos hacer un cast a Ship_Orientation para poder construir el barco
-		fleet.emplace_back(x, y, size, (Ship_Orientation)orientation);
+		fleet.emplace_back(--x, --y, size, (Ship_Orientation)orientation);
 	}
 	file.close();
 
