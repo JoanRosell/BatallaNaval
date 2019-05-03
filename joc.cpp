@@ -5,6 +5,7 @@
 //-----------------------------------------
 // joc: porta el control de tot el joc
 //-----------------------------------------
+
 void joc(bool modeGrafic)
 {
 	Partida game;
@@ -23,7 +24,7 @@ void joc(bool modeGrafic)
 
 	do 
 	{
-		// Captura tots els events de ratolí i teclat de l'ultim cicle
+		// Captura tots els events de ratolÃ­ i teclat de l'ultim cicle
 		pantalla.processEvents();
 		
 		// Actualitza la pantalla
@@ -31,5 +32,4 @@ void joc(bool modeGrafic)
 
 	} while (!Keyboard_GetKeyTrg(KEYBOARD_ESCAPE));
 	// Sortim del bucle si pressionem ESC
-
 }

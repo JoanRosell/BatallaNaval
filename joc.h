@@ -23,6 +23,8 @@ const int FI_PANTALLA_Y = 520;
 // Mida d'una casella del tauler
 const int MIDA_CASELLA = 52;
 
+
 void joc(bool modeGrafic);
 
+void joc(bool mode);
 /*----- END --------------*/
