@@ -30,40 +30,29 @@ bool Partida::init(const std::string & initFileHuman, const std::string & initFi
 
 void Partida::dumpToFile()
 {
-	std::ofstream humanOutput("tauler_huma.txt");
+	logBoardToFile("tauler_huma.txt", ui.getHumanBoard());
+	logBoardToFile("tauler_ordinador.txt", ui.getMachineBoard());
+}
+
+void Partida::logBoardToFile(const char * filename, const std::vector<Sprite_Type>& board)
+{
 	int elementsLogged(0);
-	for (const auto& spriteType : ui.getHumanBoard())
+	std::ofstream outFile(filename);
+
+	for (const auto& spriteType : board)
 	{
 		if (spriteType == Sprite_Type::SHIP || spriteType == Sprite_Type::DAMAGED_SHIP)
-			humanOutput << "1 ";
+			outFile << "1 ";
 		else
-			humanOutput << "0 ";
+			outFile << "0 ";
 		elementsLogged++;
 
 		if (elementsLogged == 10)
 		{
-			humanOutput << "\n";
+			outFile << "\n";
 			elementsLogged = 0;
 		}
 	}
-	
-	humanOutput.close();
 
-	std::ofstream machineOutput("tauler_ordinador.txt");
-	for (const auto& spriteType : ui.getMachineBoard())
-	{
-		if (spriteType == Sprite_Type::SHIP || spriteType == Sprite_Type::DAMAGED_SHIP)
-			machineOutput << "1 ";
-		else
-			machineOutput << "0 ";
-		elementsLogged++;
-
-		if (elementsLogged == 10)
-		{
-			machineOutput << "\n";
-			elementsLogged = 0;
-		}
-	}
-	machineOutput.close();
-	
+	outFile.close();
 }

@@ -18,5 +18,7 @@ private:
 	InputHandler playerListener;
 	UserInterface ui;
 	int turn;
+
+	void logBoardToFile(const char* filename, const std::vector<Sprite_Type>& board);
 };
 

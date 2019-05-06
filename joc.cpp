@@ -9,11 +9,11 @@
 void joc(bool modeGrafic)
 {
 	Partida game;
-	std::string iniFileHuman("vaixells_jugador_huma.txt");
-	std::string iniFileArtificial("vaixells_jugador_ordinador.txt");
-	game.init(iniFileHuman, iniFileArtificial);
+	std::string iniFileHuman("Program\\data\\vaixells_jugador_huma.txt");
+	std::string iniFileArtificial("Program\\data\\vaixells_jugador_ordinador.txt");
+	bool gameReady = game.init(iniFileHuman, iniFileArtificial);
 	
-	if (!modeGrafic)
+	if (!modeGrafic && gameReady)
 	{
 		game.dumpToFile();
 		return;
