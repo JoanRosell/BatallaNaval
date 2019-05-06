@@ -9,29 +9,29 @@
 class Ship
 {
 public:
-	Ship() : deployed(false), sank(false), size(0), 
-		activeCells(0), orientation(Ship_Orientation::UNDEFINED) 
-	{}
+	Ship() : deployed(false), destroyed(false), size(0), 
+		activeCells(0), orientation(Ship_Orientation::UNDEFINED) {}
 
 	Ship(int size) : deployed(false), 
-		sank(false), size(size), activeCells(size), orientation(Ship_Orientation::UNDEFINED) {}
+		destroyed(false), size(size), activeCells(size), orientation(Ship_Orientation::UNDEFINED) {}
 
 	Ship(int x, int y, int size, Ship_Orientation o);
 	~Ship();
 
 	bool isDeployed() const { return deployed; }
-	bool isSank() const { return sank; }
+	bool isDestroyed() const { return destroyed; }
 	int getSize() const { return size; }
 	bool deploy(coord firstCoord);
-	//void askOrientation();
-
-	const std::vector<std::pair<bool, coord>>& getCoords() const { return myCoords; }
+	const std::vector<std::pair<bool, coord>>& getCells() const { return myCells; }
+	#ifndef __NOT_GRAPHICS
+		void askOrientation();
+	#endif
 
 private:
 	Ship_Orientation orientation;
-	std::vector<std::pair<bool, coord>> myCoords;
+	std::vector<std::pair<bool, coord>> myCells;
 	bool deployed;
-	bool sank;
+	bool destroyed;
 	int size;
 	int activeCells;
 };

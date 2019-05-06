@@ -25,6 +25,4 @@ const int MIDA_CASELLA = 52;
 
 
 void joc(bool modeGrafic);
-
-void joc(bool mode);
 /*----- END --------------*/
