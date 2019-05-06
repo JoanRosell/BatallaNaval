@@ -53,7 +53,7 @@ inline bool Player::loadShipsFromFile(const std::string & filename)
 
 	/*	Lectura de fichero:
 	*		Para leer un fichero extraemos una linea entera
-	*		y la transformamos en un input stringstream para poder tratarla
+	*		y la transformamos en un input-stringstream para poder tratarla
 	*		como un iostream (cout, cin, cerr, etc...) generico
 	*/
 
@@ -79,7 +79,8 @@ inline bool Player::loadShipsFromFile(const std::string & filename)
 		*/
 		int orientation;
 		shipData >> orientation;
-		// Como orientation es un int debemos hacer un cast a Ship_Orientation para poder construir el barco
+		//	Como orientation es un int debemos hacer un cast a Ship_Orientation para poder construir el barco
+		//	Las coordenadas son un rango [1, 10], necesitamos transformar este rango a [0, 9]
 		fleet.emplace_back(--x, --y, size, (Ship_Orientation)orientation);
 	}
 	file.close();

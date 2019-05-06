@@ -27,8 +27,8 @@ bool UserInterface::loadBoard(std::vector<Sprite_Type>& board, const std::vector
 	{
 		for (const auto& ship : ships)
 		{
-			auto cellVector(ship.getCoords());
-			bool shipIsDestroyed(ship.isSank());
+			auto cellVector(ship.getCells());
+			bool shipIsDestroyed(ship.isDestroyed());
 			for (const auto& cell : cellVector)
 				updateBoard(board, cell, shipIsDestroyed);
 		}
