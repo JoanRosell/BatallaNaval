@@ -42,39 +42,36 @@ bool UserInterface::loadBoard(std::vector<Sprite_Type>& board, const std::vector
 void UserInterface::updateBoard(std::vector<Sprite_Type>& board, const std::pair<bool, coord>& cell, bool shipIsDestroyed)
 {
 	int index(coordToIndex(cell.second));
-	board.at(index) = updateSpriteType(board.at(index), !cell.first, shipIsDestroyed);
+	updateSpriteType(board.at(index), !cell.first, shipIsDestroyed);
 }
 
-Sprite_Type UserInterface::updateSpriteType(const Sprite_Type & oldType, bool positionAttacked, bool shipIsDestroyed)
-{
-	Sprite_Type newType(oldType);
+void UserInterface::updateSpriteType(Sprite_Type & currentType, bool positionAttacked, bool shipIsDestroyed)
+{	
 	bool typeChanged(false);
 
-	if (oldType == Sprite_Type::DAMAGED_SHIP)
+	if (currentType == Sprite_Type::DAMAGED_SHIP)
 		if (shipIsDestroyed)
 		{
-			newType = Sprite_Type::DESTROYED_SHIP;
+			currentType = Sprite_Type::DESTROYED_SHIP;
 			typeChanged = true;
 		}
 
 	if (!typeChanged)
 		if (positionAttacked)
 		{
-			switch (oldType)
+			switch (currentType)
 			{
 			case Sprite_Type::NO_SPRITE:
-				newType = Sprite_Type::WATER;
+				currentType = Sprite_Type::WATER;
 				break;
 			case Sprite_Type::SHIP:
-				newType = Sprite_Type::DAMAGED_SHIP;
+				currentType = Sprite_Type::DAMAGED_SHIP;
 				break;
 			default:
 				break;
 			}
 		}
 		else
-			if (oldType == Sprite_Type::NO_SPRITE)
-				newType = Sprite_Type::SHIP;
-
-	return newType;
+			if (currentType == Sprite_Type::NO_SPRITE)
+				currentType = Sprite_Type::SHIP;
 }

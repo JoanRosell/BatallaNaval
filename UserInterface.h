@@ -43,7 +43,7 @@ private:
 	int coordToIndex(coord thisCoord) { return (thisCoord.first*nRows) + thisCoord.second; }
 	bool loadBoard(std::vector<Sprite_Type>& board, const std::vector<Ship>& ships);
 	void updateBoard(std::vector<Sprite_Type>& board, const std::pair<bool, coord>& cell, bool shipIsDestroyed);
-	Sprite_Type updateSpriteType(const Sprite_Type& oldType, bool positionAttacked, bool shipIsDestroyed);
+	void updateSpriteType(Sprite_Type& oldType, bool positionAttacked, bool shipIsDestroyed);
 	
 };
 
