@@ -19,14 +19,16 @@ void joc(bool modeGrafic)
 		return;
 	}
 
-	Screen pantalla(MIDA_X, MIDA_Y);
+	Screen pantalla(MIDA_X, MIDA_Y*2);
 	pantalla.show();
+	//Sprite boardImg("Program\\data\\caselles.png");
 
 	do 
 	{
 		// Captura tots els events de ratolí i teclat de l'ultim cicle
 		pantalla.processEvents();
-		
+		//boardImg.draw(0, 0);
+		game.processEvents();
 		// Actualitza la pantalla
 		pantalla.update();
 

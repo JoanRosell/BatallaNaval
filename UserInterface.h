@@ -20,14 +20,14 @@ enum class Sprite_Type
 class UserInterface
 {
 public:
-	UserInterface()
+	UserInterface() : boardImg("Program\\data\\caselles.png")
 	{
 		humanBoard.resize(nRows*nCols, Sprite_Type::NO_SPRITE);
 		machineBoard.resize(nRows*nCols, Sprite_Type::NO_SPRITE);
 	}
 	~UserInterface();
 	bool init(const std::vector<Ship>& userShips, const std::vector<Ship>& machineShips);
-
+	void printBoards();
 	const std::vector<Sprite_Type>& getHumanBoard() const { return humanBoard; }
 	const std::vector<Sprite_Type>& getMachineBoard() const { return machineBoard; }
 		
@@ -39,10 +39,11 @@ private:
 	std::vector<Sprite_Type> machineBoard;
 	static const int nRows = 10;
 	static const int nCols = 10;
+	Sprite boardImg;
 	//	Con esta sencilla funcion mapeamos una coordenada (x, y) a un indice [0, 99]
 	int coordToIndex(coord thisCoord) { return (thisCoord.first*nRows) + thisCoord.second; }
 	bool loadBoard(std::vector<Sprite_Type>& board, const std::vector<Ship>& ships);
-	void updateBoard(std::vector<Sprite_Type>& board, const std::pair<bool, coord>& cell, bool shipIsDestroyed);
+	void updateBoard(std::vector<Sprite_Type>& board, const Ship& ship);
 	void updateSpriteType(Sprite_Type& oldType, bool positionAttacked, bool shipIsDestroyed);
 	
 };

@@ -28,6 +28,13 @@ bool Partida::init(const std::string & initFileHuman, const std::string & initFi
 	return dataInitialized;
 }
 
+bool Partida::processEvents()
+{
+	ui.printBoards();
+	playerListener.waitForEvents();
+	return false;
+}
+
 void Partida::dumpToFile()
 {
 	logBoardToFile("tauler_huma.txt", ui.getHumanBoard());

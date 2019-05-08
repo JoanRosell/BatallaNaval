@@ -19,6 +19,11 @@ bool UserInterface::init(const std::vector<Ship>& userShips, const std::vector<S
 	return interfaceReady;
 }
 
+void UserInterface::printBoards()
+{
+	boardImg.draw(0, 0);
+}
+
 bool UserInterface::loadBoard(std::vector<Sprite_Type>& board, const std::vector<Ship>& ships)
 {
 	bool boardLoaded(false);
@@ -26,12 +31,8 @@ bool UserInterface::loadBoard(std::vector<Sprite_Type>& board, const std::vector
 	if (!ships.empty())
 	{
 		for (const auto& ship : ships)
-		{
-			auto cellVector(ship.getCells());
-			bool shipIsDestroyed(ship.isDestroyed());
-			for (const auto& cell : cellVector)
-				updateBoard(board, cell, shipIsDestroyed);
-		}
+			if (ship.isDeployed()) // Asumimos que si, pero no está de mas comprobarlo en caso de que reutilicemos esta funcion
+				updateBoard(board, ship);
 
 		boardLoaded = true;
 	}
@@ -39,10 +40,17 @@ bool UserInterface::loadBoard(std::vector<Sprite_Type>& board, const std::vector
 	return boardLoaded;
 }
 
-void UserInterface::updateBoard(std::vector<Sprite_Type>& board, const std::pair<bool, coord>& cell, bool shipIsDestroyed)
+// Actualiza la información del tablero de un barco entero
+void UserInterface::updateBoard(std::vector<Sprite_Type>& board, const Ship& ship)
 {
-	int index(coordToIndex(cell.second));
-	updateSpriteType(board.at(index), !cell.first, shipIsDestroyed);
+	auto cellVector(ship.getCells());
+	bool shipIsDestroyed(ship.isDestroyed());
+
+	for (const auto& cell : cellVector)
+	{
+		int index(coordToIndex(cell.second));
+		updateSpriteType(board.at(index), !cell.first, shipIsDestroyed);
+	}
 }
 
 void UserInterface::updateSpriteType(Sprite_Type & currentType, bool positionAttacked, bool shipIsDestroyed)
@@ -63,9 +71,12 @@ void UserInterface::updateSpriteType(Sprite_Type & currentType, bool positionAtt
 			{
 			case Sprite_Type::NO_SPRITE:
 				currentType = Sprite_Type::WATER;
-				break;
+				break; 
 			case Sprite_Type::SHIP:
-				currentType = Sprite_Type::DAMAGED_SHIP;
+				if (!shipIsDestroyed) // Cuando la ultima viva celda de un barco muere pasa de SHIP a DESTROYED_SHIP directamente
+					currentType = Sprite_Type::DAMAGED_SHIP;
+				else
+					currentType = Sprite_Type::DESTROYED_SHIP;
 				break;
 			default:
 				break;

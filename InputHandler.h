@@ -5,7 +5,7 @@
 #include <utility>
 
 // Scoped enum or 'class' enum
-enum class Action_Types
+enum class Action_Type
 {
 	DEPLOY,
 	ATTACK
@@ -18,8 +18,10 @@ public:
 	~InputHandler() {}
 	void attach(Player* p) { myPlayer.reset(p); }
 	void detach() { myPlayer = nullptr; }
+	void waitForEvents();
 
 private:
 	std::unique_ptr<Player> myPlayer;
+	coord coordFromPixel(int x, int y);
 };
 

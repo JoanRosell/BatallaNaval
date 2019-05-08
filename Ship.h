@@ -24,7 +24,7 @@ public:
 	bool deploy(coord firstCoord);
 	const std::vector<std::pair<bool, coord>>& getCells() const { return myCells; }
 	#ifndef __NOT_GRAPHICS
-		void askOrientation();
+	void askOrientation();
 	#endif
 
 private:
