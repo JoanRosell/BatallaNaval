@@ -53,7 +53,7 @@
 
 #elif defined(__IPHONEOS__)
 /* On iOS SDL provides a main function that creates an application delegate
-   and starts the iOS application run loop.
+   and starts the iOS application processEvents loop.
 
    See src/video/uikit/SDL_uikitappdelegate.m for more details.
  */
@@ -71,7 +71,7 @@
 /* On NACL we use ppapi_simple to set up the application helper code,
    then wait for the first PSE_INSTANCE_DIDCHANGEVIEW event before 
    starting the user main function.
-   All user code is run in a separate thread by ppapi_simple, thus 
+   All user code is processEvents in a separate thread by ppapi_simple, thus 
    allowing for blocking io to take place via nacl_io
 */
 #define SDL_MAIN_NEEDED

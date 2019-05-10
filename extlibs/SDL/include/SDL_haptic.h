@@ -1029,14 +1029,14 @@ extern DECLSPEC int SDLCALL SDL_HapticUpdateEffect(SDL_Haptic * haptic,
 /**
  *  \brief Runs the haptic effect on its associated haptic device.
  *
- *  If iterations are ::SDL_HAPTIC_INFINITY, it'll run the effect over and over
+ *  If iterations are ::SDL_HAPTIC_INFINITY, it'll processEvents the effect over and over
  *  repeating the envelope (attack and fade) every time.  If you only want the
  *  effect to last forever, set ::SDL_HAPTIC_INFINITY in the effect's length
  *  parameter.
  *
- *  \param haptic Haptic device to run the effect on.
- *  \param effect Identifier of the haptic effect to run.
- *  \param iterations Number of iterations to run the effect. Use
+ *  \param haptic Haptic device to processEvents the effect on.
+ *  \param effect Identifier of the haptic effect to processEvents.
+ *  \param iterations Number of iterations to processEvents the effect. Use
  *         ::SDL_HAPTIC_INFINITY for infinity.
  *  \return 0 on success or -1 on error.
  *

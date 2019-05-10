@@ -214,7 +214,7 @@ extern "C" {
  *  \brief  A variable controlling whether the windows message loop is processed by SDL 
  *
  *  This variable can be set to the following values:
- *    "0"       - The window message loop is not run
+ *    "0"       - The window message loop is not processEvents
  *    "1"       - The window message loop is processed in SDL_PumpEvents()
  *
  *  By default SDL will process the windows message loop

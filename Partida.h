@@ -12,6 +12,8 @@ public:
 	~Partida();
 	bool init(const std::string& initFileHuman, const std::string& initFileArtificial);
 	bool processEvents();
+	void drawGraphics();
+	void update();
 	void dumpToFile();
 private:
 	Player humanPlayer;

@@ -20,14 +20,21 @@ enum class Sprite_Type
 class UserInterface
 {
 public:
-	UserInterface() : boardImg("Program\\data\\caselles.png")
+	UserInterface() : screen(MIDA_X, MIDA_Y * 2), boardImg("Program\\data\\caselles.png"), shipImg("Program\\data\\vaixell.png")
 	{
+		// Dejamos la pantalla preparada, el metodo show solo debe hacerse una vez
+		screen.show();
 		humanBoard.resize(nRows*nCols, Sprite_Type::NO_SPRITE);
 		machineBoard.resize(nRows*nCols, Sprite_Type::NO_SPRITE);
 	}
 	~UserInterface();
 	bool init(const std::vector<Ship>& userShips, const std::vector<Ship>& machineShips);
-	void printBoards();
+	// Screen tambien controla parte de la gestion de eventos...
+	void catchEvents() { screen.processEvents(); }
+	// Esto hay que extenderlo o sobrecargarlo para hacer actualizaciones de forma inteligente
+	// Actualizar solamente los datos modificados en el ultimo turno
+	void update() { screen.update(); }
+	void printGraphics();
 	const std::vector<Sprite_Type>& getHumanBoard() const { return humanBoard; }
 	const std::vector<Sprite_Type>& getMachineBoard() const { return machineBoard; }
 		
@@ -39,12 +46,15 @@ private:
 	std::vector<Sprite_Type> machineBoard;
 	static const int nRows = 10;
 	static const int nCols = 10;
+	Screen screen;
 	Sprite boardImg;
+	Sprite shipImg;
 	//	Con esta sencilla funcion mapeamos una coordenada (x, y) a un indice [0, 99]
 	int coordToIndex(coord thisCoord) { return (thisCoord.first*nRows) + thisCoord.second; }
 	bool loadBoard(std::vector<Sprite_Type>& board, const std::vector<Ship>& ships);
 	void updateBoard(std::vector<Sprite_Type>& board, const Ship& ship);
 	void updateSpriteType(Sprite_Type& oldType, bool positionAttacked, bool shipIsDestroyed);
+	void printBoard(std::vector<Sprite_Type>& boardToPrint, int startPos, bool visibility);
 	
 };
 

@@ -19,9 +19,14 @@ bool UserInterface::init(const std::vector<Ship>& userShips, const std::vector<S
 	return interfaceReady;
 }
 
-void UserInterface::printBoards()
+void UserInterface::printGraphics()
 {
 	boardImg.draw(0, 0);
+	boardImg.draw(0, 10*MIDA_CASELLA);
+
+	printBoard(machineBoard, 0, false);
+	printBoard(humanBoard, MIDA_Y, true);
+	
 }
 
 bool UserInterface::loadBoard(std::vector<Sprite_Type>& board, const std::vector<Ship>& ships)
@@ -73,7 +78,7 @@ void UserInterface::updateSpriteType(Sprite_Type & currentType, bool positionAtt
 				currentType = Sprite_Type::WATER;
 				break; 
 			case Sprite_Type::SHIP:
-				if (!shipIsDestroyed) // Cuando la ultima viva celda de un barco muere pasa de SHIP a DESTROYED_SHIP directamente
+				if (!shipIsDestroyed) // Cuando la ultima celda viva de un barco muere pasa de SHIP a DESTROYED_SHIP directamente
 					currentType = Sprite_Type::DAMAGED_SHIP;
 				else
 					currentType = Sprite_Type::DESTROYED_SHIP;
@@ -85,4 +90,39 @@ void UserInterface::updateSpriteType(Sprite_Type & currentType, bool positionAtt
 		else
 			if (currentType == Sprite_Type::NO_SPRITE)
 				currentType = Sprite_Type::SHIP;
+}
+
+void UserInterface::printBoard(std::vector<Sprite_Type>& boardToPrint, int startY, bool visibility)
+{
+	int X(0);
+	int Y(startY);
+
+	for (const auto& spriteType : boardToPrint)
+	{
+		switch (spriteType)
+		{
+		case Sprite_Type::NO_SPRITE:
+			break;
+		case Sprite_Type::WATER:
+			break;
+		case Sprite_Type::SHIP:
+			if (visibility)
+				shipImg.draw(X, Y);
+			break;
+		case Sprite_Type::DAMAGED_SHIP:
+			break;
+		case Sprite_Type::DESTROYED_SHIP:
+			break;
+		default:
+			break;
+		}
+
+		X += MIDA_CASELLA;
+
+		if (X == MIDA_X)
+		{
+			X = 0;
+			Y += MIDA_CASELLA;
+		}
+	}
 }

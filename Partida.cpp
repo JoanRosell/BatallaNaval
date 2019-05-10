@@ -30,9 +30,21 @@ bool Partida::init(const std::string & initFileHuman, const std::string & initFi
 
 bool Partida::processEvents()
 {
-	ui.printBoards();
+	ui.catchEvents();
+	
 	playerListener.waitForEvents();
+	
 	return false;
+}
+
+void Partida::drawGraphics()
+{
+	ui.printGraphics();
+}
+
+void Partida::update()
+{
+	ui.update();
 }
 
 void Partida::dumpToFile()

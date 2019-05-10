@@ -407,7 +407,7 @@ struct stb_vorbis
    int setup_offset;
    int temp_offset;
 
-  // run-time results
+  // processEvents-time results
    int eof;
    enum STBVorbisError error;
 
@@ -815,7 +815,7 @@ static void compute_sorted_huffman(Codebook *c, uint8 *lengths, uint32 *values)
    }
 }
 
-// only run while parsing the header (3 times)
+// only processEvents while parsing the header (3 times)
 static int vorbis_validate(uint8 *data)
 {
    static uint8 vorbis[6] = { 'v', 'o', 'r', 'b', 'i', 's' };
@@ -2001,7 +2001,7 @@ void inverse_mdct_slow(float *buffer, int n)
    free(x);
 }
 #elif 0
-// same as above, but just barely able to run in real time on modern machines
+// same as above, but just barely able to processEvents in real time on modern machines
 void inverse_mdct_slow(float *buffer, int n, vorb *f, int blocktype)
 {
    float mcos[16384];
