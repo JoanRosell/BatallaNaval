@@ -3,11 +3,12 @@
 void InputHandler::waitForEvents()
 {
 	SDL_Event input;
-	// El segundo parametro son los milisegundos que se espera antes de continuar con la ejecución del proceso
-	if (SDL_WaitEventTimeout(&input, 100))
+	
+	if (SDL_WaitEvent(&input))
 		if (input.type == SDL_MOUSEBUTTONDOWN)
 		{
 			coord positionClicked(coordFromPixel(input.button.x, input.button.y));
+			actions.emplace_back(new ClickAction(myPlayer, positionClicked));
 		}
 }
 
