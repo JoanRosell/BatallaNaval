@@ -3,12 +3,11 @@
 void InputHandler::waitForEvents()
 {
 	SDL_Event input;
-	
 	if (SDL_WaitEvent(&input))
 		if (input.type == SDL_MOUSEBUTTONDOWN)
 		{
 			coord positionClicked(coordFromPixel(input.button.x, input.button.y));
-			actions.emplace_back(new ClickAction(myPlayer, positionClicked));
+			actions.push_back(new ClickAction(myPlayer, positionClicked));
 		}
 }
 

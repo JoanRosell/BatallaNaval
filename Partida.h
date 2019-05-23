@@ -5,6 +5,7 @@
 #include "UserInterface.h"
 #include "Typedefs.h"
 #include <vector>
+
 class Partida
 {
 public:

@@ -5,12 +5,6 @@
 #include <memory>
 #include <utility>
 
-// Scoped enum or 'class' enum
-enum class Action_Type
-{
-	DEPLOY,
-	ATTACK
-};
 
 class InputHandler
 {

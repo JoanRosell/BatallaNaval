@@ -16,7 +16,7 @@ public:
 	//	Construye una flota a partir de un archivo txt
 	bool loadShipsFromFile(const std::string& file);
 	const std::vector<Ship>& getShips() const { return fleet; }
-
+	
 private:
 	unsigned int shipsAlive;
 	unsigned int deployedShips;

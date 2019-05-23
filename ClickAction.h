@@ -1,6 +1,7 @@
 #pragma once
 #include "joc.h"
-#include "InputHandler.h"
+#include "Player.h"
+#include "Typedefs.h"
 #include "Action.h"
 
 // Accion que realiza un Player, se generan a raiz de eventos
@@ -16,7 +17,7 @@ public:
 	ClickAction(Player* target, const coord& coordClicked);
 	~ClickAction();
 
-	void execute() { return; }
+	Action_Outcome execute();
 
 private:
 	Player* target;
