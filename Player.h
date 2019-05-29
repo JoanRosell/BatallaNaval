@@ -4,10 +4,16 @@
 #include <sstream>
 #include <vector>
 
+enum class Player_Type
+{
+	MACHINE,
+	HUMAN
+};
+
 class Player
 {
 public:
-	Player();
+	Player(Player_Type t);
 	~Player() {}
 	bool isDeploying() const { return deploying; }
 	bool isAttacking() const { return attacking; }
@@ -23,8 +29,11 @@ private:
 	bool deploying;
 	bool attacking;
 	std::vector<Ship> fleet;
-	
+	std::vector<std::pair<coord, bool>> attackCoords;
+	Player_Type type;
+
 	void buildFleet();
+	void buildAttackGrid(int startX, int startY);
 
 	// Tipos de barcos diferentes
 	const int kShipTypes = 4;
@@ -41,8 +50,22 @@ private:
 
 
 
-inline Player::Player() : deploying(true), attacking(false), deployedShips(0)
+inline Player::Player(Player_Type t) : deploying(true), attacking(false), deployedShips(0), type(t)
 {
+	attackCoords.resize(100);
+
+	switch (type)
+	{
+	case Player_Type::MACHINE:
+		buildAttackGrid(0, 9);
+		break;
+	
+	case Player_Type::HUMAN:
+		buildAttackGrid(0, 0);
+		break;
+	default:
+		break;
+	}
 }
 
 inline bool Player::loadShipsFromFile(const std::string & filename)
@@ -122,5 +145,23 @@ inline void Player::buildFleet()
 		
 		currentShipSize--;
 		currentShipsToBuild++;
+	}
+}
+
+inline void Player::buildAttackGrid(int startX, int startY)
+{
+	for (auto& cell : attackCoords)
+	{
+		cell.first.first = startX;
+		cell.first.second = startY;
+		startX++;
+
+		if (startX > 9)
+		{
+			startY++;
+			startX = 0;
+		}
+
+		cell.second = false;
 	}
 }
