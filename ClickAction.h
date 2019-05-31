@@ -14,13 +14,13 @@ public:
 	ClickAction(const ClickAction&&) = delete;
 	ClickAction& operator=(const ClickAction&) = delete;
 
-	ClickAction(Player* target, const coord& coordClicked);
+	ClickAction(Player* source, const coord& coordClicked);
 	~ClickAction();
 
 	Action_Outcome execute();
 
 private:
-	Player* target;
+	Player* source;
 	coord parameter;
 };
 

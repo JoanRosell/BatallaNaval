@@ -13,25 +13,25 @@ enum class Player_Type
 class Player
 {
 public:
-	Player(Player_Type t);
+	Player();
 	~Player() {}
-	bool isDeploying() const { return deploying; }
-	bool isAttacking() const { return attacking; }
+	
+	bool isActive() const { return attacking; }
 	int getShipsAlive() const { return shipsAlive; }
 	
 	//	Construye una flota a partir de un archivo txt
 	bool loadShipsFromFile(const std::string& file);
 	const std::vector<Ship>& getShips() const { return fleet; }
+	void endActionPhase() { attacking = false; }
+	void startActionPhase() { attacking = true; }
 	
 private:
 	unsigned int shipsAlive;
 	unsigned int deployedShips;
-	bool deploying;
 	bool attacking;
 	std::vector<Ship> fleet;
 	std::vector<std::pair<coord, bool>> attackCoords;
-	Player_Type type;
-
+	
 	void buildFleet();
 	void buildAttackGrid(int startX, int startY);
 
@@ -50,7 +50,7 @@ private:
 
 
 
-inline Player::Player(Player_Type t) : deploying(true), attacking(false), deployedShips(0), type(t)
+inline Player::Player() : attacking(true), deployedShips(0)
 {
 	attackCoords.resize(100);
 
@@ -113,7 +113,6 @@ inline bool Player::loadShipsFromFile(const std::string & filename)
 	if (deployedShips == 10)
 	{
 		shipsLoaded = true;
-		deploying = false;
 		attacking = true;
 	}
 	

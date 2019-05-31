@@ -13,8 +13,8 @@ public:
 	~InputHandler() {}
 	void attach(Player* p) { myPlayer = p; }
 	void detach() { myPlayer = nullptr; }
-	void waitForEvents();
-
+	bool waitForEvents();
+	Action_Outcome executeLastAction();
 private:
 	Player* myPlayer;
 	std::vector<Action*> actions;

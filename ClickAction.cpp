@@ -1,7 +1,7 @@
 #include "ClickAction.h"
 
-ClickAction::ClickAction(Player* target, const coord& coordClicked) : Action(), 
-	target(target), parameter(coordClicked) {}
+ClickAction::ClickAction(Player* source, const coord& coordClicked) : Action(), 
+	source(source), parameter(coordClicked) {}
 
 ClickAction::~ClickAction() { }
 

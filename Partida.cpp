@@ -53,6 +53,37 @@ void Partida::dumpToFile()
 	logBoardToFile("tauler_ordinador.txt", ui.getMachineBoard());
 }
 
+void Partida::playTurn()
+{
+	bool turnEnded(false);
+	Action_Outcome result(Action_Outcome::UNDEFINED);
+
+	while (!turnEnded)
+	{
+		if (humanPlayer.isActive())
+		{
+			playerListener.waitForEvents();
+			
+			result = playerListener.executeLastAction();
+
+			if (result != Action_Outcome::INVALID)
+			{
+				if (result != Action_Outcome::SHIP_HIT && result != Action_Outcome::SHIP_DESTROYED)
+					humanPlayer.endActionPhase();
+
+				turnEnded = true;
+			}
+		}
+		else
+		{
+			// turno de la maquina
+		}
+					
+	}
+	
+	
+}
+
 void Partida::logBoardToFile(const char * filename, const std::vector<Sprite_Type>& board)
 {
 	int elementsLogged(0);

@@ -16,6 +16,8 @@ public:
 	void drawGraphics();
 	void update();
 	void dumpToFile();
+	void playTurn();
+
 private:
 	Player humanPlayer;
 	Player artificialPlayer;

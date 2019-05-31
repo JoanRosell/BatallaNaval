@@ -1,6 +1,7 @@
 #pragma once
 enum class Action_Outcome
 {
+	UNDEFINED,
 	INVALID,
 	WATER,
 	SHIP_HIT,
@@ -23,6 +24,7 @@ public:
 
 	virtual Action_Outcome execute() = 0;
 	bool isDone() const { return done; }
+
 protected:
 	bool done;
 	Action_Type type;
