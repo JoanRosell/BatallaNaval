@@ -19,10 +19,12 @@ public:
 	~Ship();
 
 	bool isDeployed() const { return deployed; }
-	bool isDestroyed() const { return destroyed; }
+	bool isDestroyed() const { return activeCells == 0; }
 	int getSize() const { return size; }
 	bool deploy(coord firstCoord);
 	const std::vector<std::pair<bool, coord>>& getCells() const { return myCells; }
+	bool updateCell(coord pos);
+
 	#ifndef __NOT_GRAPHICS
 	void askOrientation();
 	#endif

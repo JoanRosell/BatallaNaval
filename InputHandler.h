@@ -2,22 +2,23 @@
 #include "Player.h"
 #include "Typedefs.h"
 #include "ClickAction.h"
-#include <memory>
+#include <queue>
 #include <utility>
 
 
 class InputHandler
 {
 public:
-	InputHandler() {}
+	InputHandler() : human(nullptr), machine(nullptr) {}
 	~InputHandler() {}
-	void attach(Player* p) { myPlayer = p; }
-	void detach() { myPlayer = nullptr; }
+	void init(Player* h, Player* m);
 	bool waitForEvents();
-	Action_Outcome executeLastAction();
+	Action* retrieveLastAction();
+
 private:
-	Player* myPlayer;
-	std::vector<Action*> actions;
+	Player* human;
+	Player* machine;
+	std::queue<Action*> actions;
 	coord coordFromPixel(int x, int y);
 };
 

@@ -1,5 +1,16 @@
 #include "InputHandler.h"
 
+void InputHandler::init(Player * h, Player * m)
+{
+	if (human != nullptr || machine != nullptr)
+		return;
+	else
+	{
+		human = h;
+		machine = m;
+	}
+}
+
 bool InputHandler::waitForEvents()
 {
 	bool eventCaptured(false);
@@ -11,7 +22,7 @@ bool InputHandler::waitForEvents()
 			if (input.type == SDL_MOUSEBUTTONDOWN)
 			{
 				coord positionClicked(coordFromPixel(input.button.x, input.button.y));
-				actions.push_back(new ClickAction(myPlayer, positionClicked));
+				actions.push(new ClickAction(machine, positionClicked));
 				eventCaptured = true;
 			}
 	}
@@ -19,15 +30,12 @@ bool InputHandler::waitForEvents()
 	return eventCaptured;
 }
 
-Action_Outcome InputHandler::executeLastAction()
+Action * InputHandler::retrieveLastAction()
 {
-	Action* lastAction = actions.back();
-	Action_Outcome result(Action_Outcome::UNDEFINED);
-
-	if (!lastAction->isDone())
-		result = lastAction->execute();
-	
-	return result;
+	if (!actions.empty())
+		return actions.back();
+	else
+		return nullptr;
 }
 
 coord InputHandler::coordFromPixel(int x, int y)

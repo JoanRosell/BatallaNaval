@@ -4,6 +4,8 @@
 
 Partida::Partida()
 {
+	humanPlayer = Player(Player_Type::HUMAN);
+	artificialPlayer = Player(Player_Type::MACHINE);
 }
 
 
@@ -17,6 +19,7 @@ bool Partida::init(const std::string & initFileHuman, const std::string & initFi
 	bool humanReady(false);
 	bool aiReady(false);
 
+	playerListener.init(&humanPlayer, &artificialPlayer);
 	humanReady = humanPlayer.loadShipsFromFile(initFileHuman);
 	aiReady = artificialPlayer.loadShipsFromFile(initFileArtificial);
 
@@ -64,15 +67,40 @@ void Partida::playTurn()
 		{
 			playerListener.waitForEvents();
 			
-			result = playerListener.executeLastAction();
+			Action* lastAction(playerListener.retrieveLastAction());
+
+			if (!lastAction->isDone())
+				result = lastAction->execute();
+			
 
 			if (result != Action_Outcome::INVALID)
 			{
-				if (result != Action_Outcome::SHIP_HIT && result != Action_Outcome::SHIP_DESTROYED)
+				switch (result)
+				{
+				case Action_Outcome::UNDEFINED:
+					break;
+				case Action_Outcome::WATER:
+					ui.updateCell(lastAction->getParameter(), Sprite_Type::WATER, false);
+					break;
+				case Action_Outcome::SHIP_HIT:
+					ui.updateCell(lastAction->getParameter(), Sprite_Type::DAMAGED_SHIP, false);
 					humanPlayer.endActionPhase();
+					break;
+				case Action_Outcome::SHIP_DESTROYED:
+					ui.updateShipStatus(lastAction->getAffectedShip(), false);
+					humanPlayer.endActionPhase();
+					break;
+				default:
+					break;
+				}
+				if (result != Action_Outcome::SHIP_HIT && result != Action_Outcome::SHIP_DESTROYED)
+					
 
 				turnEnded = true;
+				
 			}
+
+			turn++;
 		}
 		else
 		{

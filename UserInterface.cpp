@@ -19,6 +19,30 @@ bool UserInterface::init(const std::vector<Ship>& userShips, const std::vector<S
 	return interfaceReady;
 }
 
+void UserInterface::updateCell(coord pos, Sprite_Type newType, bool isHumanBoard)
+{
+	if (isHumanBoard)
+	{
+		humanBoard.at(coordToIndex(pos)) = newType;
+	}
+	else
+	{
+		machineBoard.at(coordToIndex(pos)) = newType;
+	}
+}
+
+void UserInterface::updateShipStatus(Ship * ship, bool isHumanBoard)
+{
+	if (isHumanBoard)
+	{
+		updateBoard(humanBoard, *ship);
+	}
+	else
+	{
+		updateBoard(machineBoard, *ship);
+	}
+}
+
 void UserInterface::printGraphics()
 {
 	boardImg.draw(0, 0);

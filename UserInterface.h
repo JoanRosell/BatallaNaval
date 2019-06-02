@@ -34,6 +34,8 @@ public:
 	// Esto hay que extenderlo o sobrecargarlo para hacer actualizaciones de forma inteligente
 	// Actualizar solamente los datos modificados en el ultimo turno
 	void update() { screen.update(); }
+	void updateCell(coord pos, Sprite_Type newType, bool isHumanBoard);
+	void updateShipStatus(Ship* ship, bool isHumanBoard);
 	void printGraphics();
 	const std::vector<Sprite_Type>& getHumanBoard() const { return humanBoard; }
 	const std::vector<Sprite_Type>& getMachineBoard() const { return machineBoard; }

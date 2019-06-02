@@ -14,13 +14,17 @@ public:
 	ClickAction(const ClickAction&&) = delete;
 	ClickAction& operator=(const ClickAction&) = delete;
 
-	ClickAction(Player* source, const coord& coordClicked);
+	ClickAction(Player* source, Player* target, const coord& coordClicked);
 	~ClickAction();
 
 	Action_Outcome execute();
+	const coord& getParameter() const { return parameter; }
+	Ship* getAffectedShip() { return affectedShip; }
 
 private:
 	Player* source;
+	Player* target;
+	Ship* affectedShip;
 	coord parameter;
 };
 

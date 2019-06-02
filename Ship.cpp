@@ -57,6 +57,26 @@ bool Ship::deploy(coord firstCoord)
 	return deployed;
 }
 
+bool Ship::updateCell(coord pos)
+{
+	bool cellUpdated(false);
+
+	for (auto& cell : myCells)
+	{
+		if (cell.second == pos)
+		{
+			if (cell.first)
+			{
+				cell.first = false;
+				cellUpdated = true;
+				activeCells--;
+			}
+		}
+	}
+
+	return cellUpdated;
+}
+
 #ifndef __NOT_GRAPHICS
 void Ship::askOrientation()
 {

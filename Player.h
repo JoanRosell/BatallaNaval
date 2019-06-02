@@ -21,7 +21,9 @@ public:
 	
 	//	Construye una flota a partir de un archivo txt
 	bool loadShipsFromFile(const std::string& file);
-	const std::vector<Ship>& getShips() const { return fleet; }
+	std::vector<Ship>& getShips() { return fleet; }
+	const std::vector<std::pair<coord, bool>>& getAttackCoords() const { return attackCoords; }
+	void updateAttackCoords(coord& coordToUpdate);
 	void endActionPhase() { attacking = false; }
 	void startActionPhase() { attacking = true; }
 	
@@ -31,7 +33,7 @@ private:
 	bool attacking;
 	std::vector<Ship> fleet;
 	std::vector<std::pair<coord, bool>> attackCoords;
-	
+	Player_Type type;
 	void buildFleet();
 	void buildAttackGrid(int startX, int startY);
 
@@ -49,6 +51,10 @@ private:
 };
 
 
+
+inline Player::Player()
+{
+}
 
 inline Player::Player() : attacking(true), deployedShips(0)
 {
@@ -117,6 +123,13 @@ inline bool Player::loadShipsFromFile(const std::string & filename)
 	}
 	
 	return shipsLoaded;
+}
+
+inline void Player::updateAttackCoords(coord & coordToUpdate)
+{
+	for (auto& cell : attackCoords)
+		if (cell.first == coordToUpdate)
+			cell.second = true;
 }
 
 // Construye una flota de barcos sin desplegar
