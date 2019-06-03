@@ -10,6 +10,12 @@ enum class Player_Type
 	HUMAN
 };
 
+struct attackCoord
+{
+	coord coord;
+	bool isAlreadyAttacked;
+};
+
 class Player
 {
 public:
@@ -22,7 +28,7 @@ public:
 	//	Construye una flota a partir de un archivo txt
 	bool loadShipsFromFile(const std::string& file);
 	std::vector<Ship>& getShips() { return fleet; }
-	const std::vector<std::pair<coord, bool>>& getAttackCoords() const { return attackCoords; }
+	const std::vector<attackCoord>& getAttackCoords() const { return attackCoords; }
 	void updateAttackCoords(coord& coordToUpdate);
 	void endActionPhase() { attacking = false; }
 	void startActionPhase() { attacking = true; }
@@ -32,7 +38,7 @@ private:
 	unsigned int deployedShips;
 	bool attacking;
 	std::vector<Ship> fleet;
-	std::vector<std::pair<coord, bool>> attackCoords;
+	std::vector<attackCoord> attackCoords;
 	Player_Type type;
 	void buildFleet();
 	void buildAttackGrid(int startX, int startY);
@@ -127,9 +133,9 @@ inline bool Player::loadShipsFromFile(const std::string & filename)
 
 inline void Player::updateAttackCoords(coord & coordToUpdate)
 {
-	for (auto& cell : attackCoords)
-		if (cell.first == coordToUpdate)
-			cell.second = true;
+	for (auto& attackCoord : attackCoords)
+		if (attackCoord.coord == coordToUpdate)
+			attackCoord.isAlreadyAttacked = true;
 }
 
 // Construye una flota de barcos sin desplegar
@@ -162,10 +168,10 @@ inline void Player::buildFleet()
 
 inline void Player::buildAttackGrid(int startX, int startY)
 {
-	for (auto& cell : attackCoords)
+	for (auto& attackCoord : attackCoords)
 	{
-		cell.first.first = startX;
-		cell.first.second = startY;
+		attackCoord.coord._x = startX;
+		attackCoord.coord._y = startY;
 		startX++;
 
 		if (startX > 9)
@@ -174,6 +180,6 @@ inline void Player::buildAttackGrid(int startX, int startY)
 			startX = 0;
 		}
 
-		cell.second = false;
+		attackCoord.isAlreadyAttacked = false;
 	}
 }

@@ -4,44 +4,59 @@ UserInterface::~UserInterface()
 {
 }
 
-bool UserInterface::init(const std::vector<Ship>& userShips, const std::vector<Ship>& machineShips)
+bool UserInterface::init(const std::vector<Ship>& humanShips, const std::vector<Ship>& machineShips)
 {	
-	bool machineBoardReady(false);
-	bool humanBoardReady(false);
+	bool boardsLoaded(false);
 
-	humanBoardReady = loadBoard(humanBoard, userShips);
-	machineBoardReady = loadBoard(machineBoard, machineShips);
+	if (!humanShips.empty() && !machineShips.empty())
+	{
+		for (const auto& ship : humanShips)
+			if (ship.isDeployed()) // Asumimos que si, pero no está de mas comprobarlo en caso de que reutilicemos esta funcion
+				updateShipStatus(ship, true);
 
-	bool interfaceReady(false);
-	if (humanBoardReady && machineBoardReady)
-		interfaceReady = true;
+		for (const auto& ship : machineShips)
+			if (ship.isDeployed())
+				updateShipStatus(ship, false);
+
+		boardsLoaded = true;
+	}
+
+	return boardsLoaded;
+}
+
+
+void UserInterface::updateCell(VisualizationCell newCellState)
+{
 	
-	return interfaceReady;
 }
 
-void UserInterface::updateCell(coord pos, Sprite_Type newType, bool isHumanBoard)
+void UserInterface::updateShipStatus(const Ship& ship, bool defaultVisibility)
 {
-	if (isHumanBoard)
+	for (const cell& shipCell : ship.getCells())
 	{
-		humanBoard.at(coordToIndex(pos)) = newType;
-	}
-	else
-	{
-		machineBoard.at(coordToIndex(pos)) = newType;
-	}
-}
+		auto it = std::find_if(vBoard.begin(), vBoard.end(), 
+			[&shipCell](const VisualizationCell& param) { return shipCell.coord == param.coord; }
+		);
 
-void UserInterface::updateShipStatus(Ship * ship, bool isHumanBoard)
-{
-	if (isHumanBoard)
-	{
-		updateBoard(humanBoard, *ship);
-	}
-	else
-	{
-		updateBoard(machineBoard, *ship);
+		if (it != vBoard.end())
+		{
+			if (ship.isDestroyed())
+				it->spriteType = Sprite_Type::DESTROYED_SHIP;
+			else
+				if (shipCell.isHit && it->spriteType == Sprite_Type::SHIP)
+				{
+					it->spriteType = Sprite_Type::DAMAGED_SHIP;
+
+					if (it->isHidden)
+						it->isHidden = false;
+				}
+					
+		}
+		else
+			vBoard.emplace_back(shipCell.coord, Sprite_Type::SHIP, defaultVisibility || shipCell.isHit);
 	}
 }
+		
 
 void UserInterface::printGraphics()
 {
@@ -51,69 +66,6 @@ void UserInterface::printGraphics()
 	printBoard(machineBoard, 0, false);
 	printBoard(humanBoard, MIDA_Y, true);
 	
-}
-
-bool UserInterface::loadBoard(std::vector<Sprite_Type>& board, const std::vector<Ship>& ships)
-{
-	bool boardLoaded(false);
-
-	if (!ships.empty())
-	{
-		for (const auto& ship : ships)
-			if (ship.isDeployed()) // Asumimos que si, pero no está de mas comprobarlo en caso de que reutilicemos esta funcion
-				updateBoard(board, ship);
-
-		boardLoaded = true;
-	}
-
-	return boardLoaded;
-}
-
-// Actualiza la información del tablero de un barco entero
-void UserInterface::updateBoard(std::vector<Sprite_Type>& board, const Ship& ship)
-{
-	auto cellVector(ship.getCells());
-	bool shipIsDestroyed(ship.isDestroyed());
-
-	for (const auto& cell : cellVector)
-	{
-		int index(coordToIndex(cell.second));
-		updateSpriteType(board.at(index), !cell.first, shipIsDestroyed);
-	}
-}
-
-void UserInterface::updateSpriteType(Sprite_Type & currentType, bool positionAttacked, bool shipIsDestroyed)
-{	
-	bool typeChanged(false);
-
-	if (currentType == Sprite_Type::DAMAGED_SHIP)
-		if (shipIsDestroyed)
-		{
-			currentType = Sprite_Type::DESTROYED_SHIP;
-			typeChanged = true;
-		}
-
-	if (!typeChanged)
-		if (positionAttacked)
-		{
-			switch (currentType)
-			{
-			case Sprite_Type::NO_SPRITE:
-				currentType = Sprite_Type::WATER;
-				break; 
-			case Sprite_Type::SHIP:
-				if (!shipIsDestroyed) // Cuando la ultima celda viva de un barco muere pasa de SHIP a DESTROYED_SHIP directamente
-					currentType = Sprite_Type::DAMAGED_SHIP;
-				else
-					currentType = Sprite_Type::DESTROYED_SHIP;
-				break;
-			default:
-				break;
-			}
-		}
-		else
-			if (currentType == Sprite_Type::NO_SPRITE)
-				currentType = Sprite_Type::SHIP;
 }
 
 void UserInterface::printBoard(std::vector<Sprite_Type>& boardToPrint, int startY, bool visibility)

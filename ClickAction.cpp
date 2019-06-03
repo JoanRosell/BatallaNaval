@@ -1,24 +1,23 @@
 #include "ClickAction.h"
 
 ClickAction::ClickAction(Player* source, Player* target, const coord& coordClicked) : Action(), 
-	source(source), target(target), parameter(coordClicked), affectedShip(nullptr) {}
+	source(source), target(target), parameter(coordClicked) {}
 
 ClickAction::~ClickAction() { }
 
 Action_Outcome ClickAction::execute()
 {
-	Action_Outcome outcome(Action_Outcome::UNDEFINED);
+	Action_Outcome result{ Outcome_Type::UNDEFINED, nullptr, parameter };
 
 	if (!done)
 	{ 
-		
 		auto attackCoords(source->getAttackCoords());
 		bool validPosition(false);
 
-		for (const auto& cell : attackCoords)
+		for (const auto& attackCoord : attackCoords)
 		{
-			if (cell.first == parameter)
-				if (!cell.second)
+			if (attackCoord.coord == parameter)
+				if (!attackCoord.isAlreadyAttacked)
 					validPosition = true;
 		}
 
@@ -28,25 +27,25 @@ Action_Outcome ClickAction::execute()
 
 			for (auto& ship : target->getShips())
 				for (auto& cell : ship.getCells())
-					if (cell.second == parameter)
+					if (cell.coord == parameter)
 					{
 						ship.updateCell(parameter);
-						affectedShip = &ship;
+						result.affectedShip = &ship;
 
 						if (ship.isDestroyed())
-							outcome = Action_Outcome::SHIP_DESTROYED;
+							result.outcomeType = Outcome_Type::SHIP_DESTROYED;
 						else
-							outcome = Action_Outcome::SHIP_HIT;
+							result.outcomeType = Outcome_Type::SHIP_HIT;
 					}
 
-			if (outcome == Action_Outcome::UNDEFINED)
-				outcome = Action_Outcome::WATER;
+			if (result.outcomeType == Outcome_Type::UNDEFINED)
+				result.outcomeType = Outcome_Type::WATER;
 
 		}
 		else
-			outcome = Action_Outcome::INVALID;
+			result.outcomeType = Outcome_Type::INVALID;
 	}
 
-	return outcome;
+	return result;
 	
 }

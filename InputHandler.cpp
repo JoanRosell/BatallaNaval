@@ -43,5 +43,5 @@ coord InputHandler::coordFromPixel(int x, int y)
 	int coord_X = (x / MIDA_CASELLA) * MIDA_CASELLA;
 	int coord_Y = (y / MIDA_CASELLA) * MIDA_CASELLA;
 
-	return coord(coord_X, coord_Y);
+	return coord { coord_X, coord_Y };
 }

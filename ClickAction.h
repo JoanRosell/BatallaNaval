@@ -19,12 +19,10 @@ public:
 
 	Action_Outcome execute();
 	const coord& getParameter() const { return parameter; }
-	Ship* getAffectedShip() { return affectedShip; }
 
 private:
 	Player* source;
 	Player* target;
-	Ship* affectedShip;
 	coord parameter;
 };
 

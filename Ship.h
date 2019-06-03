@@ -6,6 +6,17 @@
 #include "joc.h"
 #include "Typedefs.h"
 
+typedef struct cell
+{
+	coord coord;
+	bool isHit;
+
+	bool operator==(const cell& rhs)
+	{
+		return coord == rhs.coord && isHit == rhs.isHit;
+	}
+};
+
 class Ship
 {
 public:
@@ -22,7 +33,7 @@ public:
 	bool isDestroyed() const { return activeCells == 0; }
 	int getSize() const { return size; }
 	bool deploy(coord firstCoord);
-	const std::vector<std::pair<bool, coord>>& getCells() const { return myCells; }
+	const std::vector<cell>& getCells() const { return myCells; }
 	bool updateCell(coord pos);
 
 	#ifndef __NOT_GRAPHICS
@@ -31,7 +42,7 @@ public:
 
 private:
 	Ship_Orientation orientation;
-	std::vector<std::pair<bool, coord>> myCells;
+	std::vector<cell> myCells;
 	bool deployed;
 	bool destroyed;
 	int size;

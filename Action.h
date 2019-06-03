@@ -1,5 +1,5 @@
 #pragma once
-enum class Action_Outcome
+enum class Outcome_Type
 {
 	UNDEFINED,
 	INVALID,
@@ -8,6 +8,12 @@ enum class Action_Outcome
 	SHIP_DESTROYED
 };
 
+struct Action_Outcome
+{
+	Outcome_Type outcomeType;
+	Ship* affectedShip;
+	cell affectedCell;
+};
 
 class Action
 {
@@ -15,11 +21,9 @@ public:
 	Action() : done(false) {}
 	virtual ~Action() {}
 
-	virtual Action_Outcome execute() = 0;
+	virtual Outcome_Type execute() = 0;
 	bool isDone() const { return done; }
-	virtual const coord& getParameter() const;
-	virtual Ship* getAffectedShip();
-
+	
 protected:
 	bool done;
 	
