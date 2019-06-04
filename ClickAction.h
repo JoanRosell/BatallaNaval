@@ -17,12 +17,14 @@ public:
 	ClickAction(Player* source, Player* target, const coord& coordClicked);
 	~ClickAction();
 
-	Action_Outcome execute();
+	ActionOutcome execute();
 	const coord& getParameter() const { return parameter; }
 
 private:
 	Player* source;
 	Player* target;
 	coord parameter;
+
+	bool coordIsValid(const std::vector<attackCoord>::iterator & it, const std::vector<attackCoord>::iterator & end) const;
 };
 

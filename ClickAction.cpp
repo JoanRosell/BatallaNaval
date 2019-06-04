@@ -5,47 +5,55 @@ ClickAction::ClickAction(Player* source, Player* target, const coord& coordClick
 
 ClickAction::~ClickAction() { }
 
-Action_Outcome ClickAction::execute()
+ActionOutcome ClickAction::execute()
 {
-	Action_Outcome result{ Outcome_Type::UNDEFINED, nullptr, parameter };
+	ActionOutcome result{ Outcome_Type::INVALID, nullptr, parameter };
 
 	if (!done)
-	{ 
-		auto attackCoords(source->getAttackCoords());
+	{
 		bool validPosition(false);
+		
+		auto atkCoordIt = std::find_if(source->getAttackCoords().begin(), source->getAttackCoords().end(), [&](const attackCoord& thisAtkCoord) {
+			return thisAtkCoord.coord == parameter; 
+		});
 
-		for (const auto& attackCoord : attackCoords)
-		{
-			if (attackCoord.coord == parameter)
-				if (!attackCoord.isAlreadyAttacked)
-					validPosition = true;
-		}
-
-		if (validPosition)
+		if (coordIsValid(atkCoordIt, source->getAttackCoords().end()))
 		{
 			source->updateAttackCoords(parameter);
+			bool shipFound(false);
 
 			for (auto& ship : target->getShips())
-				for (auto& cell : ship.getCells())
-					if (cell.coord == parameter)
-					{
-						ship.updateCell(parameter);
-						result.affectedShip = &ship;
+			{
+				auto shipIt = std::find_if(ship.getCells().begin(), ship.getCells().end(), [&](const cell& thisCell) {
+					return thisCell.coord == parameter;
+				});
 
-						if (ship.isDestroyed())
-							result.outcomeType = Outcome_Type::SHIP_DESTROYED;
-						else
-							result.outcomeType = Outcome_Type::SHIP_HIT;
-					}
+				if (shipIt != ship.getCells().end())
+				{
+					shipFound = true;
+					ship.updateCell(parameter);
+					result.affectedShip = new Ship(ship);
 
-			if (result.outcomeType == Outcome_Type::UNDEFINED)
+					if (ship.isDestroyed())
+						result.outcomeType = Outcome_Type::SHIP_DESTROYED;
+					else
+						result.outcomeType = Outcome_Type::SHIP_HIT;
+				}
+
+				if (shipFound)
+					break;
+			}
+
+			if (!shipFound)
 				result.outcomeType = Outcome_Type::WATER;
-
 		}
-		else
-			result.outcomeType = Outcome_Type::INVALID;
 	}
 
 	return result;
-	
+}
+
+bool ClickAction::coordIsValid(const std::vector<attackCoord>::const_iterator & it, const std::vector<attackCoord>::const_iterator & end) const
+{
+	if (it != end)
+		return !it->isAlreadyAttacked;
 }

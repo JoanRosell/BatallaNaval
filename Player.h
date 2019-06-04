@@ -133,9 +133,12 @@ inline bool Player::loadShipsFromFile(const std::string & filename)
 
 inline void Player::updateAttackCoords(coord & coordToUpdate)
 {
-	for (auto& attackCoord : attackCoords)
-		if (attackCoord.coord == coordToUpdate)
-			attackCoord.isAlreadyAttacked = true;
+	auto it = std::find_if(attackCoords.begin(), attackCoords.end(), [&](const attackCoord& thisAtkCoord) {
+		return thisAtkCoord.coord == coordToUpdate;
+	});
+	
+	if (it != attackCoords.end())
+		it->isAlreadyAttacked = true;
 }
 
 // Construye una flota de barcos sin desplegar
