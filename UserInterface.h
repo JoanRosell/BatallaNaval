@@ -4,6 +4,7 @@
 #include "Typedefs.h"
 #include "Ship.h"
 #include <algorithm>
+#include "Action.h"
 
 /*
 	Define los posibles sprites que pueden 
@@ -37,8 +38,8 @@ public:
 	// Screen tambien controla parte de la gestion de eventos...
 	void catchEvents() { screen.processEvents(); }
 	void update() { screen.update(); }
-	void updateCell(VisualizationCell newCellState);
-	void updateShipStatus(const Ship& ship, bool defaultVisibility);
+	void updateChanges(const ActionOutcome& outcome);
+	
 	void printGraphics();
 	const std::vector<VisualizationCell>& getVBoard() const { return vBoard; }
 		
@@ -51,8 +52,9 @@ private:
 	Sprite boardImg;
 	Sprite shipImg;
 	
-	
+	void registerPlayerShips(const std::vector<Ship>& ships, bool isHidden = false);
+	void updateCell(coord coord, Sprite_Type newType, bool isHidden);
+	void updateShipDestroyed(const Ship& s);
 	void printBoard(std::vector<Sprite_Type>& boardToPrint, int startPos, bool visibility);
-	
 };
 

@@ -15,7 +15,7 @@ public:
 	bool processEvents();
 	void drawGraphics();
 	void update();
-	void dumpToFile();
+	void dumpToFile(); // TO REFACTOR
 	void playTurn();
 
 private:

@@ -24,6 +24,7 @@ void joc(bool modeGrafic)
 		game.drawGraphics();
 		game.update();
 		game.processEvents();
+		game.playTurn();
 	} while (!Keyboard_GetKeyTrg(KEYBOARD_ESCAPE));
 	// Sortim del bucle si pressionem ESC
 }

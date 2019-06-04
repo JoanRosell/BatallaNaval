@@ -22,7 +22,7 @@ bool InputHandler::waitForEvents()
 			if (input.type == SDL_MOUSEBUTTONDOWN)
 			{
 				coord positionClicked(coordFromPixel(input.button.x, input.button.y));
-				actions.push(new ClickAction(machine, positionClicked));
+				actions.push(new ClickAction(human, machine, positionClicked));
 				eventCaptured = true;
 			}
 	}

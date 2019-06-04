@@ -35,9 +35,7 @@ bool Partida::processEvents()
 {
 	ui.catchEvents();
 	
-	playerListener.waitForEvents();
-	
-	return false;
+	return playerListener.waitForEvents();
 }
 
 void Partida::drawGraphics()
@@ -59,47 +57,31 @@ void Partida::dumpToFile()
 void Partida::playTurn()
 {
 	bool turnEnded(false);
-	Outcome_Type result(Outcome_Type::UNDEFINED);
 
 	while (!turnEnded)
 	{
 		if (humanPlayer.isActive())
-		{
-			playerListener.waitForEvents();
-			
+		{			
 			Action* lastAction(playerListener.retrieveLastAction());
 
 			if (!lastAction->isDone())
-				result = lastAction->execute();
-			
-
-			if (result != Outcome_Type::INVALID)
 			{
-				switch (result)
+				ActionOutcome outcome = lastAction->execute();
+
+				if (outcome.outcomeType != Outcome_Type::INVALID)
 				{
-				case Outcome_Type::UNDEFINED:
-					break;
-				case Outcome_Type::WATER:
-					ui.updateCell(lastAction->getParameter(), Sprite_Type::WATER, false);
-					humanPlayer.endActionPhase();
-					break;
-				case Outcome_Type::SHIP_HIT:
-					ui.updateCell(lastAction->getParameter(), Sprite_Type::DAMAGED_SHIP, false);
-					break;
-				case Outcome_Type::SHIP_DESTROYED:
-					ui.updateShipStatus(lastAction->getAffectedShip(), false);
-					break;
-				default:
-					break;
+					ui.updateChanges(outcome);
+
+					if (outcome.outcomeType == Outcome_Type::WATER)
+					{
+						humanPlayer.endActionPhase();
+						artificialPlayer.startActionPhase();
+					}
+
+					turn++;
+					turnEnded = true;
 				}
-				if (result != Outcome_Type::SHIP_HIT && result != Outcome_Type::SHIP_DESTROYED)
-					
-
-				turnEnded = true;
-				
 			}
-
-			turn++;
 		}
 		else
 		{
