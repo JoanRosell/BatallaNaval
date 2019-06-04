@@ -3,7 +3,7 @@
 Ship::Ship(int x, int y, int size, Ship_Orientation o) : deployed(false),
 destroyed(false), size(size), activeCells(size), orientation(o)
 {
-	deployed = deploy(std::make_pair(x, y));
+	deployed = deploy({ x, y });
 }
 
 Ship::~Ship()
@@ -18,33 +18,33 @@ bool Ship::deploy(coord firstCoord)
 	switch (orientation)
 	{
 	case Ship_Orientation::TOP:
-		myCells.push_back(std::make_pair(true, firstCoord));
-		for (int i = 0; i < size-1; i++)
-			myCells.emplace_back(std::make_pair(true, std::make_pair(firstCoord.first, ++firstCoord.second)));
-		
+		myCells.push_back({ firstCoord, false });
+		for (int i = 0; i < size - 1; i++)
+			myCells.push_back({ { firstCoord._x, ++firstCoord._y }, false });
+
 		deployed = true;
 		break;
 
 	case Ship_Orientation::RIGHT:
-		myCells.push_back(std::make_pair(true, firstCoord));
+		myCells.push_back({ firstCoord, false });
 		for (int i = 0; i < size - 1; i++)
-			myCells.emplace_back(std::make_pair(true, std::make_pair(++firstCoord.first, firstCoord.second)));
-		
+			myCells.push_back({ { ++firstCoord._x, firstCoord._y }, false });
+
 		deployed = true;
 		break;
 
 	case Ship_Orientation::BOTTOM:
-		myCells.push_back(std::make_pair(true, firstCoord));
+		myCells.push_back({ firstCoord, false });
 		for (int i = 0; i < size - 1; i++)
-			myCells.emplace_back(std::make_pair(true, std::make_pair(firstCoord.first, --firstCoord.second)));
+			myCells.push_back({ { firstCoord._x, --firstCoord._y }, false });
 
 		deployed = true;
 		break;
 
 	case Ship_Orientation::LEFT:
-		myCells.push_back(std::make_pair(true, firstCoord));
+		myCells.push_back({ firstCoord, false });
 		for (int i = 0; i < size - 1; i++)
-			myCells.emplace_back(std::make_pair(true, std::make_pair(--firstCoord.first, firstCoord.second)));
+			myCells.push_back({ { --firstCoord._x, firstCoord._y }, false });
 
 		deployed = true;
 		break;
@@ -57,23 +57,20 @@ bool Ship::deploy(coord firstCoord)
 	return deployed;
 }
 
-bool Ship::updateCell(coord pos)
+bool Ship::registerHit(coord pos)
 {
 	bool cellUpdated(false);
 
-	for (auto& cell : myCells)
-	{
-		if (cell.second == pos)
-		{
-			if (cell.first)
-			{
-				cell.first = false;
-				cellUpdated = true;
-				activeCells--;
-			}
-		}
-	}
+	auto it = std::find_if(myCells.begin(), myCells.end(), [&](const cell& thisCell) {
+		return thisCell.coord == pos;
+	});
 
+	if (it != myCells.end())
+	{
+		it->isHit = true;
+		cellUpdated = true;
+	}
+	
 	return cellUpdated;
 }
 

@@ -1,10 +1,10 @@
 #pragma once
-#include <memory>
 #include <string>
 #include <vector>
 #include <iostream>
 #include "joc.h"
 #include "Typedefs.h"
+#include <algorithm>
 
 typedef struct cell
 {

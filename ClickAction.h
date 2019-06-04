@@ -25,6 +25,6 @@ private:
 	Player* target;
 	coord parameter;
 
-	bool coordIsValid(const std::vector<attackCoord>::iterator & it, const std::vector<attackCoord>::iterator & end) const;
+	bool coordIsValid(const std::vector<attackCoord>::const_iterator & it, const std::vector<attackCoord>::const_iterator & end) const;
 };
 

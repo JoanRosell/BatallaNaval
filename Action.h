@@ -9,7 +9,7 @@ enum class Outcome_Type
 	SHIP_DESTROYED
 };
 
-struct ActionOutcome
+struct ActionOutcome // Test if storing a ptr to an object whose lifetime lasts longer gets destroyed upon self deletion
 {
 	Outcome_Type outcomeType;
 	Ship* affectedShip;

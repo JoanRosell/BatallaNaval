@@ -31,7 +31,7 @@ ActionOutcome ClickAction::execute()
 				if (shipIt != ship.getCells().end())
 				{
 					shipFound = true;
-					ship.updateCell(parameter);
+					ship.registerHit(parameter);
 					result.affectedShip = new Ship(ship);
 
 					if (ship.isDestroyed())
