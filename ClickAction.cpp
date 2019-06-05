@@ -8,16 +8,25 @@ ClickAction::~ClickAction() { }
 ActionOutcome ClickAction::execute()
 {
 	ActionOutcome result{ Outcome_Type::INVALID, nullptr, parameter };
+	Outcome_Type outcomeType(Outcome_Type::INVALID);
 
 	if (!done)
 	{
 		bool validPosition(false);
 
-		if (!source->hasAttackedThisCoord(parameter))
+		if (source->canAttackAt(parameter))
 		{
-			source->updateAttackCoords(parameter);
+			source->updateAtkCoords(parameter);
 			bool shipFound(false);
 
+			if (target->fleetIsHit(parameter))
+			{
+
+			}
+			else
+			{
+				outcomeType = Outcome_Type::WATER;
+			}
 			for (auto& ship : target->getShips())
 			{
 				auto shipIt = std::find_if(ship.getCells().begin(), ship.getCells().end(), [&](const cell& thisCell) {

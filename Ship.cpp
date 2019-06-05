@@ -74,6 +74,11 @@ bool Ship::registerHit(coord pos)
 	return cellUpdated;
 }
 
+bool Ship::isHit(const coord & c) const
+{
+	return cells.find(c) != cells.end();
+}
+
 #ifndef __NOT_GRAPHICS
 void Ship::askOrientation()
 {

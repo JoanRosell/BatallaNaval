@@ -29,11 +29,13 @@ public:
 	//	Construye una flota a partir de un archivo txt
 	bool loadShipsFromFile(const std::string& file);
 	std::vector<Ship>& getShips() { return fleet; }
-	const std::vector<attackCoord>& getAttackCoords() const { return attackCoords; }
-	
-	bool updateAtkCoords(const coord& c);
-	
-	void registerAttack(const coord& c);
+		
+	bool canAttackAt(const coord& c) const;
+	void updateAtkCoords(const coord& c) { atkCoords.find(c)->second = true; }
+
+	bool fleetIsHit(const coord& c) const;
+	bool shipWasDestroyed();
+	void processHit();
 
 	void endActionPhase() { attacking = false; }
 	void startActionPhase() { attacking = true; }
@@ -43,30 +45,30 @@ private:
 	unsigned int deployedShips;
 	bool attacking;
 	std::vector<Ship> fleet;
-	std::vector<attackCoord> attackCoords;
+	std::vector<Ship>::iterator lastShipAttacked;
 	std::map<coord, bool> atkCoords;
 	Player_Type type;
 	void buildFleet();
 	void buildAttackCoords(int startX, int startY);
 
 	// Tipos de barcos diferentes
-	const int kShipTypes = 4;
+	static const int kShipTypes = 4;
 
 	// Tamaño maximo de un barco
-	const int kMaxShipSize = 4;
+	static const int kMaxShipSize = 4;
 
 	// Cantidad minima de barcos de cada tipo
-	const int kMinShipQuantity = 1;
+	static const int kMinShipQuantity = 1;
 
 	// Numero maximo de barcos por jugador
-	const int kMaxShipsPerPlayer = 10;
+	static const int kMaxShipsPerPlayer = 10;
+
+	static const short k_nCoords = 100;
 };
 
 
 inline Player::Player() : attacking(true), deployedShips(0)
 {
-	attackCoords.resize(100);
-
 	switch (type)
 	{
 	case Player_Type::MACHINE:
@@ -133,18 +135,30 @@ inline bool Player::loadShipsFromFile(const std::string & filename)
 }
 
 
-inline bool Player::updateAtkCoords(const coord & c)
+inline bool Player::canAttackAt(const coord & c) const
 {
 	bool atkCanBeMade(false);
 	auto coordToAttack(atkCoords.find(c));
 	
 	if (coordToAttack != atkCoords.end())
-	{
 		atkCanBeMade = !coordToAttack->second;
-		coordToAttack->second = true;
+	
+	return atkCanBeMade;
+}
+
+inline bool Player::fleetIsHit(const coord & c) const
+{
+	bool shipHit(false);
+
+	for (const auto& ship : fleet)
+	{
+		shipHit = ship.isHit(c);
+
+		if (shipHit)
+			break;
 	}
 
-	return atkCanBeMade;
+	return shipHit;
 }
 
 // Construye una flota de barcos sin desplegar
@@ -177,10 +191,11 @@ inline void Player::buildFleet()
 
 inline void Player::buildAttackCoords(int startX, int startY)
 {
-	for (auto& attackCoord : attackCoords)
+	for (int i = 0; i < k_nCoords; i++)
 	{
-		attackCoord.coord._x = startX;
-		attackCoord.coord._y = startY;
+		coord c{ startX, startY };
+		atkCoords.emplace(std::make_pair(c, false));
+
 		startX++;
 
 		if (startX > 9)
@@ -188,7 +203,5 @@ inline void Player::buildAttackCoords(int startX, int startY)
 			startY++;
 			startX = 0;
 		}
-
-		attackCoord.isAlreadyAttacked = false;
 	}
 }

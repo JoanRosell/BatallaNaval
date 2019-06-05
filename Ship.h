@@ -5,6 +5,7 @@
 #include "joc.h"
 #include "Typedefs.h"
 #include <algorithm>
+#include <map>
 
 typedef struct cell
 {
@@ -35,6 +36,7 @@ public:
 	bool deploy(coord firstCoord);
 	const std::vector<cell>& getCells() const { return myCells; }
 	bool registerHit(coord pos);
+	bool isHit(const coord& c) const;
 
 	#ifndef __NOT_GRAPHICS
 	void askOrientation();
@@ -43,6 +45,7 @@ public:
 private:
 	Ship_Orientation orientation;
 	std::vector<cell> myCells;
+	std::map<coord, bool> cells;
 	bool deployed;
 	bool destroyed;
 	int size;
