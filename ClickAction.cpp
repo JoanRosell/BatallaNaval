@@ -12,12 +12,8 @@ ActionOutcome ClickAction::execute()
 	if (!done)
 	{
 		bool validPosition(false);
-		
-		auto atkCoordIt = std::find_if(source->getAttackCoords().begin(), source->getAttackCoords().end(), [&](const attackCoord& thisAtkCoord) {
-			return thisAtkCoord.coord == parameter; 
-		});
 
-		if (coordIsValid(atkCoordIt, source->getAttackCoords().end()))
+		if (!source->hasAttackedThisCoord(parameter))
 		{
 			source->updateAttackCoords(parameter);
 			bool shipFound(false);

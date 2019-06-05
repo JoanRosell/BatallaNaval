@@ -34,7 +34,7 @@ public:
 	int getSize() const { return size; }
 	bool deploy(coord firstCoord);
 	const std::vector<cell>& getCells() const { return myCells; }
-	bool updateCell(coord pos);
+	bool registerHit(coord pos);
 
 	#ifndef __NOT_GRAPHICS
 	void askOrientation();

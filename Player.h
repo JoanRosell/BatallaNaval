@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <map>
 
 enum class Player_Type
 {
@@ -29,7 +30,11 @@ public:
 	bool loadShipsFromFile(const std::string& file);
 	std::vector<Ship>& getShips() { return fleet; }
 	const std::vector<attackCoord>& getAttackCoords() const { return attackCoords; }
-	void updateAttackCoords(coord& coordToUpdate);
+	
+	bool updateAtkCoords(const coord& c);
+	
+	void registerAttack(const coord& c);
+
 	void endActionPhase() { attacking = false; }
 	void startActionPhase() { attacking = true; }
 	
@@ -39,9 +44,10 @@ private:
 	bool attacking;
 	std::vector<Ship> fleet;
 	std::vector<attackCoord> attackCoords;
+	std::map<coord, bool> atkCoords;
 	Player_Type type;
 	void buildFleet();
-	void buildAttackGrid(int startX, int startY);
+	void buildAttackCoords(int startX, int startY);
 
 	// Tipos de barcos diferentes
 	const int kShipTypes = 4;
@@ -57,11 +63,6 @@ private:
 };
 
 
-
-inline Player::Player()
-{
-}
-
 inline Player::Player() : attacking(true), deployedShips(0)
 {
 	attackCoords.resize(100);
@@ -69,11 +70,11 @@ inline Player::Player() : attacking(true), deployedShips(0)
 	switch (type)
 	{
 	case Player_Type::MACHINE:
-		buildAttackGrid(0, 9);
+		buildAttackCoords(0, 10);
 		break;
 	
 	case Player_Type::HUMAN:
-		buildAttackGrid(0, 0);
+		buildAttackCoords(0, 0);
 		break;
 	default:
 		break;
@@ -131,14 +132,19 @@ inline bool Player::loadShipsFromFile(const std::string & filename)
 	return shipsLoaded;
 }
 
-inline void Player::updateAttackCoords(coord & coordToUpdate)
+
+inline bool Player::updateAtkCoords(const coord & c)
 {
-	auto it = std::find_if(attackCoords.begin(), attackCoords.end(), [&](const attackCoord& thisAtkCoord) {
-		return thisAtkCoord.coord == coordToUpdate;
-	});
+	bool atkCanBeMade(false);
+	auto coordToAttack(atkCoords.find(c));
 	
-	if (it != attackCoords.end())
-		it->isAlreadyAttacked = true;
+	if (coordToAttack != atkCoords.end())
+	{
+		atkCanBeMade = !coordToAttack->second;
+		coordToAttack->second = true;
+	}
+
+	return atkCanBeMade;
 }
 
 // Construye una flota de barcos sin desplegar
@@ -169,7 +175,7 @@ inline void Player::buildFleet()
 	}
 }
 
-inline void Player::buildAttackGrid(int startX, int startY)
+inline void Player::buildAttackCoords(int startX, int startY)
 {
 	for (auto& attackCoord : attackCoords)
 	{
