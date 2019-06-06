@@ -20,7 +20,7 @@ public:
 
 private:
 	Player humanPlayer;
-	Player artificialPlayer;
+	Player machinePlayer;
 	InputHandler playerListener;
 	UserInterface ui;
 	int turn;

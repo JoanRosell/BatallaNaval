@@ -4,11 +4,7 @@
 #include "Ship.h"
 #include <algorithm>
 #include "Action.h"
-
-/*
-	Define los posibles sprites que pueden 
-	visualizarse en una coordenada concreta
-*/
+#include "Utilities.h"
 
 class UserInterface
 {

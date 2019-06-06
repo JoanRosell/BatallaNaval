@@ -19,14 +19,14 @@ bool Partida::init(const std::string & initFileHuman, const std::string & initFi
 	bool humanReady(false);
 	bool aiReady(false);
 
-	playerListener.init(&humanPlayer, &artificialPlayer);
+	playerListener.init(&humanPlayer, &machinePlayer);
 	humanReady = humanPlayer.loadShipsFromFile(initFileHuman);
-	aiReady = artificialPlayer.loadShipsFromFile(initFileArtificial);
+	aiReady = machinePlayer.loadShipsFromFile(initFileArtificial);
 
 	dataInitialized = humanReady && aiReady;
 
 	if (dataInitialized)
-		ui.init(humanPlayer.getShips(), artificialPlayer.getShips());
+		ui.init(humanPlayer.getShips(), machinePlayer.getShips());
 		
 	return dataInitialized;
 }
@@ -75,7 +75,7 @@ void Partida::playTurn()
 					if (outcome.outcomeType == Outcome_Type::WATER)
 					{
 						humanPlayer.endActionPhase();
-						artificialPlayer.startActionPhase();
+						machinePlayer.startActionPhase();
 						turnEnded = true;
 					}
 

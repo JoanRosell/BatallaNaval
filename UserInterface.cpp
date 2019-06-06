@@ -24,13 +24,13 @@ void UserInterface::updateChanges(const ActionOutcome & outcome)
 	switch (outcome.outcomeType)
 	{
 	case Outcome_Type::WATER:
-		updateCell(outcome.affectedCell.coord, Sprite_Type::WATER, false);
+		updateCell(outcome.coord, Sprite_Type::WATER, true);
 		break;
 	case Outcome_Type::SHIP_HIT:
-		updateCell(outcome.affectedCell.coord, Sprite_Type::DAMAGED_SHIP, !outcome.affectedCell.isHit);
+		updateCell(outcome.coord, Sprite_Type::DAMAGED_SHIP, true);
 		break;
 	case Outcome_Type::SHIP_DESTROYED:
-		updateShipDestroyed(*outcome.affectedShip);
+		updateShipDestroyed(outcome.affectedShip);
 		break;
 	default:
 		break;
@@ -53,7 +53,7 @@ void UserInterface::updateCell(coord coord, Sprite_Type newType, bool isHidden)
 	if (it != vBoard.end())
 	{
 		it->spriteType = newType;
-		it->isHidden = isHidden;
+		it->isVisible = isHidden;
 	}
 	
 }

@@ -49,7 +49,7 @@ struct VisualizationCell
 {
 	coord coord;
 	Sprite_Type spriteType;
-	bool isHidden;
+	bool isVisible;
 };
 
 struct ActionOutcome
