@@ -76,10 +76,11 @@ void Partida::playTurn()
 					{
 						humanPlayer.endActionPhase();
 						artificialPlayer.startActionPhase();
+						turnEnded = true;
 					}
 
 					turn++;
-					turnEnded = true;
+					
 				}
 			}
 		}

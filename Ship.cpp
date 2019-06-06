@@ -18,33 +18,33 @@ bool Ship::deploy(coord firstCoord)
 	switch (orientation)
 	{
 	case Ship_Orientation::TOP:
-		myCells.push_back({ firstCoord, false });
+		myCells.push_back({ firstCoord, true });
 		for (int i = 0; i < size - 1; i++)
-			myCells.push_back({ { firstCoord._x, ++firstCoord._y }, false });
+			myCells.push_back({ { firstCoord._x, ++firstCoord._y }, true });
 
 		deployed = true;
 		break;
 
 	case Ship_Orientation::RIGHT:
-		myCells.push_back({ firstCoord, false });
+		myCells.push_back({ firstCoord, true });
 		for (int i = 0; i < size - 1; i++)
-			myCells.push_back({ { ++firstCoord._x, firstCoord._y }, false });
+			myCells.push_back({ { ++firstCoord._x, firstCoord._y }, true });
 
 		deployed = true;
 		break;
 
 	case Ship_Orientation::BOTTOM:
-		myCells.push_back({ firstCoord, false });
+		myCells.push_back({ firstCoord, true });
 		for (int i = 0; i < size - 1; i++)
-			myCells.push_back({ { firstCoord._x, --firstCoord._y }, false });
+			myCells.push_back({ { firstCoord._x, --firstCoord._y }, true });
 
 		deployed = true;
 		break;
 
 	case Ship_Orientation::LEFT:
-		myCells.push_back({ firstCoord, false });
+		myCells.push_back({ firstCoord, true });
 		for (int i = 0; i < size - 1; i++)
-			myCells.push_back({ { --firstCoord._x, firstCoord._y }, false });
+			myCells.push_back({ { --firstCoord._x, firstCoord._y }, true });
 
 		deployed = true;
 		break;
@@ -57,21 +57,15 @@ bool Ship::deploy(coord firstCoord)
 	return deployed;
 }
 
-bool Ship::registerHit(coord pos)
+void Ship::registerHit(coord pos)
 {
-	bool cellUpdated(false);
+	auto it = cells.find(pos);
 
-	auto it = std::find_if(myCells.begin(), myCells.end(), [&](const cell& thisCell) {
-		return thisCell.coord == pos;
-	});
-
-	if (it != myCells.end())
+	if (it != cells.end())
 	{
-		it->isHit = true;
-		cellUpdated = true;
+		it->second = false;
+		activeCells--;
 	}
-	
-	return cellUpdated;
 }
 
 bool Ship::isHit(const coord & c) const

@@ -1,6 +1,5 @@
 #pragma once
 #include "Player.h"
-#include "Typedefs.h"
 #include "ClickAction.h"
 #include <queue>
 #include <utility>

@@ -7,51 +7,16 @@ ClickAction::~ClickAction() { }
 
 ActionOutcome ClickAction::execute()
 {
-	ActionOutcome result{ Outcome_Type::INVALID, nullptr, parameter };
-	Outcome_Type outcomeType(Outcome_Type::INVALID);
-
-	if (!done)
+	ActionOutcome result{ Outcome_Type::INVALID, Ship(), parameter };
+	
+	if (!done && source->canAttackAt(parameter))
 	{
-		bool validPosition(false);
+		source->updateAtkCoords(parameter);
 
-		if (source->canAttackAt(parameter))
-		{
-			source->updateAtkCoords(parameter);
-			bool shipFound(false);
+		result.outcomeType = target->processHit(parameter);
 
-			if (target->fleetIsHit(parameter))
-			{
-
-			}
-			else
-			{
-				outcomeType = Outcome_Type::WATER;
-			}
-			for (auto& ship : target->getShips())
-			{
-				auto shipIt = std::find_if(ship.getCells().begin(), ship.getCells().end(), [&](const cell& thisCell) {
-					return thisCell.coord == parameter;
-				});
-
-				if (shipIt != ship.getCells().end())
-				{
-					shipFound = true;
-					ship.registerHit(parameter);
-					result.affectedShip = new Ship(ship);
-
-					if (ship.isDestroyed())
-						result.outcomeType = Outcome_Type::SHIP_DESTROYED;
-					else
-						result.outcomeType = Outcome_Type::SHIP_HIT;
-				}
-
-				if (shipFound)
-					break;
-			}
-
-			if (!shipFound)
-				result.outcomeType = Outcome_Type::WATER;
-		}
+		if (result.outcomeType != Outcome_Type::WATER)
+			result.affectedShip = target->getLastShipHit();
 	}
 
 	return result;

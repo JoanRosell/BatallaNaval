@@ -1,21 +1,10 @@
 #pragma once
-#include "Ship.h"
 #include <fstream>
 #include <sstream>
 #include <vector>
 #include <map>
+#include "Utilities.h"
 
-enum class Player_Type
-{
-	MACHINE,
-	HUMAN
-};
-
-struct attackCoord
-{
-	coord coord;
-	bool isAlreadyAttacked;
-};
 
 class Player
 {
@@ -28,28 +17,42 @@ public:
 	
 	//	Construye una flota a partir de un archivo txt
 	bool loadShipsFromFile(const std::string& file);
-	std::vector<Ship>& getShips() { return fleet; }
-		
+
 	bool canAttackAt(const coord& c) const;
 	void updateAtkCoords(const coord& c) { atkCoords.find(c)->second = true; }
 
-	bool fleetIsHit(const coord& c) const;
-	bool shipWasDestroyed();
-	void processHit();
+	
+	Outcome_Type processHit(const coord& c)
+	{
+		Outcome_Type oType(Outcome_Type::WATER);
+
+		if (fleetIsHit(c))
+		{
+			lastShipHit->registerHit(c);
+			if (lastShipHit->isDestroyed())
+				oType = Outcome_Type::SHIP_DESTROYED;
+			else
+				oType = Outcome_Type::SHIP_HIT;
+		}
+
+		return oType;
+	}
+
+	Ship getLastShipHit() { return *lastShipHit; }
 
 	void endActionPhase() { attacking = false; }
 	void startActionPhase() { attacking = true; }
-	
 private:
 	unsigned int shipsAlive;
 	unsigned int deployedShips;
 	bool attacking;
 	std::vector<Ship> fleet;
-	std::vector<Ship>::iterator lastShipAttacked;
+	std::vector<Ship>::iterator lastShipHit;
 	std::map<coord, bool> atkCoords;
 	Player_Type type;
 	void buildFleet();
 	void buildAttackCoords(int startX, int startY);
+	bool fleetIsHit(const coord& c) const;
 
 	// Tipos de barcos diferentes
 	static const int kShipTypes = 4;
@@ -153,9 +156,12 @@ inline bool Player::fleetIsHit(const coord & c) const
 	for (const auto& ship : fleet)
 	{
 		shipHit = ship.isHit(c);
-
+		
 		if (shipHit)
+		{
+			*lastShipHit = ship;
 			break;
+		}	
 	}
 
 	return shipHit;

@@ -3,7 +3,7 @@
 #include <fstream>
 #include "InputHandler.h"
 #include "UserInterface.h"
-#include "Typedefs.h"
+#include "Utilities.h"
 #include <vector>
 
 class Partida

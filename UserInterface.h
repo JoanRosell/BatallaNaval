@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "Typedefs.h"
 #include "Ship.h"
 #include <algorithm>
 #include "Action.h"
@@ -10,20 +9,6 @@
 	Define los posibles sprites que pueden 
 	visualizarse en una coordenada concreta
 */
-enum class Sprite_Type
-{
-	WATER,
-	SHIP,
-	DAMAGED_SHIP,
-	DESTROYED_SHIP
-};
-
-typedef struct VisualizationCell
-{
-	coord coord;
-	Sprite_Type spriteType;
-	bool isHidden;
-};
 
 class UserInterface
 {

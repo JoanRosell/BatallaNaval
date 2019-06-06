@@ -1,7 +1,7 @@
 #pragma once
 #include "joc.h"
 #include "Player.h"
-#include "Typedefs.h"
+#include "Utilities.h"
 #include "Action.h"
 
 // Accion que realiza un Player, se generan a raiz de eventos
