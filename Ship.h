@@ -1,10 +1,10 @@
 #pragma once
 #include <string>
-#include <vector>
 #include <iostream>
-#include "joc.h"
 #include <algorithm>
 #include <map>
+#include "Utilities.h"
+#include "joc.h"
 
 class Ship
 {
@@ -23,6 +23,8 @@ public:
 	bool deploy(coord firstCoord);
 	void registerHit(coord pos);
 	bool isHit(const coord& c) const;
+
+	const std::map<coord, bool>& getCells() const { return cells; }
 
 	#ifndef __NOT_GRAPHICS
 	void askOrientation();

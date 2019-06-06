@@ -178,8 +178,8 @@
     <ClInclude Include="Partida.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Ship.h" />
-    <ClInclude Include="Typedefs.h" />
     <ClInclude Include="UserInterface.h" />
+    <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

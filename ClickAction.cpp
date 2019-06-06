@@ -17,13 +17,9 @@ ActionOutcome ClickAction::execute()
 
 		if (result.outcomeType != Outcome_Type::WATER)
 			result.affectedShip = target->getLastShipHit();
+
+		done = true;
 	}
 
 	return result;
-}
-
-bool ClickAction::coordIsValid(const std::vector<attackCoord>::const_iterator & it, const std::vector<attackCoord>::const_iterator & end) const
-{
-	if (it != end)
-		return !it->isAlreadyAttacked;
 }

@@ -1,7 +1,6 @@
 #include "Ship.h"
 
-Ship::Ship(int x, int y, int size, Ship_Orientation o) : deployed(false),
-destroyed(false), size(size), activeCells(size), orientation(o)
+Ship::Ship(int x, int y, int size, Ship_Orientation o) : deployed(false), size(size), activeCells(size), orientation(o)
 {
 	deployed = deploy({ x, y });
 }
@@ -18,34 +17,22 @@ bool Ship::deploy(coord firstCoord)
 	switch (orientation)
 	{
 	case Ship_Orientation::TOP:
-		myCells.push_back({ firstCoord, true });
+		cells.emplace(std::make_pair( firstCoord, true));
 		for (int i = 0; i < size - 1; i++)
-			myCells.push_back({ { firstCoord._x, ++firstCoord._y }, true });
-
+		{
+			++firstCoord.second;
+			cells.emplace(std::make_pair(firstCoord, true));
+		}
 		deployed = true;
 		break;
 
 	case Ship_Orientation::RIGHT:
-		myCells.push_back({ firstCoord, true });
+		cells.emplace(std::make_pair(firstCoord, true));
 		for (int i = 0; i < size - 1; i++)
-			myCells.push_back({ { ++firstCoord._x, firstCoord._y }, true });
-
-		deployed = true;
-		break;
-
-	case Ship_Orientation::BOTTOM:
-		myCells.push_back({ firstCoord, true });
-		for (int i = 0; i < size - 1; i++)
-			myCells.push_back({ { firstCoord._x, --firstCoord._y }, true });
-
-		deployed = true;
-		break;
-
-	case Ship_Orientation::LEFT:
-		myCells.push_back({ firstCoord, true });
-		for (int i = 0; i < size - 1; i++)
-			myCells.push_back({ { --firstCoord._x, firstCoord._y }, true });
-
+		{
+			++firstCoord.first;
+			cells.emplace(std::make_pair(firstCoord, true));
+		}
 		deployed = true;
 		break;
 

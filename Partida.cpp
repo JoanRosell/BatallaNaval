@@ -19,6 +19,9 @@ bool Partida::init(const std::string & initFileHuman, const std::string & initFi
 	bool humanReady(false);
 	bool aiReady(false);
 
+	humanPlayer.initAtkCoords(Player_Type::HUMAN);
+	machinePlayer.initAtkCoords(Player_Type::MACHINE);
+
 	playerListener.init(&humanPlayer, &machinePlayer);
 	humanReady = humanPlayer.loadShipsFromFile(initFileHuman);
 	aiReady = machinePlayer.loadShipsFromFile(initFileArtificial);
@@ -31,11 +34,11 @@ bool Partida::init(const std::string & initFileHuman, const std::string & initFi
 	return dataInitialized;
 }
 
-bool Partida::processEvents()
+void Partida::processEvents()
 {
 	ui.catchEvents();
 	
-	return playerListener.waitForEvents();
+	playerListener.waitForEvents();
 }
 
 void Partida::drawGraphics()
@@ -50,20 +53,18 @@ void Partida::update()
 
 void Partida::dumpToFile()
 {
-	logBoardToFile("tauler_huma.txt", ui.getHumanBoard());
-	logBoardToFile("tauler_ordinador.txt", ui.getMachineBoard());
+	/*logBoardToFile("tauler_huma.txt", ui.getHumanBoard());
+	logBoardToFile("tauler_ordinador.txt", ui.getMachineBoard());*/
 }
 
 void Partida::playTurn()
 {
 	bool turnEnded(false);
+	if (humanPlayer.isActive())
+	{			
+		Action* lastAction(playerListener.retrieveLastAction());
 
-	while (!turnEnded)
-	{
-		if (humanPlayer.isActive())
-		{			
-			Action* lastAction(playerListener.retrieveLastAction());
-
+		if (lastAction != nullptr)
 			if (!lastAction->isDone())
 			{
 				ActionOutcome outcome = lastAction->execute();
@@ -76,32 +77,32 @@ void Partida::playTurn()
 					{
 						humanPlayer.endActionPhase();
 						machinePlayer.startActionPhase();
-						turnEnded = true;
 					}
 
 					turn++;
-					
+					turnEnded = true;
 				}
 			}
-		}
-		else
-		{
-			// turno de la maquina
-		}
-					
 	}
-	
-	
+	else
+	{
+		
+
+		if (humanPlayer.getShipsAlive() == 0 || machinePlayer.getShipsAlive() == 0)
+		{
+			// Turn ended
+		}
+	}	
 }
 
-void Partida::logBoardToFile(const char * filename, const std::vector<Sprite_Type>& board)
+void Partida::logBoardToFile(const char * filename, const std::vector<VisualizationCell>& board)
 {
 	int elementsLogged(0);
 	std::ofstream outFile(filename);
 
-	for (const auto& spriteType : board)
+	for (const auto& vCell : board)
 	{
-		if (spriteType == Sprite_Type::SHIP || spriteType == Sprite_Type::DAMAGED_SHIP)
+		if (vCell.spriteType == Sprite_Type::SHIP || vCell.spriteType == Sprite_Type::SHIP_HIT)
 			outFile << "1 ";
 		else
 			outFile << "0 ";

@@ -1,20 +1,6 @@
 #pragma once
 #include <algorithm>
-
-enum class Outcome_Type
-{
-	INVALID,
-	WATER,
-	SHIP_HIT,
-	SHIP_DESTROYED
-};
-
-struct ActionOutcome
-{
-	Outcome_Type outcomeType;
-	Ship affectedShip;
-	coord coord;
-};
+#include "Utilities.h"
 
 class Action
 {

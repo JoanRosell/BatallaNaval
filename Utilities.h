@@ -1,5 +1,4 @@
 #pragma once
-#include <utility>
 #include "Ship.h"
 
 enum class Ship_Orientation
@@ -29,32 +28,23 @@ enum class Sprite_Type
 {
 	WATER,
 	SHIP,
-	DAMAGED_SHIP,
-	DESTROYED_SHIP
+	SHIP_HIT,
+	SHIP_DESTROYED
 };
 
-struct coord
-{
-	unsigned short _x;
-	unsigned short _y;
-
-	bool operator==(const coord& rhs) const
-	{
-		return _x == rhs._x && _y == rhs._y;
-	}
-};
-
-
-struct VisualizationCell
-{
-	coord coord;
-	Sprite_Type spriteType;
-	bool isVisible;
-};
+typedef std::pair<int, int> coord;
 
 struct ActionOutcome
 {
 	Outcome_Type outcomeType;
 	Ship affectedShip;
 	coord coord;
+};
+
+struct VisualizationCell
+{
+	VisualizationCell(const coord& c, Sprite_Type t, bool v) : coord(c), spriteType(t), isVisible(v) {}
+	coord coord;
+	Sprite_Type spriteType;
+	bool isVisible;
 };

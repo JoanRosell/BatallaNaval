@@ -11,7 +11,7 @@ bool UserInterface::init(const std::vector<Ship>& humanShips, const std::vector<
 	if (!humanShips.empty() && !machineShips.empty())
 	{
 		registerPlayerShips(humanShips);
-		registerPlayerShips(machineShips, true);
+		registerPlayerShips(machineShips, false);
 
 		boardsLoaded = true;
 	}
@@ -27,7 +27,7 @@ void UserInterface::updateChanges(const ActionOutcome & outcome)
 		updateCell(outcome.coord, Sprite_Type::WATER, true);
 		break;
 	case Outcome_Type::SHIP_HIT:
-		updateCell(outcome.coord, Sprite_Type::DAMAGED_SHIP, true);
+		updateCell(outcome.coord, Sprite_Type::SHIP_HIT, true);
 		break;
 	case Outcome_Type::SHIP_DESTROYED:
 		updateShipDestroyed(outcome.affectedShip);
@@ -37,14 +37,14 @@ void UserInterface::updateChanges(const ActionOutcome & outcome)
 	}
 }
 
-void UserInterface::registerPlayerShips(const std::vector<Ship>& ships, bool isHidden = false)
+void UserInterface::registerPlayerShips(const std::vector<Ship>& ships, bool isVisible)
 {
 	for (const auto& ship : ships)
 		for (const auto& cell : ship.getCells())
-			updateCell(cell.coord, Sprite_Type::SHIP, isHidden);
+			updateCell(cell.first, Sprite_Type::SHIP, isVisible);
 }
 
-void UserInterface::updateCell(coord coord, Sprite_Type newType, bool isHidden)
+void UserInterface::updateCell(coord coord, Sprite_Type newType, bool isVisible)
 {
 	auto it = std::find_if(vBoard.begin(), vBoard.end(),
 		[&](const VisualizationCell& thisVCell) { return coord == thisVCell.coord; }
@@ -53,59 +53,54 @@ void UserInterface::updateCell(coord coord, Sprite_Type newType, bool isHidden)
 	if (it != vBoard.end())
 	{
 		it->spriteType = newType;
-		it->isVisible = isHidden;
+		it->isVisible = isVisible;
 	}
-	
+	else
+	{
+		vBoard.emplace_back(coord, newType, isVisible);
+	}
 }
 
 void UserInterface::updateShipDestroyed(const Ship & s)
 {
 	for (const auto& cell : s.getCells())
-		updateCell(cell.coord, Sprite_Type::DESTROYED_SHIP, false);
+		updateCell(cell.first, Sprite_Type::SHIP_DESTROYED, true);
 }
 		
-//
-//void UserInterface::printGraphics()
-//{
-//	boardImg.draw(0, 0);
-//	boardImg.draw(0, 10*MIDA_CASELLA);
-//
-//	printBoard(machineBoard, 0, false);
-//	printBoard(humanBoard, MIDA_Y, true);
-//	
-//}
-//
-//void UserInterface::printBoard(std::vector<Sprite_Type>& boardToPrint, int startY, bool visibility)
-//{
-//	int X(0);
-//	int Y(startY);
-//
-//	for (const auto& spriteType : boardToPrint)
-//	{
-//		switch (spriteType)
-//		{
-//		case Sprite_Type::NO_SPRITE:
-//			break;
-//		case Sprite_Type::WATER:
-//			break;
-//		case Sprite_Type::SHIP:
-//			if (visibility)
-//				shipImg.draw(X, Y);
-//			break;
-//		case Sprite_Type::DAMAGED_SHIP:
-//			break;
-//		case Sprite_Type::DESTROYED_SHIP:
-//			break;
-//		default:
-//			break;
-//		}
-//
-//		X += MIDA_CASELLA;
-//
-//		if (X == MIDA_X)
-//		{
-//			X = 0;
-//			Y += MIDA_CASELLA;
-//		}
-//	}
-//}
+void UserInterface::printGraphics()
+{
+	boardImg.draw(0, 0);
+	boardImg.draw(0, 10*MIDA_CASELLA);
+	printBoard();
+}
+
+void UserInterface::printBoard()
+{
+	for (const auto& vCell : vBoard)
+		printCell(vCell);
+}
+
+void UserInterface::printCell(const VisualizationCell & vCell)
+{
+	if (vCell.isVisible)
+		printSprite(vCell.coord, vCell.spriteType);
+}
+
+void UserInterface::printSprite(const coord & c, Sprite_Type type)
+{
+	switch (type)
+	{
+	case Sprite_Type::WATER:
+		waterImg.draw(c.first*MIDA_CASELLA, c.second*MIDA_CASELLA);
+		break;
+	case Sprite_Type::SHIP:
+		shipImg.draw(c.first*MIDA_CASELLA, c.second*MIDA_CASELLA);
+		break;
+	case Sprite_Type::SHIP_HIT:
+		shipHitImg.draw(c.first*MIDA_CASELLA, c.second*MIDA_CASELLA);
+		break;
+	case Sprite_Type::SHIP_DESTROYED:
+		shipDestroyedImg.draw(c.first*MIDA_CASELLA, c.second*MIDA_CASELLA);
+		break;
+	}
+}

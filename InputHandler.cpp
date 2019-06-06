@@ -15,16 +15,19 @@ bool InputHandler::waitForEvents()
 {
 	bool eventCaptured(false);
 
-	while (!eventCaptured)
-	{
-		SDL_Event input;
+	/*SDL_Event input;
 		if (SDL_WaitEvent(&input))
 			if (input.type == SDL_MOUSEBUTTONDOWN)
 			{
 				coord positionClicked(coordFromPixel(input.button.x, input.button.y));
-				actions.push(new ClickAction(human, machine, positionClicked));
+				
 				eventCaptured = true;
-			}
+			}*/
+		
+	if (Mouse_getButLeft())
+	{
+		actions.push(new ClickAction(human, machine, coordFromPixel(Mouse_getX(), Mouse_getY())));
+		eventCaptured = true;
 	}
 
 	return eventCaptured;
@@ -40,8 +43,8 @@ Action * InputHandler::retrieveLastAction()
 
 coord InputHandler::coordFromPixel(int x, int y)
 {
-	int coord_X = (x / MIDA_CASELLA) * MIDA_CASELLA;
-	int coord_Y = (y / MIDA_CASELLA) * MIDA_CASELLA;
+	int coord_X = x / MIDA_CASELLA;
+	int coord_Y = y / MIDA_CASELLA;
 
-	return coord { coord_X, coord_Y };
+	return std::make_pair(coord_X, coord_Y);
 }

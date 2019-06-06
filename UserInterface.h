@@ -9,7 +9,8 @@
 class UserInterface
 {
 public:
-	UserInterface() : screen(MIDA_X, MIDA_Y * 2), boardImg("Program\\data\\caselles.png"), shipImg("Program\\data\\vaixell.png")
+	UserInterface() : screen(MIDA_X, MIDA_Y * 2), boardImg("Program\\data\\caselles.png"), shipImg("Program\\data\\vaixell.png"), 
+		waterImg("Program\\data\\aigua.png"), shipHitImg("Program\\data\\tocat.png"), shipDestroyedImg("Program\\data\\enfonsat.png")
 	{
 		// Dejamos la pantalla preparada, el metodo show solo debe hacerse una vez
 		screen.show();
@@ -32,10 +33,15 @@ private:
 	Screen screen;
 	Sprite boardImg;
 	Sprite shipImg;
+	Sprite waterImg;
+	Sprite shipHitImg;
+	Sprite shipDestroyedImg;
 	
-	void registerPlayerShips(const std::vector<Ship>& ships, bool isHidden = false);
-	void updateCell(coord coord, Sprite_Type newType, bool isHidden);
+	void registerPlayerShips(const std::vector<Ship>& ships, bool isVisible = true);
+	void updateCell(coord coord, Sprite_Type newType, bool isVisible);
 	void updateShipDestroyed(const Ship& s);
-	void printBoard(std::vector<Sprite_Type>& boardToPrint, int startPos, bool visibility);
+	void printBoard();
+	void printCell(const VisualizationCell& vCell);
+	void printSprite(const coord& c, Sprite_Type type);
 };
 

@@ -12,7 +12,7 @@ public:
 	Partida();
 	~Partida();
 	bool init(const std::string& initFileHuman, const std::string& initFileArtificial);
-	bool processEvents();
+	void processEvents();
 	void drawGraphics();
 	void update();
 	void dumpToFile(); // TO REFACTOR
@@ -25,6 +25,6 @@ private:
 	UserInterface ui;
 	int turn;
 
-	void logBoardToFile(const char* filename, const std::vector<Sprite_Type>& board);
+	void logBoardToFile(const char* filename, const std::vector<VisualizationCell>& board);
 };
 
