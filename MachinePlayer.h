@@ -8,6 +8,8 @@ public:
 	~MachinePlayer();
 
 	bool loadShipsFromFile(const std::string& file);
+	ActionOutcome takeAction();
+
 private:
 	void buildAttackCoords();
 };

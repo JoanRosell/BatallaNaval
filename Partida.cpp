@@ -57,7 +57,7 @@ void Partida::dumpToFile()
 	logBoardToFile("tauler_ordinador.txt", ui.getMachineBoard());*/
 }
 
-void Partida::playTurn()
+void Partida::playTurn() // TO REFACTOR
 {
 	bool turnEnded(false);
 	if (humanPlayer.isActive())
