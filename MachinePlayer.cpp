@@ -2,7 +2,7 @@
 
 
 
-MachinePlayer::MachinePlayer() : Player(), distribution(0, 9), rng(device()), targetAcquired(false)
+MachinePlayer::MachinePlayer() : Player(), distribution(0, 9), rng(device()), targetAcquired(false), currentAttackPattern(Ship_Orientation::UNDEFINED)
 {
 	buildAttackCoords();
 }
@@ -85,11 +85,13 @@ ActionOutcome MachinePlayer::takeAction(Player * target)
 
 	if (outcome.outcomeType == Outcome_Type::SHIP_HIT)
 	{
-		if (atkQueue.empty())
-			buildAttackQueue(outcome.coord);
-		else
+		if (!atkQueue.empty())
+		{
 			if (!targetAcquired)
 				acquireTarget(outcome.coord);
+		}
+		else
+			buildAttackQueue(outcome.coord);
 
 		lastHitCoord = outcome.coord;
 	}
@@ -97,33 +99,29 @@ ActionOutcome MachinePlayer::takeAction(Player * target)
 	if (outcome.outcomeType == Outcome_Type::SHIP_DESTROYED)
 	{
 		targetAcquired = false;
-		clearQueue();
-
 		lastHitCoord = outcome.coord;
 	}
+	
+	if (outcome.outcomeType == Outcome_Type::WATER && targetAcquired)
+		updateAttackPattern(outcome.coord);
 	
 	return outcome;
 }
 
 void MachinePlayer::buildAttackQueue(const coord & c)
 {
-	atkQueue.push({ c.first, c.second-1 });
-	atkQueue.push({ c.first+1, c.second });
-	atkQueue.push({ c.first-1, c.second });
-	atkQueue.push({ c.first, c.second+1 });
-}
+	if (!atkQueue.empty())
+		clearQueue();
 
-void MachinePlayer::buildAttackQueue(const coord & c, Ship_Orientation o)
-{
-	switch (o)
+	switch (currentAttackPattern)
 	{
 	case Ship_Orientation::TOP:
-		atkQueue.push({c.first, c.second-1});
-		atkQueue.push({c.first, c.second-2});
+		atkQueue.push({ c.first, c.second - 1 });
+		atkQueue.push({ c.first, c.second - 2 });
 		break;
 	case Ship_Orientation::RIGHT:
-		atkQueue.push({ c.first+1, c.second });
-		atkQueue.push({ c.first+2, c.second });
+		atkQueue.push({ c.first + 1, c.second });
+		atkQueue.push({ c.first + 2, c.second });
 		break;
 	case Ship_Orientation::BOTTOM:
 		atkQueue.push({ c.first, c.second + 1 });
@@ -133,6 +131,12 @@ void MachinePlayer::buildAttackQueue(const coord & c, Ship_Orientation o)
 		atkQueue.push({ c.first - 1, c.second });
 		atkQueue.push({ c.first - 2, c.second });
 		break;
+	case Ship_Orientation::UNDEFINED:
+		atkQueue.push({ c.first, c.second - 1 });
+		atkQueue.push({ c.first + 1, c.second });
+		atkQueue.push({ c.first - 1, c.second });
+		atkQueue.push({ c.first, c.second + 1 });
+		break;
 	}
 }
 
@@ -141,16 +145,13 @@ void MachinePlayer::acquireTarget(const coord & c)
 	targetAcquired = true;
 
 	int deltaX(c.first - lastHitCoord.first);
-	Ship_Orientation orientation(Ship_Orientation::UNDEFINED);
-
-	clearQueue();
 
 	if (deltaX != 0)
 	{
 		if (deltaX < 0)
-			orientation = Ship_Orientation::LEFT;
+			currentAttackPattern = Ship_Orientation::LEFT;
 		else
-			orientation = Ship_Orientation::RIGHT;
+			currentAttackPattern = Ship_Orientation::RIGHT;
 	}
 	else
 	{
@@ -158,18 +159,39 @@ void MachinePlayer::acquireTarget(const coord & c)
 
 		if (deltaY != 0)
 			if (deltaY < 0)
-				orientation = Ship_Orientation::TOP;
+				currentAttackPattern = Ship_Orientation::TOP;
 			else
-				orientation = Ship_Orientation::BOTTOM;
+				currentAttackPattern = Ship_Orientation::BOTTOM;
 	}
 	
-	buildAttackQueue(c, orientation);
+	buildAttackQueue(c);
 }
 
 void MachinePlayer::clearQueue()
 {
 	std::queue<coord> empty;
 	std::swap(atkQueue, empty);
+}
+
+void MachinePlayer::updateAttackPattern(const coord & c)
+{
+	switch (currentAttackPattern)
+	{
+	case Ship_Orientation::TOP:
+		currentAttackPattern = Ship_Orientation::BOTTOM;
+		break;
+	case Ship_Orientation::RIGHT:
+		currentAttackPattern = Ship_Orientation::LEFT;
+		break;
+	case Ship_Orientation::BOTTOM:
+		currentAttackPattern = Ship_Orientation::TOP;
+		break;
+	case Ship_Orientation::LEFT:
+		currentAttackPattern = Ship_Orientation::RIGHT;
+		break;
+	}
+
+	buildAttackQueue(c);
 }
 
 void MachinePlayer::buildAttackCoords()

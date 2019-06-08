@@ -99,7 +99,7 @@ inline bool Player::canAttackAt(const coord & c) const
 	{
 		return !atkCoords.at(c);
 	}
-	catch (const std::exception& e)
+	catch (const std::out_of_range& o)
 	{
 		return false;
 	}

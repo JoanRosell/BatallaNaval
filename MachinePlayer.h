@@ -23,12 +23,13 @@ private:
 	coord lastHitCoord;
 	bool targetAcquired;
 	std::queue<coord> atkQueue;
+	Ship_Orientation currentAttackPattern;
 
+	void updateAttackPattern(const coord & c);
 	void buildAttackCoords();
 	coord makeRandomAttack();
 
 	void buildAttackQueue(const coord& c);
-	void buildAttackQueue(const coord & c, Ship_Orientation s);
 	void acquireTarget(const coord& c);
 	void clearQueue();
 };
