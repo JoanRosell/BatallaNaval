@@ -89,9 +89,6 @@ ActionOutcome HumanPlayer::takeAction(Player* target)
 			}
 	}
 
-	if (outcome.outcomeType == Outcome_Type::WATER)
-		attacking = false;
-
 	return outcome;
 }
 

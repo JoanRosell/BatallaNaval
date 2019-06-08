@@ -1,5 +1,10 @@
 #pragma once
 #include "Player.h"
+#include "ClickAction.h"
+#include <vector>
+#include <queue>
+#include <random>
+
 class MachinePlayer :
 	public Player
 {
@@ -9,8 +14,22 @@ public:
 
 	bool loadShipsFromFile(const std::string& file);
 	ActionOutcome takeAction(Player* target);
-
+	
 private:
+	std::uniform_int_distribution<int> distribution;
+	std::random_device device;
+	std::mt19937 rng;
+
+	coord lastHitCoord;
+	bool targetAcquired;
+	std::queue<coord> atkQueue;
+
 	void buildAttackCoords();
+	coord makeRandomAttack();
+
+	void buildAttackQueue(const coord& c);
+	void buildAttackQueue(const coord & c, Ship_Orientation s);
+	void acquireTarget(const coord& c);
+	void clearQueue();
 };
 

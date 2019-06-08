@@ -11,6 +11,7 @@ public:
 
 	bool loadShipsFromFile(const std::string& filename);
 	ActionOutcome takeAction(Player* target);
+
 private:
 	void buildAttackCoords();
 	InputHandler inputHandler;

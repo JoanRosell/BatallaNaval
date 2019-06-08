@@ -1,5 +1,4 @@
 #pragma once
-#include "joc.h"
 #include "Utilities.h"
 #include "Action.h"
 #include "Player.h"

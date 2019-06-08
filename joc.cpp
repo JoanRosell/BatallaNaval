@@ -22,12 +22,18 @@ void joc(bool modeGrafic)
 	}
 
 	if (gameReady)
-		do 
+	{
+		bool gameEnded(false);
+
+		do
 		{
 			game.drawGraphics();
 			game.update();
 			game.catchEvents();
 			game.playTurn();
-		} while (!Keyboard_GetKeyTrg(KEYBOARD_ESCAPE));
+			gameEnded = game.isFinished();
+		} while (!Keyboard_GetKeyTrg(KEYBOARD_ESCAPE) && !gameEnded);
+	}
+		
 	// Sortim del bucle si pressionem ESC
 }

@@ -19,6 +19,7 @@ public:
 	void dumpToFile(); // TO REFACTOR
 	void playTurn();
 	bool isReady() const { return ready; }
+	bool isFinished() const { return gameEnded; }
 
 private:
 	Player* humanPlayer;

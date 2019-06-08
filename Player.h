@@ -16,7 +16,10 @@ public:
 	int getShipsAlive() const { return shipsAlive; }
 	bool fleetIsHit(const coord& c) const;
 	bool canAttackAt(const coord& c) const;
-	
+
+	void startAttack() { attacking = true; }
+	void endAttack() { attacking = false; }
+
 	void updateAtkCoords(const coord& c) { atkCoords.find(c)->second = true; }
 
 	virtual bool loadShipsFromFile(const std::string& file) = 0;
@@ -92,13 +95,14 @@ inline bool Player::fleetIsHit(const coord & c) const
 
 inline bool Player::canAttackAt(const coord & c) const
 {
-	bool atkCanBeMade(false);
-	auto coordToAttack(atkCoords.find(c));
-
-	if (coordToAttack != atkCoords.end())
-		atkCanBeMade = !coordToAttack->second;
-
-	return atkCanBeMade;
+	try 
+	{
+		return !atkCoords.at(c);
+	}
+	catch (const std::exception& e)
+	{
+		return false;
+	}
 }
 
 inline Outcome_Type Player::processHit(const coord & c)

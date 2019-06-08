@@ -2,7 +2,7 @@
 
 
 
-MachinePlayer::MachinePlayer() : Player()
+MachinePlayer::MachinePlayer() : Player(), distribution(0, 9), rng(device()), targetAcquired(false)
 {
 	buildAttackCoords();
 }
@@ -69,7 +69,107 @@ bool MachinePlayer::loadShipsFromFile(const std::string & filename)
 
 ActionOutcome MachinePlayer::takeAction(Player * target)
 {
-	return ActionOutcome();
+	ActionOutcome outcome;
+	coord atkCoord;
+
+	if (!atkQueue.empty())
+	{
+		atkCoord = atkQueue.front();
+		atkQueue.pop();
+	}
+	else
+		atkCoord = makeRandomAttack();
+
+	Action* currentAction(new ClickAction(this, target, atkCoord));
+	outcome = currentAction->execute();
+
+	if (outcome.outcomeType == Outcome_Type::SHIP_HIT)
+	{
+		if (atkQueue.empty())
+			buildAttackQueue(outcome.coord);
+		else
+			if (!targetAcquired)
+				acquireTarget(outcome.coord);
+
+		lastHitCoord = outcome.coord;
+	}
+		
+	if (outcome.outcomeType == Outcome_Type::SHIP_DESTROYED)
+	{
+		targetAcquired = false;
+		clearQueue();
+
+		lastHitCoord = outcome.coord;
+	}
+	
+	return outcome;
+}
+
+void MachinePlayer::buildAttackQueue(const coord & c)
+{
+	atkQueue.push({ c.first, c.second-1 });
+	atkQueue.push({ c.first+1, c.second });
+	atkQueue.push({ c.first-1, c.second });
+	atkQueue.push({ c.first, c.second+1 });
+}
+
+void MachinePlayer::buildAttackQueue(const coord & c, Ship_Orientation o)
+{
+	switch (o)
+	{
+	case Ship_Orientation::TOP:
+		atkQueue.push({c.first, c.second-1});
+		atkQueue.push({c.first, c.second-2});
+		break;
+	case Ship_Orientation::RIGHT:
+		atkQueue.push({ c.first+1, c.second });
+		atkQueue.push({ c.first+2, c.second });
+		break;
+	case Ship_Orientation::BOTTOM:
+		atkQueue.push({ c.first, c.second + 1 });
+		atkQueue.push({ c.first, c.second + 2 });
+		break;
+	case Ship_Orientation::LEFT:
+		atkQueue.push({ c.first - 1, c.second });
+		atkQueue.push({ c.first - 2, c.second });
+		break;
+	}
+}
+
+void MachinePlayer::acquireTarget(const coord & c)
+{
+	targetAcquired = true;
+
+	int deltaX(c.first - lastHitCoord.first);
+	Ship_Orientation orientation(Ship_Orientation::UNDEFINED);
+
+	clearQueue();
+
+	if (deltaX != 0)
+	{
+		if (deltaX < 0)
+			orientation = Ship_Orientation::LEFT;
+		else
+			orientation = Ship_Orientation::RIGHT;
+	}
+	else
+	{
+		int deltaY(c.second - lastHitCoord.second);
+
+		if (deltaY != 0)
+			if (deltaY < 0)
+				orientation = Ship_Orientation::TOP;
+			else
+				orientation = Ship_Orientation::BOTTOM;
+	}
+	
+	buildAttackQueue(c, orientation);
+}
+
+void MachinePlayer::clearQueue()
+{
+	std::queue<coord> empty;
+	std::swap(atkQueue, empty);
 }
 
 void MachinePlayer::buildAttackCoords()
@@ -90,4 +190,25 @@ void MachinePlayer::buildAttackCoords()
 			startX = 0;
 		}
 	}
+}
+
+coord MachinePlayer::makeRandomAttack()
+{
+	int randX(distribution(rng));
+	int randY(distribution(rng));
+	randY += 10;
+
+	coord randAtkCoord{ randX, randY };
+
+	while (!canAttackAt(randAtkCoord))
+	{
+		randX = distribution(rng);
+		randY = distribution(rng);
+		randY += 10;
+
+		randAtkCoord.first = randX;
+		randAtkCoord.second = randY;
+	}
+	
+	return randAtkCoord;
 }
