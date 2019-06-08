@@ -17,9 +17,8 @@ ActionOutcome ClickAction::execute()
 
 		if (result.outcomeType != Outcome_Type::WATER)
 			result.affectedShip = target->getLastShipHit();
-
-		done = true;
 	}
 
+	done = true;
 	return result;
 }

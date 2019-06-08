@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ClickAction.cpp" />
+    <ClCompile Include="HumanPlayer.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="joc.cpp" />
     <ClCompile Include="lib\debug.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="lib\sprites.cpp" />
     <ClCompile Include="lib\stb_vorbis.cpp" />
     <ClCompile Include="lib\video.cpp" />
+    <ClCompile Include="MachinePlayer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Partida.cpp" />
     <ClCompile Include="Ship.cpp" />
@@ -162,6 +164,7 @@
   <ItemGroup>
     <ClInclude Include="Action.h" />
     <ClInclude Include="ClickAction.h" />
+    <ClInclude Include="HumanPlayer.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="joc.h" />
     <ClInclude Include="lib\debug.h" />
@@ -175,6 +178,7 @@
     <ClInclude Include="lib\sprites.h" />
     <ClInclude Include="lib\stb_vorbis.h" />
     <ClInclude Include="lib\video.h" />
+    <ClInclude Include="MachinePlayer.h" />
     <ClInclude Include="Partida.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Ship.h" />

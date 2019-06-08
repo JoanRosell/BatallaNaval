@@ -9,7 +9,7 @@ class Player
 {
 public:
 	Player();
-	virtual ~Player();
+	virtual ~Player() {}
 
 	//	Accessors
 	bool isActive() const { return attacking; }
@@ -20,17 +20,14 @@ public:
 	void updateAtkCoords(const coord& c) { atkCoords.find(c)->second = true; }
 
 	virtual bool loadShipsFromFile(const std::string& file) = 0;
-	virtual ActionOutcome takeAction() = 0;
-
+	virtual ActionOutcome takeAction(Player* target) = 0;
+	
 	const std::vector<Ship>& getShips() const { return fleet; }
 
 	Ship getLastShipHit() const { return *lastShipHit; }
 
-	
+	Outcome_Type processHit(const coord& c);
 
-	void endActionPhase() { attacking = false; }
-	void startActionPhase() { attacking = true; }
-	
 protected:
 	unsigned short shipsAlive;
 	bool attacking;
@@ -40,7 +37,6 @@ protected:
 	std::map<coord, bool> atkCoords;
 
 	virtual void buildAttackCoords() = 0;
-	Outcome_Type processHit(const coord& c);
 
 	static const short k_nCoords = 100;
 
@@ -56,14 +52,9 @@ private:
 };
 
 
-Player::Player() : shipsAlive(0), attacking(false)
+inline Player::Player() : shipsAlive(0), attacking(false)
 {
 	buildFleet();
-}
-
-
-Player::~Player()
-{
 }
 
 inline void Player::buildFleet()

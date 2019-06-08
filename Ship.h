@@ -3,8 +3,18 @@
 #include <iostream>
 #include <algorithm>
 #include <map>
-#include "Utilities.h"
 #include "joc.h"
+
+typedef std::pair<int, int> coord;
+
+enum class Ship_Orientation
+{
+	TOP,
+	RIGHT,
+	BOTTOM,
+	LEFT,
+	UNDEFINED
+};
 
 class Ship
 {

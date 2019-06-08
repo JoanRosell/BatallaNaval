@@ -8,10 +8,12 @@
 
 void joc(bool modeGrafic)
 {
-	Partida game;
 	std::string iniFileHuman("Program\\data\\vaixells_jugador_huma.txt");
 	std::string iniFileArtificial("Program\\data\\vaixells_jugador_ordinador.txt");
-	bool gameReady = game.init(iniFileHuman, iniFileArtificial);
+
+	Partida game(iniFileHuman, iniFileArtificial);
+
+	bool gameReady = game.isReady();
 	
 	if (!modeGrafic && gameReady)
 	{
@@ -19,12 +21,13 @@ void joc(bool modeGrafic)
 		return;
 	}
 
-	do 
-	{
-		game.drawGraphics();
-		game.update();
-		game.processEvents();
-		game.playTurn();
-	} while (!Keyboard_GetKeyTrg(KEYBOARD_ESCAPE));
+	if (gameReady)
+		do 
+		{
+			game.drawGraphics();
+			game.update();
+			game.catchEvents();
+			game.playTurn();
+		} while (!Keyboard_GetKeyTrg(KEYBOARD_ESCAPE));
 	// Sortim del bucle si pressionem ESC
 }

@@ -8,7 +8,7 @@ public:
 	~MachinePlayer();
 
 	bool loadShipsFromFile(const std::string& file);
-	ActionOutcome takeAction();
+	ActionOutcome takeAction(Player* target);
 
 private:
 	void buildAttackCoords();

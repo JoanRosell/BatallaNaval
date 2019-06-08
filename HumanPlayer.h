@@ -10,8 +10,7 @@ public:
 	~HumanPlayer();
 
 	bool loadShipsFromFile(const std::string& filename);
-	ActionOutcome takeAction();
-
+	ActionOutcome takeAction(Player* target);
 private:
 	void buildAttackCoords();
 	InputHandler inputHandler;

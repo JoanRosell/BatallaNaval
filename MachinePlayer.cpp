@@ -14,6 +14,9 @@ MachinePlayer::~MachinePlayer()
 
 bool MachinePlayer::loadShipsFromFile(const std::string & filename)
 {
+	if (!fleet.empty())
+		fleet.clear();
+
 	bool shipsLoaded(false);
 	std::string line;
 	std::ifstream file;
@@ -49,8 +52,6 @@ bool MachinePlayer::loadShipsFromFile(const std::string & filename)
 		//	Como orientation es un int debemos hacer un cast a Ship_Orientation para poder construir el barco
 		//	Las coordenadas son un rango [1, 10], necesitamos transformar este rango a [0, 9]
 		
-		y += 10; // Movemos 10 posiciones hacia abajo los barcos para que queden en el tablero correcto
-		
 		fleet.emplace_back(--x, --y, size, (Ship_Orientation)orientation);
 	}
 	file.close();
@@ -60,10 +61,15 @@ bool MachinePlayer::loadShipsFromFile(const std::string & filename)
 	if (shipsAlive == 10)
 	{
 		shipsLoaded = true;
-		attacking = true;
+		attacking = false;
 	}
 
 	return shipsLoaded;
+}
+
+ActionOutcome MachinePlayer::takeAction(Player * target)
+{
+	return ActionOutcome();
 }
 
 void MachinePlayer::buildAttackCoords()

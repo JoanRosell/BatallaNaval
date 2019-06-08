@@ -11,7 +11,7 @@ bool UserInterface::init(const std::vector<Ship>& humanShips, const std::vector<
 	if (!humanShips.empty() && !machineShips.empty())
 	{
 		registerPlayerShips(humanShips);
-		registerPlayerShips(machineShips, false);
+		registerPlayerShips(machineShips);
 
 		boardsLoaded = true;
 	}

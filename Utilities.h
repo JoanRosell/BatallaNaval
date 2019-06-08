@@ -1,15 +1,6 @@
 #pragma once
 #include "Ship.h"
 
-enum class Ship_Orientation
-{
-	TOP,
-	RIGHT,
-	BOTTOM,
-	LEFT,
-	UNDEFINED
-};
-
 enum class Player_Type
 {
 	MACHINE,
@@ -31,8 +22,6 @@ enum class Sprite_Type
 	SHIP_HIT,
 	SHIP_DESTROYED
 };
-
-typedef std::pair<int, int> coord;
 
 struct ActionOutcome
 {

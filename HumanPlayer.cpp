@@ -15,6 +15,9 @@ HumanPlayer::~HumanPlayer()
 
 bool HumanPlayer::loadShipsFromFile(const std::string & filename)
 {
+	if (!fleet.empty())
+		fleet.clear();
+	
 	bool shipsLoaded(false);
 	std::string line;
 	std::ifstream file;
@@ -49,6 +52,9 @@ bool HumanPlayer::loadShipsFromFile(const std::string & filename)
 		shipData >> orientation;
 		//	Como orientation es un int debemos hacer un cast a Ship_Orientation para poder construir el barco
 		//	Las coordenadas son un rango [1, 10], necesitamos transformar este rango a [0, 9]
+
+		y += 10; // Movemos 10 posiciones hacia abajo los barcos para que queden en el tablero correcto
+
 		fleet.emplace_back(--x, --y, size, (Ship_Orientation)orientation);
 	}
 	file.close();
@@ -62,6 +68,31 @@ bool HumanPlayer::loadShipsFromFile(const std::string & filename)
 	}
 
 	return shipsLoaded;
+}
+
+ActionOutcome HumanPlayer::takeAction(Player* target)
+{
+	ActionOutcome outcome;
+
+	if (!inputHandler.isReady())
+		inputHandler.init(this, target);
+
+	if (inputHandler.waitForEvents())
+	{
+		Action* lastAction(inputHandler.retrieveLastAction());
+
+		if (lastAction != nullptr)
+			if (!lastAction->isDone())
+			{
+				outcome = lastAction->execute();
+				inputHandler.updateActionQueue();
+			}
+	}
+
+	if (outcome.outcomeType == Outcome_Type::WATER)
+		attacking = false;
+
+	return outcome;
 }
 
 void HumanPlayer::buildAttackCoords()
