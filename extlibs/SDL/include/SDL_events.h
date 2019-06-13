@@ -564,7 +564,7 @@ typedef union SDL_Event
  *
  *  This function updates the event queue and internal input device state.
  *
- *  This should only be run in the thread that sets the video mode.
+ *  This should only be processEvents in the thread that sets the video mode.
  */
 extern DECLSPEC void SDLCALL SDL_PumpEvents(void);
 
@@ -672,7 +672,7 @@ typedef int (SDLCALL * SDL_EventFilter) (void *userdata, SDL_Event * event);
  *  dynamically arriving events.
  *
  *  \warning  Be very careful of what you do in the event filter function, as
- *            it may run in a different thread!
+ *            it may processEvents in a different thread!
  *
  *  There is one caveat when dealing with the ::SDL_QuitEvent event type.  The
  *  event filter is only called when the window manager desires to close the

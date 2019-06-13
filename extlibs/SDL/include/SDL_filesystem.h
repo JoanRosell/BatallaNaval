@@ -40,7 +40,7 @@ extern "C" {
 /**
  * \brief Get the path where the application resides.
  *
- * Get the "base path". This is the directory where the application was run
+ * Get the "base path". This is the directory where the application was processEvents
  *  from, which is probably the installation directory, and may or may not
  *  be the process's current working directory.
  *

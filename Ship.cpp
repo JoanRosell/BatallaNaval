@@ -1,9 +1,8 @@
 #include "Ship.h"
 
-Ship::Ship(int x, int y, int size, Ship_Orientation o) : deployed(false),
-destroyed(false), size(size), activeCells(size), orientation(o)
+Ship::Ship(int x, int y, int size, Ship_Orientation o) : deployed(false), size(size), activeCells(size), orientation(o)
 {
-	deployed = deploy(std::make_pair(x, y));
+	deployed = deploy({ x, y });
 }
 
 Ship::~Ship()
@@ -18,34 +17,22 @@ bool Ship::deploy(coord firstCoord)
 	switch (orientation)
 	{
 	case Ship_Orientation::TOP:
-		myCells.push_back(std::make_pair(true, firstCoord));
-		for (int i = 0; i < size-1; i++)
-			myCells.emplace_back(std::make_pair(true, std::make_pair(firstCoord.first, ++firstCoord.second)));
-		
+		cells.emplace(std::make_pair( firstCoord, true));
+		for (int i = 0; i < size - 1; i++)
+		{
+			++firstCoord.second;
+			cells.emplace(std::make_pair(firstCoord, true));
+		}
 		deployed = true;
 		break;
 
 	case Ship_Orientation::RIGHT:
-		myCells.push_back(std::make_pair(true, firstCoord));
+		cells.emplace(std::make_pair(firstCoord, true));
 		for (int i = 0; i < size - 1; i++)
-			myCells.emplace_back(std::make_pair(true, std::make_pair(++firstCoord.first, firstCoord.second)));
-		
-		deployed = true;
-		break;
-
-	case Ship_Orientation::BOTTOM:
-		myCells.push_back(std::make_pair(true, firstCoord));
-		for (int i = 0; i < size - 1; i++)
-			myCells.emplace_back(std::make_pair(true, std::make_pair(firstCoord.first, --firstCoord.second)));
-
-		deployed = true;
-		break;
-
-	case Ship_Orientation::LEFT:
-		myCells.push_back(std::make_pair(true, firstCoord));
-		for (int i = 0; i < size - 1; i++)
-			myCells.emplace_back(std::make_pair(true, std::make_pair(--firstCoord.first, firstCoord.second)));
-
+		{
+			++firstCoord.first;
+			cells.emplace(std::make_pair(firstCoord, true));
+		}
 		deployed = true;
 		break;
 
@@ -55,6 +42,22 @@ bool Ship::deploy(coord firstCoord)
 	}
 
 	return deployed;
+}
+
+void Ship::registerHit(coord pos)
+{
+	auto it = cells.find(pos);
+
+	if (it != cells.end())
+	{
+		it->second = false;
+		activeCells--;
+	}
+}
+
+bool Ship::isHit(const coord & c) const
+{
+	return cells.find(c) != cells.end();
 }
 
 #ifndef __NOT_GRAPHICS

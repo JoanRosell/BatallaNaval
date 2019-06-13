@@ -882,7 +882,7 @@ typedef SDL_HitTestResult (SDLCALL *SDL_HitTest)(SDL_Window *win,
  *  from any part, or simulate its own title bar, etc.
  *
  *  This function lets the app provide a callback that designates pieces of
- *  a given window as special. This callback is run during event processing
+ *  a given window as special. This callback is processEvents during event processing
  *  if we need to tell the OS to treat a region of the window specially; the
  *  use of this callback is known as "hit testing."
  *

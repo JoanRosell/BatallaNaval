@@ -492,7 +492,7 @@ extern "C" {
  * The library source code has additional files (principally pngpriv.h) that
  * allow configuration of the library.
  */
-/* Section 1: run time configuration
+/* Section 1: processEvents time configuration
  * See pnglibconf.h for build time configuration
  *
  * Run time configuration allows the application to choose between
@@ -1749,7 +1749,7 @@ PNG_EXPORT(226, void, png_set_text_compression_method, (png_structrp png_ptr,
  * handling.  They are in the file pngrio.c, pngwio.c, and pngerror.c,
  * and call standard C I/O routines such as fread(), fwrite(), and
  * fprintf().  These functions can be made to use other I/O routines
- * at run time for those applications that need to handle I/O in a
+ * at processEvents time for those applications that need to handle I/O in a
  * different manner by calling png_set_???_fn().  See libpng-manual.txt for
  * more information.
  */
@@ -2930,7 +2930,7 @@ typedef struct
  * compiler errors because the definition of one of the following flags has been
  * compiled out it is because libpng does not have the required support.  It is
  * possible, however, for the libpng configuration to enable the format on just
- * read or just write; in that case you may see an error at run time.  You can
+ * read or just write; in that case you may see an error at processEvents time.  You can
  * guard against this by checking for the definition of the appropriate
  * "_SUPPORTED" macro, one of:
  *
@@ -3252,7 +3252,7 @@ PNG_EXPORT(243, int, png_get_palette_max, (png_const_structp png_ptr,
  * by the PNG_OPTION_ defines below.
  *
  * HARDWARE: normally hardware capabilites, such as the Intel SSE instructions,
- *           are detected at run time, however sometimes it may be impossible
+ *           are detected at processEvents time, however sometimes it may be impossible
  *           to do this in user mode, in which case it is necessary to discover
  *           the capabilities in an OS specific way.  Such capabilities are
  *           listed here when libpng has support for them and must be turned
@@ -3261,7 +3261,7 @@ PNG_EXPORT(243, int, png_get_palette_max, (png_const_structp png_ptr,
  * SOFTWARE: sometimes software optimizations actually result in performance
  *           decrease on some architectures or systems, or with some sets of
  *           PNG images.  'Software' options allow such optimizations to be
- *           selected at run time.
+ *           selected at processEvents time.
  */
 #ifdef PNG_SET_OPTION_SUPPORTED
 #ifdef PNG_ARM_NEON_API_SUPPORTED

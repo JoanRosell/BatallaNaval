@@ -4,74 +4,103 @@ UserInterface::~UserInterface()
 {
 }
 
-bool UserInterface::init(const std::vector<Ship>& userShips, const std::vector<Ship>& machineShips)
+bool UserInterface::init(const std::vector<Ship>& humanShips, const std::vector<Ship>& machineShips)
 {	
-	bool machineBoardReady(false);
-	bool humanBoardReady(false);
+	bool boardsLoaded(false);
 
-	humanBoardReady = loadBoard(humanBoard, userShips);
-	machineBoardReady = loadBoard(machineBoard, machineShips);
-
-	bool interfaceReady(false);
-	if (humanBoardReady && machineBoardReady)
-		interfaceReady = true;
-	
-	return interfaceReady;
-}
-
-bool UserInterface::loadBoard(std::vector<Sprite_Type>& board, const std::vector<Ship>& ships)
-{
-	bool boardLoaded(false);
-
-	if (!ships.empty())
+	if (!humanShips.empty() && !machineShips.empty())
 	{
-		for (const auto& ship : ships)
-		{
-			auto cellVector(ship.getCells());
-			bool shipIsDestroyed(ship.isDestroyed());
-			for (const auto& cell : cellVector)
-				updateBoard(board, cell, shipIsDestroyed);
-		}
+		registerPlayerShips(humanShips);
+		registerPlayerShips(machineShips);
 
-		boardLoaded = true;
+		boardsLoaded = true;
 	}
 
-	return boardLoaded;
+	return boardsLoaded;
 }
 
-void UserInterface::updateBoard(std::vector<Sprite_Type>& board, const std::pair<bool, coord>& cell, bool shipIsDestroyed)
+void UserInterface::updateChanges(const ActionOutcome & outcome)
 {
-	int index(coordToIndex(cell.second));
-	updateSpriteType(board.at(index), !cell.first, shipIsDestroyed);
+	switch (outcome.outcomeType)
+	{
+	case Outcome_Type::WATER:
+		updateCell(outcome.coord, Sprite_Type::WATER, true);
+		break;
+	case Outcome_Type::SHIP_HIT:
+		updateCell(outcome.coord, Sprite_Type::SHIP_HIT, true);
+		break;
+	case Outcome_Type::SHIP_DESTROYED:
+		updateShipDestroyed(outcome.affectedShip);
+		break;
+	default:
+		break;
+	}
 }
 
-void UserInterface::updateSpriteType(Sprite_Type & currentType, bool positionAttacked, bool shipIsDestroyed)
-{	
-	bool typeChanged(false);
+void UserInterface::registerPlayerShips(const std::vector<Ship>& ships, bool isVisible)
+{
+	for (const auto& ship : ships)
+		for (const auto& cell : ship.getCells())
+			updateCell(cell.first, Sprite_Type::SHIP, isVisible);
+}
 
-	if (currentType == Sprite_Type::DAMAGED_SHIP)
-		if (shipIsDestroyed)
-		{
-			currentType = Sprite_Type::DESTROYED_SHIP;
-			typeChanged = true;
-		}
+void UserInterface::updateCell(coord coord, Sprite_Type newType, bool isVisible)
+{
+	auto it = std::find_if(vBoard.begin(), vBoard.end(),
+		[&](const VisualizationCell& thisVCell) { return coord == thisVCell.coord; }
+	);
 
-	if (!typeChanged)
-		if (positionAttacked)
-		{
-			switch (currentType)
-			{
-			case Sprite_Type::NO_SPRITE:
-				currentType = Sprite_Type::WATER;
-				break;
-			case Sprite_Type::SHIP:
-				currentType = Sprite_Type::DAMAGED_SHIP;
-				break;
-			default:
-				break;
-			}
-		}
-		else
-			if (currentType == Sprite_Type::NO_SPRITE)
-				currentType = Sprite_Type::SHIP;
+	if (it != vBoard.end())
+	{
+		it->spriteType = newType;
+		it->isVisible = isVisible;
+	}
+	else
+	{
+		vBoard.emplace_back(coord, newType, isVisible);
+	}
+}
+
+void UserInterface::updateShipDestroyed(const Ship & s)
+{
+	for (const auto& cell : s.getCells())
+		updateCell(cell.first, Sprite_Type::SHIP_DESTROYED, true);
+}
+		
+void UserInterface::printGraphics()
+{
+	boardImg.draw(0, 0);
+	boardImg.draw(0, 10*MIDA_CASELLA);
+	printBoard();
+}
+
+void UserInterface::printBoard()
+{
+	for (const auto& vCell : vBoard)
+		printCell(vCell);
+}
+
+void UserInterface::printCell(const VisualizationCell & vCell)
+{
+	if (vCell.isVisible)
+		printSprite(vCell.coord, vCell.spriteType);
+}
+
+void UserInterface::printSprite(const coord & c, Sprite_Type type)
+{
+	switch (type)
+	{
+	case Sprite_Type::WATER:
+		waterImg.draw(c.first*MIDA_CASELLA, c.second*MIDA_CASELLA);
+		break;
+	case Sprite_Type::SHIP:
+		shipImg.draw(c.first*MIDA_CASELLA, c.second*MIDA_CASELLA);
+		break;
+	case Sprite_Type::SHIP_HIT:
+		shipHitImg.draw(c.first*MIDA_CASELLA, c.second*MIDA_CASELLA);
+		break;
+	case Sprite_Type::SHIP_DESTROYED:
+		shipDestroyedImg.draw(c.first*MIDA_CASELLA, c.second*MIDA_CASELLA);
+		break;
+	}
 }

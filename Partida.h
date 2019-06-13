@@ -1,24 +1,35 @@
 #pragma once
-#include "Player.h"
 #include <fstream>
 #include "InputHandler.h"
 #include "UserInterface.h"
-#include "Typedefs.h"
+#include "Utilities.h"
+#include "HumanPlayer.h"
+#include "MachinePlayer.h"
 #include <vector>
+
 class Partida
 {
 public:
 	Partida();
 	~Partida();
-	bool init(const std::string& initFileHuman, const std::string& initFileArtificial);
-	void dumpToFile();
-private:
-	Player humanPlayer;
-	Player artificialPlayer;
-	InputHandler playerListener;
-	UserInterface ui;
-	int turn;
+	Partida(const std::string& initFileHuman, const std::string& initFileArtificial);
+	void catchEvents();
+	void drawGraphics();
+	void update();
+	void dumpToFile(); // TO REFACTOR
+	void playTurn();
+	bool isReady() const { return ready; }
+	bool isFinished() const { return gameEnded; }
 
-	void logBoardToFile(const char* filename, const std::vector<Sprite_Type>& board);
+private:
+	Player* humanPlayer;
+	Player* machinePlayer;
+	UserInterface ui;
+
+	int turn;
+	bool ready;
+	bool gameEnded;
+
+	void logBoardToFile(const char* filename, const std::vector<VisualizationCell>& board);
 };
 

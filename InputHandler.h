@@ -1,25 +1,25 @@
 #pragma once
 #include "Player.h"
-#include "Typedefs.h"
-#include <memory>
+#include "ClickAction.h"
+#include <queue>
 #include <utility>
 
-// Scoped enum or 'class' enum
-enum class Action_Types
-{
-	DEPLOY,
-	ATTACK
-};
 
 class InputHandler
 {
 public:
-	InputHandler() {}
+	InputHandler() : human(nullptr), machine(nullptr), ready(false) {}
 	~InputHandler() {}
-	void attach(Player* p) { myPlayer.reset(p); }
-	void detach() { myPlayer = nullptr; }
-
+	void init(Player* h, Player* m);
+	bool waitForEvents();
+	Action* retrieveLastAction();
+	void updateActionQueue();
+	bool isReady() const { return ready; }
 private:
-	std::unique_ptr<Player> myPlayer;
+	Player* human;
+	Player* machine;
+	std::queue<Action*> actions;
+	bool ready;
+	coord coordFromPixel(int x, int y);
 };
 
