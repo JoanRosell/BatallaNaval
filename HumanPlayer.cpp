@@ -70,7 +70,7 @@ bool HumanPlayer::loadShipsFromFile(const std::string & filename)
 	return shipsLoaded;
 }
 
-ActionOutcome HumanPlayer::takeAction(Player* target)
+ActionOutcome HumanPlayer::takeActionAgainst(Player* target)
 {
 	ActionOutcome outcome;
 

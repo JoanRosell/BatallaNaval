@@ -13,7 +13,7 @@ public:
 	~MachinePlayer();
 
 	bool loadShipsFromFile(const std::string& file);
-	ActionOutcome takeAction(Player* target);
+	ActionOutcome takeActionAgainst(Player* target);
 	
 private:
 	std::uniform_int_distribution<int> distribution;

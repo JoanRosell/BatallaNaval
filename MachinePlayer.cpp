@@ -67,7 +67,7 @@ bool MachinePlayer::loadShipsFromFile(const std::string & filename)
 	return shipsLoaded;
 }
 
-ActionOutcome MachinePlayer::takeAction(Player * target)
+ActionOutcome MachinePlayer::takeActionAgainst(Player * target)
 {
 	ActionOutcome outcome;
 	coord atkCoord;

@@ -54,12 +54,12 @@ void Partida::playTurn()
 	ActionOutcome outcome;
 
 	if (humanPlayer->isActive())
-		outcome = humanPlayer->takeAction(machinePlayer);
+		outcome = humanPlayer->takeActionAgainst(machinePlayer);
 	else 
 		if (machinePlayer->isActive())
-			outcome = machinePlayer->takeAction(humanPlayer);
+			outcome = machinePlayer->takeActionAgainst(humanPlayer);
 
-	if (outcome.outcomeType == Outcome_Type::WATER) //	Ends active player attack automatically
+	if (outcome.outcomeType == Outcome_Type::WATER)
 		if (humanPlayer->isActive())
 		{
 			turn++;

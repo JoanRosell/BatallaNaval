@@ -23,7 +23,7 @@ public:
 	void updateAtkCoords(const coord& c) { atkCoords.find(c)->second = true; }
 
 	virtual bool loadShipsFromFile(const std::string& file) = 0;
-	virtual ActionOutcome takeAction(Player* target) = 0;
+	virtual ActionOutcome takeActionAgainst(Player* target) = 0;
 	
 	const std::vector<Ship>& getShips() const { return fleet; }
 
