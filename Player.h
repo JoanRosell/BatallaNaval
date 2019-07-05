@@ -32,7 +32,7 @@ public:
 	Outcome_Type processHit(const coord& c);
 
 protected:
-	unsigned short shipsAlive;
+	int shipsAlive;
 	bool attacking;
 
 	std::vector<Ship> fleet;
