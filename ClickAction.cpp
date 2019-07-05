@@ -7,10 +7,11 @@ ClickAction::~ClickAction() { }
 
 ActionOutcome ClickAction::execute()
 {
-	ActionOutcome result{ Outcome_Type::INVALID, Ship(), parameter };
+	ActionOutcome result;
 	
 	if (!done && source->canAttackAt(parameter))
 	{
+		result.coord = parameter;
 		source->updateAtkCoords(parameter);
 
 		result.outcomeType = target->processHit(parameter);

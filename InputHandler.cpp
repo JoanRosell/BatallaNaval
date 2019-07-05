@@ -20,12 +20,23 @@ bool InputHandler::waitForEvents()
 	{
 		SDL_Event input;
 		if (SDL_WaitEvent(&input))
+		{
 			if (input.type == SDL_MOUSEBUTTONDOWN)
 			{
 				coord coord(coordFromPixel(input.button.x, input.button.y));
 				actions.push(new ClickAction(human, machine, coord));
 				eventCaptured = true;
 			}
+			else
+			{
+				if (input.type == SDL_KEYDOWN)
+				{
+					actions.push(new KeyboardAction(human, input.key.keysym.scancode));
+					eventCaptured = true;
+				}
+			}
+		}
+			
 	}
 	
 	return eventCaptured;

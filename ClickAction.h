@@ -9,10 +9,6 @@ class ClickAction : public Action
 public:
 	// Funciones eliminadas
 	ClickAction() = delete;
-
-	/*ClickAction(const ClickAction& cAction) : source(cAction.source), 
-		target(cAction.target), parameter(cAction.parameter) {}*/
-
 	ClickAction(Player* source, Player* target, const coord& coordClicked);
 	~ClickAction();
 

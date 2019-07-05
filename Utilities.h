@@ -9,7 +9,8 @@ enum class Player_Type
 
 enum class Outcome_Type
 {
-	INVALID,
+	INVALID, //	Al ser el primer elemento es el valor "por defecto"
+	EXIT,
 	WATER,
 	SHIP_HIT,
 	SHIP_DESTROYED
@@ -25,6 +26,11 @@ enum class Sprite_Type
 
 struct ActionOutcome
 {
+	ActionOutcome() //	No se usa initialization list para poder usar bracket initialization
+	{
+		outcomeType = Outcome_Type::INVALID; //	Innecesario, pero ayuda a entender el codigo
+	}
+	
 	Outcome_Type outcomeType;
 	Ship affectedShip;
 	coord coord;
