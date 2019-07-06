@@ -59,19 +59,3 @@ bool Ship::isHit(const coord & c) const
 {
 	return cells.find(c) != cells.end();
 }
-
-#ifndef __NOT_GRAPHICS
-void Ship::askOrientation()
-{
-	while (orientation == Ship_Orientation::UNDEFINED)
-	{
-		SDL_Event input;
-		SDL_WaitEvent(&input);
-		if (input.type == SDL_KEYDOWN)
-		{
-			if (input.key.keysym.sym == KEYBOARD_T)
-				orientation = Ship_Orientation::TOP;
-		}
-	}
-}
-#endif

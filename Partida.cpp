@@ -17,6 +17,14 @@ void Partida::run()
 	updateTurnState(outcome);
 }
 
+ActionOutcome Partida::playTurn()
+{
+	if (humanPlayer->isActive())
+		return humanPlayer->takeActionAgainst(machinePlayer);
+	else
+		return machinePlayer->takeActionAgainst(humanPlayer);
+}
+
 void Partida::updateTurnState(ActionOutcome & outcome)
 {
 	if (outcome.outcomeType != Outcome_Type::INVALID)
@@ -46,6 +54,13 @@ void Partida::updateTurnState(ActionOutcome & outcome)
 	}
 }
 
+void Partida::passTurn()
+{
+	turn++;
+	humanPlayer->updateTurn();
+	machinePlayer->updateTurn();
+}
+
 void Partida::logBoardToFile(const char * filename, const std::vector<VisualizationCell>& board)
 {
 	int elementsLogged(0);
@@ -67,19 +82,4 @@ void Partida::logBoardToFile(const char * filename, const std::vector<Visualizat
 	}
 
 	outFile.close();
-}
-
-ActionOutcome Partida::playTurn()
-{
-	if (humanPlayer->isActive())
-		return humanPlayer->takeActionAgainst(machinePlayer);
-	else
-		return machinePlayer->takeActionAgainst(humanPlayer);
-}
-
-void Partida::passTurn()
-{
-	turn++;
-	humanPlayer->updateTurn();
-	machinePlayer->updateTurn();
 }

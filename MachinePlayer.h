@@ -10,11 +10,11 @@ class MachinePlayer :
 {
 public:
 	MachinePlayer();
-	~MachinePlayer();
+	~MachinePlayer() {}
 
-	bool loadShipsFromFile(const std::string& file);
 	ActionOutcome takeActionAgainst(Player* target);
-	
+	bool loadShipsFromFile(const std::string& file);
+
 private:
 	std::uniform_int_distribution<int> distribution;
 	std::random_device device;
@@ -33,4 +33,3 @@ private:
 	void acquireTarget(const coord& c);
 	void clearQueue();
 };
-

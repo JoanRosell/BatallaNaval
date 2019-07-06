@@ -13,6 +13,7 @@ public:
 	ActionOutcome execute() override;
 
 	Action* clone() override { return new KeyboardAction(*this); }
+
 private:
 	Player* source;
 	SDL_Scancode keyCode;

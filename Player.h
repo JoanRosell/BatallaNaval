@@ -50,7 +50,6 @@ private:
 	static const short kMaxShipSize = 4;
 	static const short kMinShipQuantity = 1;
 	static const short kMaxShipsPerPlayer = 10;
-	
 };
 
 

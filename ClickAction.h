@@ -27,6 +27,7 @@ public:
 	*	solo queremos copiar el puntero para mantener su referencia
 	*/
 	Action* clone() override { return new ClickAction(*this); }
+
 private:
 	Player* source;
 	Player* target;

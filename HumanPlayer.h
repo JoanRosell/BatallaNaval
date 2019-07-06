@@ -7,10 +7,10 @@ class HumanPlayer :
 {
 public:
 	HumanPlayer();
-	~HumanPlayer();
-
-	bool loadShipsFromFile(const std::string& filename);
+	~HumanPlayer() {}
+	
 	ActionOutcome takeActionAgainst(Player* target);
+	bool loadShipsFromFile(const std::string& filename);
 
 private:
 	void buildAttackCoords();
