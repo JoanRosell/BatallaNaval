@@ -10,14 +10,23 @@
 class Partida
 {
 public:
-	Partida();
-	~Partida();
+	Partida() = delete;
 	Partida(const std::string& initFileHuman, const std::string& initFileArtificial);
-	void catchEvents();
-	void drawGraphics();
-	void update();
-	void dumpToFile(); // TO REFACTOR
-	void playTurn();
+
+	~Partida() // Como es el objeto mas longevo este es el encargado de liberar recursos
+	{
+		delete humanPlayer;
+		humanPlayer = nullptr;
+
+		delete machinePlayer;
+		machinePlayer = nullptr;
+	}
+
+	void catchEvents() { ui.catchEvents(); }
+	void drawGraphics() { ui.printGraphics(); }
+	void update() { ui.update(); }
+	void run(); 
+
 	bool isReady() const { return ready; }
 	bool isFinished() const { return gameEnded; }
 
@@ -31,5 +40,8 @@ private:
 	bool gameEnded;
 
 	void logBoardToFile(const char* filename, const std::vector<VisualizationCell>& board);
+	ActionOutcome playTurn();
+	void passTurn();
+	void updateTurnState(ActionOutcome& outcome);
 };
 

@@ -3,13 +3,11 @@
 ClickAction::ClickAction(Player* source, Player* target, const coord& coordClicked) : Action(), 
 	source(source), target(target), parameter(coordClicked) {}
 
-ClickAction::~ClickAction() { }
-
 ActionOutcome ClickAction::execute()
 {
 	ActionOutcome result;
 	
-	if (!done && source->canAttackAt(parameter))
+	if (source->canAttackAt(parameter))
 	{
 		result.coord = parameter;
 		source->updateAtkCoords(parameter);
@@ -20,6 +18,5 @@ ActionOutcome ClickAction::execute()
 			result.affectedShip = target->getLastShipHit();
 	}
 
-	done = true;
 	return result;
 }

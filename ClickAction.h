@@ -3,19 +3,31 @@
 #include "Action.h"
 #include "Player.h"
 
-// Accion que realiza un Player, se generan a raiz de eventos
+/*
+*	Accion que realiza un jugador, se generan exclusivamente a partir de eventos
+*	Al formar parte de una jerarquia de clases se debe implementar el patron Clone
+*	para asegurar una correcta copia. 
+*
+*	No se sobrecarga el ctor de copia ya que no necesitamos 
+*	realizar deep copy, mas adelante se detalla por que
+*/
 class ClickAction : public Action
 {
 public:
-	// Funciones eliminadas
-	ClickAction() = delete;
+	ClickAction() = delete; //	No tiene sentido permitir este constructor
 	ClickAction(Player* source, Player* target, const coord& coordClicked);
-	~ClickAction();
+	~ClickAction() {} // Destacar que NO se destruyen los objetos Player, el lifetime de este objeto es menor
 
-	ActionOutcome execute();
+	ActionOutcome execute() override;
 	const coord& getParameter() const { return parameter; }
 
-	Action* clone() { return new ClickAction(*this); }
+	/*	Clone pattern:
+	*	Al contrario que en la mayoria de casos, aqui no se reliza deep copy.
+	*	Esto se debe a que NO queremos copias del objeto Player al que estamos apuntando,
+	*	solo queremos copiar el puntero para mantener su referencia
+	*/
+	Action* clone() override { return new ClickAction(*this); }
+
 private:
 	Player* source;
 	Player* target;

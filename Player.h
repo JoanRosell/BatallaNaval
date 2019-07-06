@@ -16,20 +16,20 @@ public:
 	int getShipsAlive() const { return shipsAlive; }
 	bool fleetIsHit(const coord& c) const;
 	bool canAttackAt(const coord& c) const;
-
-	void startAttack() { attacking = true; }
-	void endAttack() { attacking = false; }
-
+	const std::vector<Ship>& getShips() const { return fleet; }
+	Ship getLastShipHit() const { return *lastShipHit; }
+	bool hasLost() const { return shipsAlive == 0; }
+	void updateTurn();
+	Outcome_Type processHit(const coord& c);
 	void updateAtkCoords(const coord& c) { atkCoords.find(c)->second = true; }
 
+	//	Pure virtuals:
 	virtual bool loadShipsFromFile(const std::string& file) = 0;
 	virtual ActionOutcome takeActionAgainst(Player* target) = 0;
 	
-	const std::vector<Ship>& getShips() const { return fleet; }
+	
 
-	Ship getLastShipHit() const { return *lastShipHit; }
-
-	Outcome_Type processHit(const coord& c);
+	
 
 protected:
 	int shipsAlive;
@@ -50,7 +50,6 @@ private:
 	static const short kMaxShipSize = 4;
 	static const short kMinShipQuantity = 1;
 	static const short kMaxShipsPerPlayer = 10;
-	
 };
 
 
@@ -102,6 +101,11 @@ inline bool Player::canAttackAt(const coord & c) const
 	{
 		return false;
 	}
+}
+
+inline void Player::updateTurn()
+{
+	attacking = !attacking;
 }
 
 inline Outcome_Type Player::processHit(const coord & c)

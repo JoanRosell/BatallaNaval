@@ -10,9 +10,10 @@ public:
 	KeyboardAction(Player* pPlayer, SDL_Scancode kCode) : source(pPlayer), keyCode(kCode) {}
 	~KeyboardAction();
 
-	ActionOutcome execute();
+	ActionOutcome execute() override;
 
-	Action* clone() { return new KeyboardAction(*this); }
+	Action* clone() override { return new KeyboardAction(*this); }
+
 private:
 	Player* source;
 	SDL_Scancode keyCode;

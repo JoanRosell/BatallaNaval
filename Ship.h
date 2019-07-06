@@ -30,15 +30,12 @@ public:
 	bool isDeployed() const { return deployed; }
 	bool isDestroyed() const { return activeCells == 0; }
 	int getSize() const { return size; }
-	bool deploy(coord firstCoord);
-	void registerHit(coord pos);
 	bool isHit(const coord& c) const;
-
 	const std::map<coord, bool>& getCells() const { return cells; }
 
-	#ifndef __NOT_GRAPHICS
-	void askOrientation();
-	#endif
+	bool deploy(coord firstCoord);
+	void registerHit(coord pos);
+	
 
 private:
 	Ship_Orientation orientation;

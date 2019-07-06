@@ -2,65 +2,62 @@
 
 void InputHandler::init(Player * h, Player * m)
 {
-	if (human != nullptr || machine != nullptr)
-		return;
-	else
+	if (human == nullptr && machine == nullptr)
 	{
-		human = h;
-		machine = m;
-		ready = true;
+		if (h != nullptr && m != nullptr)
+		{
+			human = h;
+			machine = m;
+		}
+		else
+		{
+			throw std::invalid_argument("Argument pointers not initialized!");
+		}
 	}
 }
 
-bool InputHandler::waitForEvents()
+Action * InputHandler::processInput()
+{
+	return processEvent(captureEvent());
+}
+
+SDL_Event InputHandler::captureEvent()
 {
 	bool eventCaptured(false);
+	SDL_Event input;
 
 	while (!eventCaptured)
 	{
-		SDL_Event input;
 		if (SDL_WaitEvent(&input))
-		{
-			if (input.type == SDL_MOUSEBUTTONDOWN)
+			if (inputIsRelevant(input))
 			{
-				coord coord(coordFromPixel(input.button.x, input.button.y));
-				actions.push(new ClickAction(human, machine, coord));
+				eventRecord.push_back(input);
 				eventCaptured = true;
-			}
-			else
-			{
-				if (input.type == SDL_KEYDOWN)
-				{
-					actions.push(new KeyboardAction(human, input.key.keysym.scancode));
-					eventCaptured = true;
-				}
-			}
-		}
-			
+			}	
 	}
 	
-	return eventCaptured;
+	return input;
 }
 
-Action * InputHandler::getLastAction()
+Action * InputHandler::processEvent(const SDL_Event & e) const
 {
-	if (!actions.empty())
-		return actions.front();
-	else
-		return nullptr;
-		
+	switch (e.type)
+	{
+	case SDL_MOUSEBUTTONDOWN:
+		return new ClickAction(human, machine, getPosClicked(e));
+	case SDL_KEYDOWN:
+		return new KeyboardAction(human, getKeyPressed(e));
+	default:
+		throw std::invalid_argument("Invalid event type, check methods captureEvent() and inputIsRelevant()");
+	}
 }
 
-void InputHandler::updateActionQueue()
+coord InputHandler::getPosClicked(const SDL_Event& e) const
 {
-	if (actions.front()->isDone())
-		actions.pop();
+	return std::make_pair(e.button.x / MIDA_CASELLA, e.button.y / MIDA_CASELLA);
 }
 
-coord InputHandler::coordFromPixel(int x, int y)
+SDL_Scancode InputHandler::getKeyPressed(const SDL_Event & e) const
 {
-	int coord_X = x / MIDA_CASELLA;
-	int coord_Y = y / MIDA_CASELLA;
-
-	return std::make_pair(coord_X, coord_Y);
+	return e.key.keysym.scancode;
 }

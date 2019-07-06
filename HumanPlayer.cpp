@@ -1,23 +1,46 @@
 #include "HumanPlayer.h"
 
-
-
 HumanPlayer::HumanPlayer() : Player()
 {
 	attacking = true;
 	buildAttackCoords();
 }
 
-
-HumanPlayer::~HumanPlayer()
+void HumanPlayer::buildAttackCoords()
 {
+	{
+		int startX(0);
+		int startY(0);
+
+		for (int i = 0; i < k_nCoords; i++)
+		{
+			coord c(startX, startY);
+			atkCoords.emplace(std::make_pair(c, false));
+
+			startX++;
+
+			if (startX > 9)
+			{
+				startY++;
+				startX = 0;
+			}
+		}
+	}
+}
+
+ActionOutcome HumanPlayer::takeActionAgainst(Player* target)
+{
+	if (!inputHandler.isReady())
+		inputHandler.init(this, target);
+
+	return inputHandler.processInput()->execute();
 }
 
 bool HumanPlayer::loadShipsFromFile(const std::string & filename)
 {
 	if (!fleet.empty())
 		fleet.clear();
-	
+
 	bool shipsLoaded(false);
 	std::string line;
 	std::ifstream file;
@@ -69,48 +92,3 @@ bool HumanPlayer::loadShipsFromFile(const std::string & filename)
 
 	return shipsLoaded;
 }
-
-ActionOutcome HumanPlayer::takeActionAgainst(Player* target)
-{
-	ActionOutcome outcome;
-
-	if (!inputHandler.isReady())
-		inputHandler.init(this, target);
-
-	if (inputHandler.waitForEvents())
-	{
-		Action* lastAction(inputHandler.getLastAction());
-
-		if (lastAction != nullptr)
-			if (!lastAction->isDone())
-			{
-				outcome = lastAction->execute();
-				inputHandler.updateActionQueue();
-			}
-	}
-
-	return outcome;
-}
-
-void HumanPlayer::buildAttackCoords()
-{
-	{
-		int startX(0);
-		int startY(0);
-
-		for (int i = 0; i < k_nCoords; i++)
-		{
-			coord c(startX, startY);
-			atkCoords.emplace(std::make_pair(c, false));
-
-			startX++;
-
-			if (startX > 9)
-			{
-				startY++;
-				startX = 0;
-			}
-		}
-	}
-}
-
