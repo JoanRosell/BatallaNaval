@@ -18,7 +18,7 @@ public:
 	ClickAction(Player* source, Player* target, const coord& coordClicked);
 	~ClickAction() {} // Destacar que NO se destruyen los objetos Player, el lifetime de este objeto es menor
 
-	ActionOutcome execute();
+	ActionOutcome execute() override;
 	const coord& getParameter() const { return parameter; }
 
 	/*	Clone pattern:
@@ -26,7 +26,7 @@ public:
 	*	Esto se debe a que NO queremos copias del objeto Player al que estamos apuntando,
 	*	solo queremos copiar el puntero para mantener su referencia
 	*/
-	Action* clone() { return new ClickAction(*this); } 
+	Action* clone() override { return new ClickAction(*this); }
 private:
 	Player* source;
 	Player* target;

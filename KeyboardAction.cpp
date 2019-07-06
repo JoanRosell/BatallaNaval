@@ -11,7 +11,5 @@ ActionOutcome KeyboardAction::execute()
 	if (keyCode == SDL_SCANCODE_ESCAPE)
 		outcome.outcomeType = Outcome_Type::EXIT;
 
-	done = true;
-
 	return outcome;
 }

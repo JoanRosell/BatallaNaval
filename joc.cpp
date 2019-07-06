@@ -13,27 +13,14 @@ void joc(bool modeGrafic)
 
 	Partida game(iniFileHuman, iniFileArtificial);
 
-	bool gameReady = game.isReady();
-	
-	if (!modeGrafic && gameReady)
+	if (game.isReady())
 	{
-		game.dumpToFile();
-		return;
-	}
-
-	if (gameReady)
-	{
-		bool gameEnded(false);
-
 		do
 		{
 			game.drawGraphics();
 			game.update();
 			game.catchEvents();
 			game.run();
-			gameEnded = game.isFinished();
-		} while (!Keyboard_GetKeyTrg(KEYBOARD_ESCAPE) && !gameEnded);
+		} while (!game.isFinished());
 	}
-		
-	// Sortim del bucle si pressionem ESC
 }

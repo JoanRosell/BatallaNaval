@@ -3,28 +3,47 @@
 Partida::Partida(const std::string & initFileHuman, const std::string & initFileArtificial) : humanPlayer(new HumanPlayer()), 
 	machinePlayer(new MachinePlayer()), ready(false)
 {
-	bool humanReady(false);
-	bool machineReady(false);
-
-	humanReady = humanPlayer->loadShipsFromFile(initFileHuman);
-	machineReady = machinePlayer->loadShipsFromFile(initFileArtificial);
-
-	ready = humanReady && machineReady;
-
-	if (ready)
+	if (humanPlayer->loadShipsFromFile(initFileHuman) && machinePlayer->loadShipsFromFile(initFileArtificial))
+	{
+		ready = true;
 		ui.init(humanPlayer->getShips(), machinePlayer->getShips());
+	}
 }
 
-void Partida::run() 
+void Partida::run()
 {
 	ActionOutcome outcome = playTurn();
 
-	updateUserInterface(outcome);
+	updateTurnState(outcome);
+}
 
-	if (!isLastTurn() && outcome.outcomeType != Outcome_Type::EXIT)
-		passTurn();
-	else
-		gameEnded = true;	
+void Partida::updateTurnState(ActionOutcome & outcome)
+{
+	if (outcome.outcomeType != Outcome_Type::INVALID)
+	{
+		if (outcome.outcomeType != Outcome_Type::EXIT)
+		{
+			if (outcome.outcomeType != Outcome_Type::WATER)
+			{
+				if (outcome.outcomeType == Outcome_Type::SHIP_DESTROYED)
+					if (machinePlayer->isActive())
+						if (humanPlayer->hasLost() || machinePlayer->hasLost())
+							gameEnded = true;
+						else
+							passTurn();
+			}
+			else
+			{
+				passTurn();
+			}
+
+			ui.updateChanges(outcome);
+		}
+		else
+		{
+			gameEnded = true;
+		}
+	}
 }
 
 void Partida::logBoardToFile(const char * filename, const std::vector<VisualizationCell>& board)
@@ -63,10 +82,4 @@ void Partida::passTurn()
 	turn++;
 	humanPlayer->updateTurn();
 	machinePlayer->updateTurn();
-}
-
-void Partida::updateUserInterface(ActionOutcome & outcome)
-{
-	if (outcome.outcomeType != Outcome_Type::INVALID && outcome.outcomeType != Outcome_Type::EXIT)
-		ui.updateChanges(outcome);
 }

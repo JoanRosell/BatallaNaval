@@ -16,6 +16,11 @@ void InputHandler::init(Player * h, Player * m)
 	}
 }
 
+Action * InputHandler::processInput()
+{
+	return processEvent(captureEvent());
+}
+
 SDL_Event InputHandler::captureEvent()
 {
 	bool eventCaptured(false);
@@ -32,11 +37,6 @@ SDL_Event InputHandler::captureEvent()
 	}
 	
 	return input;
-}
-
-Action * InputHandler::processInput()
-{
-	return processEvent(captureEvent());
 }
 
 Action * InputHandler::processEvent(const SDL_Event & e) const

@@ -72,23 +72,10 @@ bool HumanPlayer::loadShipsFromFile(const std::string & filename)
 
 ActionOutcome HumanPlayer::takeActionAgainst(Player* target)
 {
-	ActionOutcome outcome;
-
 	if (!inputHandler.isReady())
 		inputHandler.init(this, target);
 
-	if (inputHandler.captureEvent())
-	{
-		Action* lastAction(inputHandler.processLastEvent());
-
-		if (lastAction != nullptr)
-			if (!lastAction->isDone())
-			{
-				outcome = lastAction->execute();
-			}
-	}
-
-	return outcome;
+	return inputHandler.processInput()->execute();
 }
 
 void HumanPlayer::buildAttackCoords()

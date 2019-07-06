@@ -7,7 +7,7 @@ ActionOutcome ClickAction::execute()
 {
 	ActionOutcome result;
 	
-	if (!done && source->canAttackAt(parameter))
+	if (source->canAttackAt(parameter))
 	{
 		result.coord = parameter;
 		source->updateAtkCoords(parameter);
@@ -18,6 +18,5 @@ ActionOutcome ClickAction::execute()
 			result.affectedShip = target->getLastShipHit();
 	}
 
-	done = true;
 	return result;
 }
