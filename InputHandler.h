@@ -9,18 +9,19 @@
 class InputHandler
 {
 public:
-	InputHandler() : human(nullptr), machine(nullptr), ready(false) {}
+	InputHandler() : human(nullptr), machine(nullptr) {}
 	~InputHandler() {}
 	void init(Player* h, Player* m);
-	bool waitForEvents();
-	Action* retrieveLastAction();
-	void updateActionQueue();
-	bool isReady() const { return ready; }
+	bool captureEvent();
+	Action* processLastEvent();
+	
+	bool isReady() const { return (human != nullptr && machine != nullptr); }
+
 private:
 	Player* human;
 	Player* machine;
-	std::queue<Action*> actions;
-	bool ready;
+	std::vector<SDL_Event> eventRecord;
+
 	coord coordFromPixel(int x, int y);
 };
 

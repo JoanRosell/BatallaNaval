@@ -16,20 +16,22 @@ public:
 	int getShipsAlive() const { return shipsAlive; }
 	bool fleetIsHit(const coord& c) const;
 	bool canAttackAt(const coord& c) const;
+	const std::vector<Ship>& getShips() const { return fleet; }
+	Ship getLastShipHit() const { return *lastShipHit; }
 
 	void startAttack() { attacking = true; }
 	void endAttack() { attacking = false; }
-
+	void updateAttacking() { attacking = !attacking; }
+	Outcome_Type processHit(const coord& c);
 	void updateAtkCoords(const coord& c) { atkCoords.find(c)->second = true; }
 
+	//	Pure virtuals:
 	virtual bool loadShipsFromFile(const std::string& file) = 0;
 	virtual ActionOutcome takeActionAgainst(Player* target) = 0;
 	
-	const std::vector<Ship>& getShips() const { return fleet; }
+	
 
-	Ship getLastShipHit() const { return *lastShipHit; }
-
-	Outcome_Type processHit(const coord& c);
+	
 
 protected:
 	int shipsAlive;

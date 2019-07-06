@@ -1,18 +1,5 @@
 #include "Partida.h"
 
-
-
-Partida::Partida()
-{
-	/*humanPlayer = Player(Player_Type::HUMAN);
-	artificialPlayer = Player(Player_Type::MACHINE);*/
-}
-
-
-Partida::~Partida()
-{
-}
-
 Partida::Partida(const std::string & initFileHuman, const std::string & initFileArtificial) : humanPlayer(new HumanPlayer()), 
 	machinePlayer(new MachinePlayer()), ready(false)
 {
@@ -28,28 +15,7 @@ Partida::Partida(const std::string & initFileHuman, const std::string & initFile
 		ui.init(humanPlayer->getShips(), machinePlayer->getShips());
 }
 
-void Partida::catchEvents()
-{
-	ui.catchEvents();
-}
-
-void Partida::drawGraphics()
-{
-	ui.printGraphics();
-}
-
-void Partida::update()
-{
-	ui.update();
-}
-
-void Partida::dumpToFile()
-{
-	/*logBoardToFile("tauler_huma.txt", ui.getHumanBoard());
-	logBoardToFile("tauler_ordinador.txt", ui.getMachineBoard());*/
-}
-
-void Partida::playTurn()
+void Partida::runTurn() 
 {
 	ActionOutcome outcome;
 

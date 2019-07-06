@@ -12,31 +12,31 @@ void InputHandler::init(Player * h, Player * m)
 	}
 }
 
-bool InputHandler::waitForEvents()
+bool InputHandler::captureEvent()
 {
 	bool eventCaptured(false);
 
 	while (!eventCaptured)
 	{
 		SDL_Event input;
+
 		if (SDL_WaitEvent(&input))
 		{
-			if (input.type == SDL_MOUSEBUTTONDOWN)
+			switch (input.type)
 			{
+			case SDL_MOUSEBUTTONDOWN:
 				coord coord(coordFromPixel(input.button.x, input.button.y));
 				actions.push(new ClickAction(human, machine, coord));
 				eventCaptured = true;
-			}
-			else
-			{
-				if (input.type == SDL_KEYDOWN)
-				{
-					actions.push(new KeyboardAction(human, input.key.keysym.scancode));
-					eventCaptured = true;
-				}
+				break;
+			case SDL_KEYDOWN:
+				actions.push(new KeyboardAction(human, input.key.keysym.scancode));
+				eventCaptured = true;
+				break;
+			default:
+				break;
 			}
 		}
-			
 	}
 	
 	return eventCaptured;
