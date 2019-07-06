@@ -15,54 +15,16 @@ Partida::Partida(const std::string & initFileHuman, const std::string & initFile
 		ui.init(humanPlayer->getShips(), machinePlayer->getShips());
 }
 
-void Partida::runTurn() 
+void Partida::run() 
 {
-	ActionOutcome outcome;
+	ActionOutcome outcome = playTurn();
 
-	if (humanPlayer->isActive())
-		outcome = humanPlayer->takeActionAgainst(machinePlayer);
-	else 
-		if (machinePlayer->isActive())
-			outcome = machinePlayer->takeActionAgainst(humanPlayer);
+	updateUserInterface(outcome);
 
-	if (outcome.outcomeType != Outcome_Type::EXIT)
-	{
-		if (outcome.outcomeType == Outcome_Type::WATER)
-			if (humanPlayer->isActive())
-			{
-				turn++;
-				machinePlayer->startAttack();
-				humanPlayer->endAttack();
-			}
-			else
-				if (machinePlayer->isActive())
-				{
-					turn++;
-					humanPlayer->startAttack();
-					machinePlayer->endAttack();
-				}
-
-
-		if (outcome.outcomeType != Outcome_Type::INVALID)
-			ui.updateChanges(outcome);
-
-		bool machineDefeated(machinePlayer->getShipsAlive() == 0);
-		bool humanDefeated(humanPlayer->getShipsAlive() == 0);
-
-		if (machineDefeated && turn == 0)
-		{
-			turn++;
-			machinePlayer->startAttack();
-			humanPlayer->endAttack();
-		}
-
-		if (machinePlayer->isActive())
-			if (humanDefeated || machineDefeated)
-				gameEnded = true;
-	}
+	if (!isLastTurn() && outcome.outcomeType != Outcome_Type::EXIT)
+		passTurn();
 	else
-		gameEnded = true;
-	
+		gameEnded = true;	
 }
 
 void Partida::logBoardToFile(const char * filename, const std::vector<VisualizationCell>& board)
@@ -86,4 +48,25 @@ void Partida::logBoardToFile(const char * filename, const std::vector<Visualizat
 	}
 
 	outFile.close();
+}
+
+ActionOutcome Partida::playTurn()
+{
+	if (humanPlayer->isActive())
+		return humanPlayer->takeActionAgainst(machinePlayer);
+	else
+		return machinePlayer->takeActionAgainst(humanPlayer);
+}
+
+void Partida::passTurn()
+{
+	turn++;
+	humanPlayer->updateTurn();
+	machinePlayer->updateTurn();
+}
+
+void Partida::updateUserInterface(ActionOutcome & outcome)
+{
+	if (outcome.outcomeType != Outcome_Type::INVALID && outcome.outcomeType != Outcome_Type::EXIT)
+		ui.updateChanges(outcome);
 }

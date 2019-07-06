@@ -26,7 +26,7 @@ public:
 	void drawGraphics() { ui.printGraphics(); }
 	void update() { ui.update(); }
 	void dumpToFile() const; // TO DO
-	void runTurn(); //	TO REFACTOR
+	void run(); //	TO REFACTOR
 	bool isReady() const { return ready; }
 	bool isFinished() const { return gameEnded; }
 
@@ -40,5 +40,9 @@ private:
 	bool gameEnded;
 
 	void logBoardToFile(const char* filename, const std::vector<VisualizationCell>& board);
+	ActionOutcome playTurn();
+	void passTurn();
+	void updateUserInterface(ActionOutcome& outcome);
+	bool isLastTurn() const { return machinePlayer->isActive() && (humanPlayer->hasLost() || machinePlayer->hasLost()); }
 };
 

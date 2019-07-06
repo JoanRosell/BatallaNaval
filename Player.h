@@ -18,10 +18,9 @@ public:
 	bool canAttackAt(const coord& c) const;
 	const std::vector<Ship>& getShips() const { return fleet; }
 	Ship getLastShipHit() const { return *lastShipHit; }
+	bool hasLost() const { return shipsAlive == 0 };
 
-	void startAttack() { attacking = true; }
-	void endAttack() { attacking = false; }
-	void updateAttacking() { attacking = !attacking; }
+	void updateTurn() { attacking = !attacking; }
 	Outcome_Type processHit(const coord& c);
 	void updateAtkCoords(const coord& c) { atkCoords.find(c)->second = true; }
 

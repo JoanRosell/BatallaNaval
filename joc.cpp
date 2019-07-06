@@ -30,7 +30,7 @@ void joc(bool modeGrafic)
 			game.drawGraphics();
 			game.update();
 			game.catchEvents();
-			game.playTurn();
+			game.run();
 			gameEnded = game.isFinished();
 		} while (!Keyboard_GetKeyTrg(KEYBOARD_ESCAPE) && !gameEnded);
 	}
