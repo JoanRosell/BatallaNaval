@@ -79,7 +79,7 @@ ActionOutcome HumanPlayer::takeActionAgainst(Player* target)
 
 	if (inputHandler.waitForEvents())
 	{
-		Action* lastAction(inputHandler.retrieveLastAction());
+		Action* lastAction(inputHandler.getLastAction());
 
 		if (lastAction != nullptr)
 			if (!lastAction->isDone())

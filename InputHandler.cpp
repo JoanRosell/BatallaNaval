@@ -42,7 +42,7 @@ bool InputHandler::waitForEvents()
 	return eventCaptured;
 }
 
-Action * InputHandler::retrieveLastAction()
+Action * InputHandler::getLastAction()
 {
 	if (!actions.empty())
 		return actions.front();

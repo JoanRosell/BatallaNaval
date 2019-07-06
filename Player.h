@@ -41,12 +41,11 @@ protected:
 
 	virtual void buildAttackCoords() = 0;
 
-	static const short k_nCoords = 100;
+	static const int k_nCoords = 100;
 
 private:
-	void buildFleet();
+	void init();
 
-	//	Constants
 	static const short kShipTypes = 4;
 	static const short kMaxShipSize = 4;
 	static const short kMinShipQuantity = 1;
@@ -57,10 +56,10 @@ private:
 
 inline Player::Player() : shipsAlive(0), attacking(false)
 {
-	buildFleet();
+	init();
 }
 
-inline void Player::buildFleet()
+inline void Player::init()
 {
 	int nTypes(kShipTypes);
 	int currentShipSize(kMaxShipSize);
