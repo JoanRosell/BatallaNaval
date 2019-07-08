@@ -4,6 +4,7 @@
 #include <vector>
 #include <queue>
 #include <random>
+#include <chrono>
 
 class MachinePlayer :
 	public Player
@@ -17,8 +18,7 @@ public:
 
 private:
 	std::uniform_int_distribution<int> distribution;
-	std::random_device device;
-	std::mt19937 rng;
+	std::default_random_engine rng;
 
 	coord lastHitCoord;
 	bool targetAcquired;

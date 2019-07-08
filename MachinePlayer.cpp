@@ -2,9 +2,10 @@
 
 
 
-MachinePlayer::MachinePlayer() : Player(), distribution(0, 9), rng(device()), targetAcquired(false), currentAttackPattern(Ship_Orientation::UNDEFINED)
+MachinePlayer::MachinePlayer() : Player(), distribution(0, 9), targetAcquired(false), currentAttackPattern(Ship_Orientation::UNDEFINED)
 {
 	buildAttackCoords();
+	rng.seed(std::chrono::system_clock::now().time_since_epoch().count());
 }
 
 void MachinePlayer::buildAttackCoords()

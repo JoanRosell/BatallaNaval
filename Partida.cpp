@@ -31,19 +31,8 @@ void Partida::updateTurnState(ActionOutcome & outcome)
 	{
 		if (outcome.outcomeType != Outcome_Type::EXIT)
 		{
-			if (outcome.outcomeType != Outcome_Type::WATER)
-			{
-				if (outcome.outcomeType == Outcome_Type::SHIP_DESTROYED)
-					if (machinePlayer->isActive())
-						if (humanPlayer->hasLost() || machinePlayer->hasLost())
-							gameEnded = true;
-						else
-							passTurn();
-			}
-			else
-			{
+			if (outcome.outcomeType == Outcome_Type::WATER)
 				passTurn();
-			}
 
 			ui.updateChanges(outcome);
 		}
@@ -52,6 +41,20 @@ void Partida::updateTurnState(ActionOutcome & outcome)
 			gameEnded = true;
 		}
 	}
+
+	if (!gameEnded)
+		if (machinePlayer->isActive())
+		{
+			if (humanPlayer->hasLost() || machinePlayer->hasLost())
+				gameEnded = true;
+			else
+				passTurn();
+		}
+		else
+		{
+			if (machinePlayer->hasLost())
+				passTurn();
+		}
 }
 
 void Partida::passTurn()
