@@ -40,12 +40,11 @@ protected:
 	std::map<coord, bool> atkCoords;
 
 	virtual void buildAttackCoords() = 0;
-
+	void init();
 	static const int k_nCoords = 100;
 
 private:
-	void init();
-
+	
 	static const short kShipTypes = 4;
 	static const short kMaxShipSize = 4;
 	static const short kMinShipQuantity = 1;
