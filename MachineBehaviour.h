@@ -10,15 +10,16 @@ class MachineBehaviour :
 	public PlayerBehaviour
 {
 public:
+	MachineBehaviour() = delete;
 	MachineBehaviour(Player* p) : owner(p), distribution(0, 9), 
 		targetAcquired(false), currentAttackPattern(Ship_Orientation::UNDEFINED)
 	{
 		rng.seed(std::chrono::system_clock::now().time_since_epoch().count());
 	}
 
-	~MachineBehaviour();
+	~MachineBehaviour() {}
 
-	ActionOutcome execute(Player* target);
+	ActionOutcome execute(Player* target) override;
 
 private:
 	Player* owner;

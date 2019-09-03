@@ -1,12 +1,12 @@
 #pragma once
-#include "Player.h"
 #include "Utilities.h"
+#include "Player.h"
 
 class PlayerBehaviour
 {
 public:
-	PlayerBehaviour();
-	virtual ~PlayerBehaviour();
+	PlayerBehaviour() {}
+	virtual ~PlayerBehaviour() {}
 	virtual ActionOutcome execute(Player* target) = 0;
 };
 

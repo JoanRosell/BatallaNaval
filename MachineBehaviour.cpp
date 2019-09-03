@@ -1,9 +1,5 @@
 #include "MachineBehaviour.h"
 
-MachineBehaviour::~MachineBehaviour()
-{
-}
-
 ActionOutcome MachineBehaviour::execute(Player* target)
 {
 	ActionOutcome outcome;

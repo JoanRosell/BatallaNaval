@@ -4,7 +4,7 @@ HumanBehaviour::~HumanBehaviour()
 {
 }
 
-ActionOutcome HumanBehaviour::execute(Player * target)
+ActionOutcome HumanBehaviour::execute(Player * target) 
 {
 	if (!ih.isReady())
 		ih.init(target);
