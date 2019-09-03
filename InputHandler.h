@@ -7,17 +7,17 @@
 class InputHandler
 {
 public:
-	InputHandler() : human(nullptr), machine(nullptr) {}
+	InputHandler(Player* p) : owner(p), target(nullptr) {}
 	~InputHandler() {}
 
-	void init(Player* h, Player* m);
+	void init(Player* p) { target = p; }
 	Action* processInput();
 	
-	bool isReady() const { return (human != nullptr && machine != nullptr); }
+	bool isReady() const { return target != nullptr; }
 
 private:
-	Player* human;
-	Player* machine;
+	Player* owner;
+	Player* target;
 	std::vector<SDL_Event> eventRecord;
 
 	Action* processEvent(const SDL_Event& e) const;

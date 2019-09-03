@@ -1,21 +1,5 @@
 #include "InputHandler.h"
 
-void InputHandler::init(Player * h, Player * m)
-{
-	if (human == nullptr && machine == nullptr)
-	{
-		if (h != nullptr && m != nullptr)
-		{
-			human = h;
-			machine = m;
-		}
-		else
-		{
-			throw std::invalid_argument("Argument pointers not initialized!");
-		}
-	}
-}
-
 Action * InputHandler::processInput()
 {
 	return processEvent(captureEvent());
@@ -44,9 +28,9 @@ Action * InputHandler::processEvent(const SDL_Event & e) const
 	switch (e.type)
 	{
 	case SDL_MOUSEBUTTONDOWN:
-		return new ClickAction(human, machine, getPosClicked(e));
+		return new ClickAction(owner, target, getPosClicked(e));
 	case SDL_KEYDOWN:
-		return new KeyboardAction(human, getKeyPressed(e));
+		return new KeyboardAction(owner, getKeyPressed(e));
 	default:
 		throw std::invalid_argument("Invalid event type, check methods captureEvent() and inputIsRelevant()");
 	}

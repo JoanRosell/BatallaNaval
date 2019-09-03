@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include "Utilities.h"
+#include "PlayerBehaviour.h"
 
 class Player
 {
@@ -25,30 +26,29 @@ public:
 
 	//	Pure virtuals:
 	virtual bool loadShipsFromFile(const std::string& file) = 0;
+
 	virtual ActionOutcome takeActionAgainst(Player* target) = 0;
 	
-	
-
-	
-
 protected:
+	PlayerBehaviour* behaviour;
 	int shipsAlive;
 	bool attacking;
-
 	std::vector<Ship> fleet;
 	std::vector<Ship>::iterator lastShipHit;
 	std::map<coord, bool> atkCoords;
 
+	//	To be implemented by factory =======
 	virtual void buildAttackCoords() = 0;
 	void init();
-	static const int k_nCoords = 100;
+	//======================================
 
-private:
-	
+	//	Move to file? ======================
+	static const int k_nCoords = 100;	
 	static const short kShipTypes = 4;
 	static const short kMaxShipSize = 4;
 	static const short kMinShipQuantity = 1;
 	static const short kMaxShipsPerPlayer = 10;
+	//======================================
 };
 
 

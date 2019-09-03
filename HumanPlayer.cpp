@@ -4,6 +4,7 @@ HumanPlayer::HumanPlayer() : Player()
 {
 	attacking = true;
 	buildAttackCoords();
+	behaviour = new HumanBehaviour(this);
 }
 
 void HumanPlayer::buildAttackCoords()
@@ -26,14 +27,6 @@ void HumanPlayer::buildAttackCoords()
 			}
 		}
 	}
-}
-
-ActionOutcome HumanPlayer::takeActionAgainst(Player* target)
-{
-	if (!inputHandler.isReady())
-		inputHandler.init(this, target);
-
-	return inputHandler.processInput()->execute();
 }
 
 bool HumanPlayer::loadShipsFromFile(const std::string & filename)
