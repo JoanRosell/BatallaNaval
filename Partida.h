@@ -1,11 +1,10 @@
 #pragma once
 #include <fstream>
-#include "InputHandler.h"
+#include <vector>
 #include "UserInterface.h"
-#include "Utilities.h"
 #include "HumanPlayer.h"
 #include "MachinePlayer.h"
-#include <vector>
+
 
 class Partida
 {

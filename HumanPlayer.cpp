@@ -4,7 +4,7 @@ HumanPlayer::HumanPlayer() : Player()
 {
 	attacking = true;
 	buildAttackCoords();
-	behaviour = new HumanBehaviour(this);
+	this->behaviour = new HumanBehaviour(this);
 }
 
 void HumanPlayer::buildAttackCoords()

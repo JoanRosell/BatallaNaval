@@ -45,4 +45,3 @@ private:
 	int size;
 	int activeCells;
 };
-

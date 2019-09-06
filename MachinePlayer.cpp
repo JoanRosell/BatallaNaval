@@ -3,7 +3,7 @@
 MachinePlayer::MachinePlayer() : Player()
 {
 	buildAttackCoords();
-	behaviour = new MachineBehaviour(this);
+	this->behaviour = new MachineBehaviour(this);
 }
 
 void MachinePlayer::buildAttackCoords()

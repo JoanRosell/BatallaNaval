@@ -1,6 +1,7 @@
 #pragma once
-#include "Utilities.h"
-#include "Player.h"
+
+class Player;
+struct ActionOutcome;
 
 class PlayerBehaviour
 {

@@ -9,7 +9,7 @@ public:
 	HumanPlayer();
 	~HumanPlayer() {}
 	
-	ActionOutcome takeActionAgainst(Player* target) { return behaviour->execute(target); }
+	ActionOutcome takeActionAgainst(Player* target) { return this->behaviour->execute(target); }
 	bool loadShipsFromFile(const std::string& filename);
 
 private:

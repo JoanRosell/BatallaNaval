@@ -98,7 +98,7 @@ inline bool Player::canAttackAt(const coord & c) const
 	}
 	catch (const std::out_of_range& o)
 	{
-		return false;
+		std::cerr << o.what() << std::endl;
 	}
 }
 

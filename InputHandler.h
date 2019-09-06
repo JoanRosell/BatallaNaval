@@ -1,8 +1,12 @@
 #pragma once
-#include "Player.h"
-#include "ClickAction.h"
-#include "KeyboardAction.h"
 #include <utility>
+#include <vector>
+#include "joc.h"
+#include "Utilities.h"
+#include "KeyboardAction.h"
+#include "ClickAction.h"
+
+class Player;
 
 class InputHandler
 {

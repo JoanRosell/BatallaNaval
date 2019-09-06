@@ -1,9 +1,8 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "Ship.h"
 #include <algorithm>
-#include "Action.h"
+#include "joc.h"
 #include "Utilities.h"
 
 class UserInterface
