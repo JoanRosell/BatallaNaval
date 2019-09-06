@@ -1,6 +1,6 @@
 #pragma once
 #include "Player.h"
-#include "InputHandler.h"
+#include "HumanBehaviour.h"
 
 class HumanPlayer :
 	public Player
@@ -9,11 +9,11 @@ public:
 	HumanPlayer();
 	~HumanPlayer() {}
 	
-	ActionOutcome takeActionAgainst(Player* target);
+	ActionOutcome takeActionAgainst(Player* target) { return this->behaviour->execute(target); }
 	bool loadShipsFromFile(const std::string& filename);
 
 private:
 	void buildAttackCoords();
-	InputHandler inputHandler;
+	
 };
 

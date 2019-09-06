@@ -1,6 +1,6 @@
 #pragma once
-#include <algorithm>
-#include "Utilities.h"
+
+struct ActionOutcome;
 
 class Action
 {

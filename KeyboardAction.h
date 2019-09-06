@@ -1,13 +1,16 @@
 #pragma once
 #include "Action.h"
-#include "Player.h"
+#include "joc.h"
+#include "Utilities.h"
+
+class Player;
 
 class KeyboardAction :
 	public Action
 {
 public:
 	KeyboardAction() = delete;
-	KeyboardAction(Player* pPlayer, SDL_Scancode kCode) : source(pPlayer), keyCode(kCode) {}
+	KeyboardAction(Player* s, SDL_Scancode kCode) : source(s), keyCode(kCode) {}
 	~KeyboardAction();
 
 	ActionOutcome execute() override;

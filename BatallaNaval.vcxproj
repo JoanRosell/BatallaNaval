@@ -99,7 +99,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>libpng16.lib;SDL2.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\dev\lib;C:\dev\extlibs\SDL;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)lib;$(ProjectDir)extlibs\SDL;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -145,6 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ClickAction.cpp" />
+    <ClCompile Include="HumanBehaviour.cpp" />
     <ClCompile Include="HumanPlayer.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="joc.cpp" />
@@ -157,15 +158,18 @@
     <ClCompile Include="lib\sprites.cpp" />
     <ClCompile Include="lib\stb_vorbis.cpp" />
     <ClCompile Include="lib\video.cpp" />
+    <ClCompile Include="MachineBehaviour.cpp" />
     <ClCompile Include="MachinePlayer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Partida.cpp" />
+    <ClCompile Include="PlayerBehaviour.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Action.h" />
     <ClInclude Include="ClickAction.h" />
+    <ClInclude Include="HumanBehaviour.h" />
     <ClInclude Include="HumanPlayer.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="joc.h" />
@@ -181,9 +185,11 @@
     <ClInclude Include="lib\sprites.h" />
     <ClInclude Include="lib\stb_vorbis.h" />
     <ClInclude Include="lib\video.h" />
+    <ClInclude Include="MachineBehaviour.h" />
     <ClInclude Include="MachinePlayer.h" />
     <ClInclude Include="Partida.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerBehaviour.h" />
     <ClInclude Include="Ship.h" />
     <ClInclude Include="UserInterface.h" />
     <ClInclude Include="Utilities.h" />
